@@ -24,6 +24,7 @@ def get_data(folder):
     f = open('file_data','r')
     data = f.read()
     f.close()
+    filele = data+'\n'
     data = data.split('\n')[1:]
     data = map(lambda x: x.split(':')[1:],data)[:-1]
     data = map(lambda x: x[1][1:],data)
@@ -31,5 +32,5 @@ def get_data(folder):
     data = filter(lambda x: x!='hole',data)
     data = map(make_pair,data)
     result.append(data)
-  return result
-  
+    #subprocess.call(filele +' >> data.visual',shell=True)
+  return filter(lambda x: x!=[], result)
