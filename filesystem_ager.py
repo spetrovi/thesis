@@ -1,6 +1,6 @@
 import subprocess, sys, fio_config_generator as conf, random_deletor as deletor, logging
 from random import randint
-
+import functions as fun
 
 
 
@@ -38,6 +38,8 @@ for i in range(0,n):
   logging.info('Generated volume: '+str(sum(listOfCreated))+'kB')
   logging.info('Number of deleted files: '+str(len(listOfDeleted)))
   logging.info('Deleted volume: '+str(deletedVolume)+'kB\n')
+  
+  fun.store_image('./','../cycle_'+str(i))
   
 logging.info('Total files created: '+str(totalFilesCreated))
 logging.info('Total volume created: '+str(totalVolumeCreated)+'kB')

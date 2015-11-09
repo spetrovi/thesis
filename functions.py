@@ -9,7 +9,7 @@ def recursive_glob(rootdir='.', pattern='*'):
 
 def save_json(file_name, data):
   save_json = open(file_name+'.json','w')
-  save_json.write(json_dumps(data))
+  save_json.write(json.dumps(data))
   save_json.close()
   
 def load_json(file_name):
@@ -47,3 +47,14 @@ def get_data(folder):
 def store_image(folder, file_name):
   data = get_data(folder)
   save_json(file_name, data)
+  
+def count_extents(file_adresses):
+  print file_adresses
+  number_of_non_cont = 1
+  if len(file_adresses) == 1:
+    return number_of_non_cont
+  
+  for i in range(0,len(file_adresses)-1): 
+    if (int(file_adresses[i][1])+1) != int(file_adresses[i+1][0]):
+      number_of_non_cont += 1
+  return number_of_non_cont
