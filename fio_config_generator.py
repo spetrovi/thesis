@@ -21,16 +21,15 @@ runtime=60\n
 
   config = open('./config.fio','w+')
   config.write(globalSet)
-
+  
+  filesToWrite = []
   fileSizes = []
   total = 0
-  c = 0
   while total < sizeBit-lowSizeBit:
       fileSize = randint(lowSizeBit,highSizeBit)
       if total+fileSize < sizeBit:
-	fileSizes.append(str(fileSize)+'k')
+	fileSizes.append(fileSize)
 	total += fileSize
 	config.write('['+str(fileSize)+']\n'+'filesize='+str(fileSize)+'k\n\n')
-	c +=1
-  return c
+  return fileSizes
 

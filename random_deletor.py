@@ -3,7 +3,10 @@ import subprocess, sys, glob
 from random import randint
 
 def random_deletor(size,modificator,sizeRange,c):
-  sizeBit = (int(size[:-1])*1000)/modificator
+  if modificator != 0:
+    sizeBit = (int(size[:-1])*1000)/modificator
+  else:
+    return []
   sizeRange = sizeRange.split(':')
   lowSizeBit = int(sizeRange[0][:-1])
   highSizeBit = int(sizeRange[1][:-1])
@@ -19,4 +22,4 @@ def random_deletor(size,modificator,sizeRange,c):
 	total += fileSize
 	files_to_delete.append(file_to_delete[0])
 	subprocess.call('rm '+file_to_delete[0],shell=True)
-  
+  return files_to_delete
