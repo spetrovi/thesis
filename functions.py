@@ -71,7 +71,7 @@ def count_extents(file_adresses):
 def analyse_cycles():
   cycles = glob.glob('*.json')
   cycles.sort()
-  #map(lambda x: extent_distribution(x, load_json(x)), cycles)
+  map(lambda x: extent_distribution(x, load_json(x)), cycles)
   map(lambda x: visual(x, load_json(x)), cycles)
   
 def extent_distribution(name, data):
@@ -102,7 +102,7 @@ def extent_distribution(name, data):
   plt.ylabel('Number of files')
   plt.title
   #plt.show()
-  plt.savefig('./output/'+name+'.jpg', dpi=50)
+  plt.savefig('./out/Ex'+name[:-5]+'.png', dpi=50)
   return 1
 
 #divide list 'lis' into 'n' rows
@@ -158,5 +158,33 @@ def visual(name, files):
   colorbar()
   title("Matrix")
   #show()
-  fig.savefig('./out/'+name[:-5]+'.png', dpi=200)
+  fig.savefig('./out/2d'+name[:-5]+'.png', dpi=200)
   return 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
