@@ -108,10 +108,14 @@ Prevention of file system fragmentation consist mainly of \textit{delayed alloca
 
 Delayed allocation, also called \textit{allocate-on-flush} is a feature that, when a file is written to the buffer cache, substracts space from the free-space counter, but won't allocate the free-space bitmap. The data is held in memory, instead, until it must be flushed (to storage) because of memory pressure when calling Unix \textit{sync}, or when flushing dirty buffers. This approach improves the chance, that the file will be written in a contiguous group of blocks, avoiding fragmentation and reducing CPU usage as well.
 
-
+\textit{Pridat nieco na zaver o XFS?}
 
 \section{EXT4}
-Theory of EXT4
+Ext4, also called \textit{fourth extended filesystem} is a journaling file system, developed as successor of ext3 for linux kernel.
+
+
+
+
 
 \chapter{Journaling file systems}
 
