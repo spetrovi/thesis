@@ -89,38 +89,31 @@
 Theses are rumoured to be the capstones of education, so I decided
 to write one of my own. If all goes well, I will soon have a
 diploma under my belt. Wish me luck!
-
-\begin{otherlanguage}{czech}
-Říká se, že závěrečné práce jsou vyvrcholením studia a tak jsem se
-rozhodl jednu také napsat. Pokud vše půjde podle plánu, odnesu si
-na konci semestru diplom. Držte mi palce!
-\end{otherlanguage}
-
-\begin{otherlanguage}{slovak}
-Hovorí sa, že záverečné práce sú vyvrcholením štúdia a tak som sa
-rozhodol jednu tiež napísať. Ak všetko pôjde podľa plánu, odnesiem
-si na konci semestra diplom. Držte mi palce!
-\end{otherlanguage}
-
-\begin{otherlanguage}{german}
-Man munkelt, dass die Dissertation die Krönung der Ausbildung ist.
-Deshalb habe ich mich beschlossen meine eigene zu schreiben. Wenn
-alles gut geht, bekomme ich bald ein Diplom. Wünsch mir Glück!
-\end{otherlanguage}
-
-\begin{otherlanguage}{russian}\textrussian{%
-Говорят, что тезис -- это кульминация обучения. Поэтому я и решил
-написать собственный тезис. Если всё сработает по плану, я скоро
-получу диплом. Желайте мне удачи!
-}\end{otherlanguage}
+Possible other chapters to explain terms: journaling filesystem, allocation groups, B+ trees
 
 \chapter{Targeted filesystems}
 \section{XFS}
-Theory of XFS
+
+XFS is a 64-bit journaling file system created by Silicon Graphics, Inc(SGI) in 1993. It is known for excellence in execution of paralel I/O operations, because of its architecture based on allocation groups.
+
+Allocation groups are euqally sized linear regions within file system. Each allocation group manages its own inodes and free space, therefore increasing parallelism.
+Architecture of this design enables for significant scalability of bandwidth, threads, and size of filesystem, as well as its files, simply because multiple processes and threads can access the file system simultaneously.
+
+XFS allocates space as extents stored in pairs of B+ trees, each pair for each allocation group (imrpoving performance especially when handling large files). One of the B+ trees is indexed by the length of the free extents, while the other is indexed by the starting block of the free extents. This dual indexing scheme allows for the highly efficient location of free extents for file system operations.
+Extent describes one or more contiguous blocks, which can considerably shorten list of blocks.
+ 
+Metadata journaling ensures consistency of data in case of emergency situations as f.e. system crash.
+
+Prevention of file system fragmentation consist mainly of \textit{delayed allocation} feature as well as online defragmentation(\textit{xfs\_fsr}), that can. 
+
+Delayed allocation, also called \textit{allocate-on-flush} is a feature that, when a file is written to the buffer cache, substracts space from the free-space counter, but won't allocate the free-space bitmap. The data is held in memory, instead, until it must be flushed (to storage) because of memory pressure when calling Unix \textit{sync}, or when flushing dirty buffers. This approach improves the chance, that the file will be written in a contiguous group of blocks, avoiding fragmentation and reducing CPU usage as well.
+
+
 
 \section{EXT4}
 Theory of EXT4
 
+\chapter{Journaling file systems}
 
 \chapter{Floats and references}
 \begin{figure}
