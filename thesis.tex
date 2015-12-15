@@ -93,7 +93,7 @@ Possible other chapters to explain terms: journaling filesystem, allocation grou
 
 \chapter{Targeted filesystems}
 \section{XFS}
-
+% 
 XFS is a 64-bit journaling file system created by Silicon Graphics, Inc(SGI) in 1993. It is known for excellence in execution of paralel I/O operations, because of its architecture based on allocation groups.
 
 Allocation groups are euqally sized linear regions within file system. Each allocation group manages its own inodes and free space, therefore increasing parallelism.
@@ -111,7 +111,14 @@ Delayed allocation, also called \textit{allocate-on-flush} is a feature that, wh
 \textit{Pridat nieco na zaver o XFS?}
 
 \section{EXT4}
-Ext4, also called \textit{fourth extended filesystem} is a journaling file system, developed as successor of ext3 for linux kernel.
+Ext4, also called \textit{fourth extended filesystem} is a 48-bit journaling file system, developed as successor of ext3 for linux kernel, improving reliability and performance features.
+
+Traditionally, ext* systems use an indirect block mapping sheme. Such an approach is generaly inefficient for large files, on operations like deleting or truncating. Ext4 use modern approach of \textit{extents}, which positively affect performance and encourage continuous layouts.
+
+When allocating, ext4 use multiblock allocation, which is more efficient way than one block allocation at time, which is present in earlier ext* file systems. Multiblock allocation has far better performance, particulary when in use with delayed allocation and extents.
+
+Similary as xfs, ext4 use delayed allocation design, to increase performance, especially when in use with multiblock allocation and extent-based approach, also reducing fragmentation on the device.
+
 
 
 
