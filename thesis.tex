@@ -117,7 +117,9 @@ Traditionally, ext* systems use an indirect block mapping sheme. Such an approac
 
 When allocating, ext4 use multiblock allocation, which is more efficient way than one block allocation at time, which is present in earlier ext* file systems. Multiblock allocation has far better performance, particulary when in use with delayed allocation and extents.
 
-Similary as xfs, ext4 use delayed allocation design, to increase performance, especially when in use with multiblock allocation and extent-based approach, also reducing fragmentation on the device.
+Similary as xfs, ext4 use delayed allocation design, to increase performance, especially when in use with multiblock allocation and extent-based approach, also reducing fragmentation on the device. For cases of fragmentation that still occur, ext4 provide support for online defragmentation and \textit{e4defrag} tool to defragment either single file, or whole filesystem.
+
+
 
 
 
@@ -125,6 +127,44 @@ Similary as xfs, ext4 use delayed allocation design, to increase performance, es
 
 
 \chapter{Journaling file systems}
+\chapter{Methodology}
+\section{My aging script}
+My aging tool is a simple approach to write and remove many files of random sized files.
+
+The tool consist of three scripts and one common library called \textit{functions}. The scripts are named \textit{filesystem\_ager.py}, \textit{fio\_config\_generator.py} and \textit{random\_deletor.py}.
+
+The workflow consist of calling filesystem\_ager, with desired parameters. The script manages triggering fio\_config\_generator, calling fio on generated config and triggering random deletor. These three actions are repeated given number of times.
+Parameters of filesystem\_ager are: 
+\begin{compactenum}
+  \item Total desired size do be written in one cycle
+  \item Denominator of total desired size (Total desired size will be divided by this number)
+  \item Range of size of written files
+  \item Number of cycles
+\end{compactenum}
+
+Although FIO tool has some parameters to randomize the size of files which are written, the management of this is completely in hands of fio\_config\_generator.
+Parameters of this script are:
+\begin{compactenum}
+  \item Total deisred size to be written
+  \item Range of size of written files
+\end{compactenum}
+
+The script will generate global settings of a workload, then proceeds to generate jobs for every file that will be written. File size is always the name of that file, and these are gathered to a list, then list of generated files is returned and script ends.
+
+After config file is generated, filesystem\_ager will run fio tool on generated config and therefore, files are written on the device.
+
+The removing of files is handled by random\_deletor script. Its parameters are:
+\begin{compactenum}
+  \item Total written size
+  \item Denominator of total size
+  \item Range of size of written files
+  \item Number of created files
+\end{compactenum}
+
+If denominator equals zero, random\_deletor wont remove any files and will return empty list. Otherwise, desired range of deletion is estimated. Random\_deletor then proceeds to remove files while desired volume is not deleted. Then returns a list of deleted files.
+
+filesystem\_ager then sums up deleted volume, log it as well as other information and triggers the cycle again.
+
 
 \chapter{Floats and references}
 \begin{figure}
