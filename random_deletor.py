@@ -17,7 +17,8 @@ def random_deletor(size,modificator,sizeRange,c):
     fileNum = randint(0,c)
     file_to_delete = glob.glob('*.'+str(fileNum)+'.*')
     if len(file_to_delete)!=0:
-      fileSize = int(file_to_delete[0].split('.')[0])
+      file_to_delete = file_to_delete[randint(0,len(file_to_delete))]
+      fileSize = int(file_to_delete.split('.')[0])
       if (total+fileSize < sizeBit+highSizeBit):
 	total += fileSize
 	files_to_delete.append(file_to_delete[0])

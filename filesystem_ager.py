@@ -18,13 +18,19 @@ totalFilesCreated = 0
 totalVolumeCreated = 0
 totalFilesDeleted = 0
 totalVolumeDeleted = 0
+existent_files = 0
 
 for i in range(0,n):
   logging.info('Cycle number '+str(i)+':')
   listOfCreated = conf.fio_config_generator(size,sizeRange)
   
+  existent_files += len(listOfCreated)
+
   subprocess.call('fio config.fio',shell=True)
-  listOfDeleted = deletor.random_deletor(size,modificator,sizeRange,len(listOfCreated))
+  listOfDeleted = deletor.random_deletor(size,modificator,sizeRange,existent_files)
+
+  existent_files -=len(listOfDeleted)
+
   deletedVolume = sum(map(lambda x: int(x.split('.')[0]), listOfDeleted))
   
   

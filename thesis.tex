@@ -133,7 +133,7 @@ My aging tool is a simple approach to write and remove many files of random size
 
 The tool consist of three scripts and one common library called \textit{functions}. The scripts are named \textit{filesystem\_ager.py}, \textit{fio\_config\_generator.py} and \textit{random\_deletor.py}.
 
-The workflow consist of calling filesystem\_ager, with desired parameters. The script manages triggering fio\_config\_generator, calling fio on generated config and triggering random deletor. These three actions are repeated given number of times.
+The workflow consist of calling filesystem\_ager, with desired parameters. Script manages triggering fio\_config\_generator, calling fio tool on generated config and triggering random deletor. These three actions are repeated given number of times.
 Parameters of filesystem\_ager are: 
 \begin{compactenum}
   \item Total desired size do be written in one cycle
@@ -142,14 +142,14 @@ Parameters of filesystem\_ager are:
   \item Number of cycles
 \end{compactenum}
 
-Although FIO tool has some parameters to randomize the size of files which are written, the management of this is completely in hands of fio\_config\_generator.
+Although FIO tool has some parameters to randomize the size of files which are written, the management of file sizes and randomisation, as well as naming of files is handled by fio\_config\_generator instead, to provide more control over those qualities.
 Parameters of this script are:
 \begin{compactenum}
   \item Total deisred size to be written
   \item Range of size of written files
 \end{compactenum}
 
-The script will generate global settings of a workload, then proceeds to generate jobs for every file that will be written. File size is always the name of that file, and these are gathered to a list, then list of generated files is returned and script ends.
+The script will generate global settings of a workload, then proceeds to generate jobs for every file that will be written. File size is always the name of that file, and these are gathered to a list, then list of generated files is returned and script ends. Including file size in its name, as well as indexation of files will help effectively search and delete files in the random deletion process, without need to search for files on the disk and examine them for size. Simplistic approach in fio config will hopefully result in compatibility and reliability in use with any fio version.
 
 After config file is generated, filesystem\_ager will run fio tool on generated config and therefore, files are written on the device.
 
@@ -158,12 +158,20 @@ The removing of files is handled by random\_deletor script. Its parameters are:
   \item Total written size
   \item Denominator of total size
   \item Range of size of written files
-  \item Number of created files
+  \item Number of existent files
 \end{compactenum}
 
-If denominator equals zero, random\_deletor wont remove any files and will return empty list. Otherwise, desired range of deletion is estimated. Random\_deletor then proceeds to remove files while desired volume is not deleted. Then returns a list of deleted files.
+If denominator equals zero, random\_deletor wont remove any files and will return empty list. Otherwise, desired range of deletion is estimated. Random\_deletor then proceeds to remove files while desired volume is not deleted. Files are randomly selected through choosing random integer from zero to number of existent files. This step may seem inefficient, but with large amounts of generated files, the time to perform succesfull selection will not change dramatically. Selected file name is then parsed for size information, and if it fits into desired volume to remove, it is deleted, through subprocess command. Names of removed files are gathered in a list and returned.
 
+Number of deleted files is substracted from number of existent files.
 filesystem\_ager then sums up deleted volume, log it as well as other information and triggers the cycle again.
+
+Here is a sequence diagram to show the structure of filesystem\_ager.
+
+\section{Measuring performance}
+
+
+\section{Generating results}
 
 
 \chapter{Floats and references}
