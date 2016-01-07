@@ -169,6 +169,46 @@ filesystem\_ager then sums up deleted volume, log it as well as other informatio
 Here is a sequence diagram to show the structure of filesystem\_ager.
 
 \section{Measuring performance}
+Measuring a performance is done by an internal tool I developed, recipe\_fio. Similar to filesytem\_ager, recipe\_fio use fio tool to handle needed IO operations, but instead of focusing on storing some data, the script use measurement features of fio, which consist of performing IO operations and reporting data.
+
+The main script receive slightly enhanced fio config, enriched of used filesystem, for example. Other parameters are number of iterations of measurement, for statisticaly more stable data and boolean parameter, to tell, wheather or not to rsync results with data gathering storage.(i.e. perf-desktop, for our purposes)
+
+After compiling, tool parse the parameters and gather information about system, which consist of:
+
+\begin{compactenum}
+  \item version of kernel
+  \item time and date
+  \item hostname
+  \item RHEL compose
+  \item memory info
+  \item kernel info
+  \item mount info
+  \item system info
+  \item system variables
+  \item version of fio
+\end{compactenum}
+
+Then it proceeds to set environment for testing by:
+
+\begin{compactenum}
+  \item Installing fio tool
+  \item Creating directory for results
+\end{compactenum}
+
+Python script run\_tests.py then manages to parse recipe parameter, resulting in creating one or several fio configs in the directory, further adding logging parameters to the configs. Then for every created config, directory on the desired medium is created and fio tool is triggered. If the script succesfully ends, file \'OK\' is created in the results directory.
+
+When the testing is over, bash script generate the name of results, which consist of:
+\begin{compactenum}
+  \item time
+  \item date
+  \item used filesystem
+  \item version of kernel
+  \item version of RHEL compose
+\end{compactenum}
+
+Then proceeds to tar the result directory into a tar file with generated name, and according to argument will or will not rsync the result onto the data server.
+
+
 
 
 \section{Generating results}
