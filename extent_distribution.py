@@ -6,15 +6,16 @@ import sys, json
 import functions as fun
 
 #get extent image of filesystem
-path = 'testdir' #sys.argv[1]
+path = sys.argv[1]
+name = sys.argv[2]
 data = fun.get_data(path)
-extents = open('home.data','w')
+extents = open('/root/tmp/fs-drift.data','w')
 for i in range(0,len(data)):
  extents.write(str(fun.count_extents(data[i]))+'\n')
 extents.close()
 
 #get extents data from file
-arch = "image.data"
+arch = "/root/tmp/fs-drift.data"
 datos = []
 for item in open(arch,'r'):
     item = item.strip()
@@ -39,14 +40,14 @@ ax = plt.axes()
 width = 1.0
 ax.set_xticks(buckets+(width/2))
 ax.set_xticklabels(ticks)
-plt.bar(buckets,values,width,color='green',log=1, label='Amount of files with given number of extents')
+plt.bar(buckets,values,width,color='green',log=0, label='Amount of files with given number of extents')
 plt.legend(loc='upper right')
 plt.grid(linewidth=3)
 plt.xlabel('Number of extents')
 plt.ylabel('Number of files')
 plt.title
 #plt.show()
-plt.savefig('extent_distribution.png', dpi=50)
+plt.savefig('./res/'+name+'_extents.png', dpi=50)
 
 
 """
