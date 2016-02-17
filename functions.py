@@ -10,6 +10,14 @@ from scipy.ndimage import measurements
 from itertools import islice
 import copy
 
+#opens file, load the contents, close file, returns contents
+def read_file(name, option):
+  f = open(name, option)
+  string = f.read()
+  f.close()
+  return string
+
+
 def recursive_glob(rootdir='.', pattern='*'):
     return [os.path.join(looproot, filename)
             for looproot, _, filenames in os.walk(rootdir)

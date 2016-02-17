@@ -181,7 +181,24 @@ To determine which fs-drift settings will be the most fitting for purposes of th
 
 It is capable of taking matrix of possible fs-drift paramteres from \textit{json} file and then run it on a device.
 
-After every run, histograms-generating scripts are triggered to store histograms of free space and used space fragmentation. Also outputs of the \textit{fs-drift} script and \textit{df} command are logged.
+After every run, histograms-generating scripts are triggered to store histograms of \textit{free space} and \textit{used space} fragmentation. Also outputs of the \textit{fs-drift} script and \textit{df} command are logged.
+
+As the creator states in README, to fill up a filesystem, maximum number of files and mean size of file should be defined such that the product is greater than the available space.
+
+For the purpose of this thesis, desired usage is 60\%-100\% with enough fragmentation to consider the device aged. Experimentation with different run-times is now heavily considered.
+
+\section{Age measurement}
+For determining some overall idea about an extent to which is the filesystem aged or dirty, I wrote scripts that generate histograms representing fragmentation of used space as well as fragmentation of free space. Both scripts use common linux tools and pyplot to generate the graphics. Both scripts can display linear or logarhytmic Y scale.
+
+\section{extent\_distribution.py}
+This script makes use of xfs\_io fiemap tool, which is a tool to display extent distribution of a given file. 
+
+The script will first recursively crawls the whole filesystem from given top folder and makes a list of all files. Fiemap is then run over every file separately. 
+
+The only data, that are then parsed from the output is how many non-contigous extent does the file have. These integers are aggregated to a single list, where are then counted, and final histogram can be made.
+
+\section{free\_space\_fragmentation.py}
+This script use the tool e2freefrag, which when run over a device will output the histogram of free space fragmentation in texutal form. Script will store this output and then easily parse the histogram and aggregate the data into a graphic form.
 
 \section{Measuring performance}
 Measuring a performance is done by an internal tool I developed, recipe\_fio. Similar to filesytem\_ager, recipe\_fio use fio tool to handle needed IO operations, but instead of focusing on storing some data, the script use measurement features of fio, which consist of performing IO operations and reporting data.
