@@ -5,8 +5,10 @@ import subprocess, sys
 def remove_space(line):
     return filter(lambda x: x!='', line.split(' '))
 
+lvm_name = sys.argv[2]
+
 subprocess.call('rm -rf /root/tmp/fs-drift.free',shell=True)
-subprocess.call('e2freefrag /dev/agingfs_group/agingfs > /root/tmp/fs-drift.free',shell=True)
+subprocess.call('e2freefrag /dev/agingfs_group/'+lvm_name+' > /root/tmp/fs-drift.free',shell=True)
 subprocess.call('df | grep agingfs > /root/tmp/fs-drift.df',shell=True)
 f = open('/root/tmp/fs-drift.free','r')
 fsf = f.read()
