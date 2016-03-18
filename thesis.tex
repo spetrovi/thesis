@@ -169,7 +169,6 @@ filesystem\_ager then sums up deleted volume, log it as well as other informatio
 Here is a sequence diagram to show the structure of filesystem\_ager.
 
 \section{Aging using fs-drift}
-\section{fs-drift}
 fs-drift is a workload aging test written by Ben England. It relies on randomly mixed requests generated according to options. These requests can be writes, reads, creates, appends or deletes.
 
 At the beginning of run time, the top directory is empty, and therefore \textit{create} requests success the most, other requests, such as \textit{read} or \textit{delete}, will fail because of lack of files and small probability of randomly choosing existing one. 
@@ -185,40 +184,34 @@ After every run, histograms-generating scripts are triggered to store histograms
 
 As the creator states in README, to fill up a filesystem, maximum number of files and mean size of file should be defined such that the product is greater than the available space.
 
-For the purpose of this thesis, desired usage is 60\%-100\% with enough fragmentation to consider the device aged. Experimentation with different run-times is now heavily considered.
+For the purpose of this thesis, desired usage is 60\%-100\% with enough fragmentation to consider the device aged.
 
-\section{Age measurement}
+\chapter{Age measurement}
 For determining some overall idea about an extent to which is the filesystem aged or dirty, I wrote scripts that generate histograms representing fragmentation of used space as well as fragmentation of free space. Both scripts use common linux tools and pyplot to generate the graphics. Both scripts can display linear or logarhytmic Y scale.
 
-\section{extent\_distribution.py}
-This script makes use of xfs\_io fiemap tool, which is a tool to display extent distribution of a given file. 
+\section{extent distribution}
+Script extent\_distribution.py makes use of xfs\_io fiemap tool, which is a tool to display extent distribution of a given file and works correctly even for ext* filesystems.
 
 The script will first recursively crawls the whole filesystem from given top folder and makes a list of all files. Fiemap is then run over every file separately. 
 
-The only data, that are then parsed from the output is how many non-contigous extent does the file have. These integers are aggregated to a single list, where are then counted, and final histogram can be made.
+The only data, that are then parsed from the output, is how many non-contigous extents does the file have. These integers are aggregated to a single list, from which are then counted, and final histogram is made.
 
-\section{free\_space\_fragmentation.py}
-This script use the tool e2freefrag, which when run over a device will output the histogram of free space fragmentation in texutal form. Script will store this output and then easily parse the histogram and aggregate the data into a graphic form.
+\section{free space fragmentation}
+Script free\_space\_fragmentation.py use the tool e2freefrag, which runs over a device, and outputs the histogram of free space fragmentation in texutal form. Script will store this output and then easily parse the histogram and aggregate the data into a graphic form.
 
-\section{Measuring performance}
-Measuring a performance is done by an internal tool I developed, recipe\_fio. Similar to filesytem\_ager, recipe\_fio use fio tool to handle needed IO operations, but instead of focusing on storing some data, the script use measurement features of fio, which consist of performing IO operations and reporting data.
+\chapter{Measuring performance}
+\section{recipe\_fio}
+Measuring a performance is done by an internal tool I developed, recipe\_fio. Similar to filesytem\_ager, recipe\_fio use fio tool to handle needed IO operations, but instead of focusing on filling the filesystem, the script use measurement features of fio, which consist of performing IO operations and reporting results.
 
-The main script receive slightly enhanced fio config, enriched of used filesystem, for example. Other parameters are number of iterations of measurement, for statisticaly more stable data and boolean parameter, to tell, wheather or not to rsync results with data gathering storage.(i.e. perf-desktop, for our purposes)
-
-After compiling, tool parse the parameters and gather information about system, which consist of:
-
+The main script receives slightly enhanced fio config, enriched of some non-fio parameters, which are used by test only. These parameters are:
 \begin{compactenum}
-  \item version of kernel
-  \item time and date
-  \item hostname
-  \item RHEL compose
-  \item memory info
-  \item kernel info
-  \item mount info
-  \item system info
-  \item system variables
-  \item version of fio
-\end{compactenum}
+  \item used filesystem
+  \item number of test repetitions. For statistical stability, we run the test several times under same conditions.
+  \item flag which represents whether or not to rsync data to some result-storing server
+  \end{compactenum}
+
+  
+After compiling, tool parses the parameters and gathers information about system, which consist of: version of kernel, time and date, hostname, RHEL compose, memory, kernel, mount, system info, system variables and fio version.
 
 Then it proceeds to set environment for testing by:
 
@@ -227,7 +220,7 @@ Then it proceeds to set environment for testing by:
   \item Creating directory for results
 \end{compactenum}
 
-Python script run\_tests.py then manages to parse recipe parameter, resulting in creating one or several fio configs in the directory, further adding logging parameters to the configs. Then for every created config, directory on the desired medium is created and fio tool is triggered. If the script succesfully ends, file OK is created in the results directory.
+Python script run\_tests.py, manages to parse recipe parameter, resulting in creating one or several fio configs in the directory, further adding logging parameters to the configs. Then for every created config, directory on the desired medium is created and fio tool is triggered. If the script succesfully ends, file OK is created in the results directory.
 
 When the testing is over, bash script generate the name of results, which consist of:
 \begin{compactenum}
@@ -241,7 +234,21 @@ When the testing is over, bash script generate the name of results, which consis
 Then proceeds to tar the result directory into a tar file with generated name, and according to argument will or will not rsync the result onto the data server.
 
 
+\section{Measuring management}
+Measuring performance of aged filesystem happen in a loop as follows:
+\begin{compactenum}
+  \item inspecting device, logging
+  \item randomly removing volume needed for test to execute
+  \item running test
+  \item cleanup
+\end{compactenum}
 
+Inspection of device is just generating histograms of extent distribution and free space fragmentation.
+
+Volume is randomly removed using random\_delete\_volume.py script. This scriptt globs all files in the filesystem, retrieves information about used volume as well as it's overall size. Then proceeds to randomly choosing files to delete and stops when desired volume is freed. The approach of recursively globbing all files may be inefficient, but this way, we can be sure, that volume is deleted from whole device evenly.
+
+
+Generaly, in our measurements, we focus on iterating through different thead count, while keeping size and blocksize the same. I also test for all 4
 
 \section{Generating results}
 The output of result generator is a htlm report summarising all information about system, links to raw data and charts of measured values.
