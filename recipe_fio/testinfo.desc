@@ -1,0 +1,13 @@
+Owner:           Samuel Petrovic <spetrovi@redhat.com>
+Name:            /performance/recipe_fio
+TestVersion:     1.0
+Path:            /mnt/tests/performance/recipe_fio
+Description:     Testing IO operations with multiple threads on different filesystems using given fio recipe
+Type:            Performance
+TestTime:        8h
+RunFor:          recipe_fio
+Requires:        recipe_fio
+Priority:        Normal
+License:         GPLv2+
+Confidential:    no
+Destructive:     no

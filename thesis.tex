@@ -248,7 +248,14 @@ Inspection of device is just generating histograms of extent distribution and fr
 Volume is randomly removed using random\_delete\_volume.py script. This scriptt globs all files in the filesystem, retrieves information about used volume as well as it's overall size. Then proceeds to randomly choosing files to delete and stops when desired volume is freed. The approach of recursively globbing all files may be inefficient, but this way, we can be sure, that volume is deleted from whole device evenly.
 
 
-Generaly, in our measurements, we focus on iterating through different thead count, while keeping size and blocksize the same. I also test for all 4
+Generaly, in our measurements, we focus on iterating through different thead count, while keeping size and blocksize the same. We also test for 4 standard IO operations, respectively:
+\begin{compactenum}
+  \item read
+  \item random read
+  \item write
+  \item random write
+\end{compactenum}
+
 
 \section{Generating results}
 The output of result generator is a htlm report summarising all information about system, links to raw data and charts of measured values.
