@@ -262,6 +262,20 @@ The output of result generator is a htlm report summarising all information abou
 *talk about highcharts and how do you represent data
 
 
+\chapter{Practicall part}
+\section{Hardware}
+The aging process took place on an ibm3250 machine with following parameters:
+\begin{compactenum}
+  \item Intel(R) Xeon(R) CPU, X2460 2.80Ghz, 8 cores
+  \item RAM ~10GB
+  \item 4x300GB SAS disks + 1x50GB Sas disk
+\end{compactenum}
+
+The system installed on machine was ----- with kernel 3.10.0-229.el7.x86_64 
+
+I created a two volume groups, G1 and G2. Each group have a pair of 300GB disks with striping of 2. This setting allows to double the speed of IO operations.
+
+On each volume group i created logical volume of 100GB.
 \chapter{Floats and references}
 \begin{figure}
   \begin{center}
