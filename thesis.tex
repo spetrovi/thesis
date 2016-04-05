@@ -86,25 +86,30 @@
 \usepackage{menukeys}
 \begin{document}
 \chapter{Introduction}
-Theses are rumoured to be the capstones of education, so I decided
-to write one of my own. If all goes well, I will soon have a
-diploma under my belt. Wish me luck!
+This thesis will debate the effect of aging and fragmentation on filesystem performance, specifically ext4 and xfs.
+
+Performance of Red Hat supported filesystems is closely watched by our team, but the effect of aging is not included in the testing matrix and is quite lightly understood in general.
+
+Therefore, this thesis will try to shed some light as what the effect could possibly be as well as to design somewhat conceptual way of exploring this field further.
+
 Possible other chapters to explain terms: journaling filesystem, allocation groups, B+ trees
 
-\chapter{Targeted filesystems}
+\chapter{Filesystems and used tools}
+\section{Filesystems}
+Filesystem is a system to do mojo with files. Note to self: don't forget to delete this line and fill it with some actual text later.
 \section{XFS}
-% 
 XFS is a 64-bit journaling file system created by Silicon Graphics, Inc(SGI) in 1993. It is known for excellence in execution of paralel I/O operations, because of its architecture based on allocation groups.
 
 Allocation groups are euqally sized linear regions within file system. Each allocation group manages its own inodes and free space, therefore increasing parallelism.
 Architecture of this design enables for significant scalability of bandwidth, threads, and size of filesystem, as well as its files, simply because multiple processes and threads can access the file system simultaneously.
 
 XFS allocates space as extents stored in pairs of B+ trees, each pair for each allocation group (imrpoving performance especially when handling large files). One of the B+ trees is indexed by the length of the free extents, while the other is indexed by the starting block of the free extents. This dual indexing scheme allows for the highly efficient location of free extents for file system operations.
+
 Extent describes one or more contiguous blocks, which can considerably shorten list of blocks.
  
 Metadata journaling ensures consistency of data in case of emergency situations as f.e. system crash.
 
-Prevention of file system fragmentation consist mainly of \textit{delayed allocation} feature as well as online defragmentation(\textit{xfs\_fsr}), that can. 
+Prevention of file system fragmentation consist mainly of \textit{delayed allocation} feature as well as online defragmentation(\textit{xfs\_fsr}), that can turururu
 
 Delayed allocation, also called \textit{allocate-on-flush} is a feature that, when a file is written to the buffer cache, substracts space from the free-space counter, but won't allocate the free-space bitmap. The data is held in memory, instead, until it must be flushed (to storage) because of memory pressure when calling Unix \textit{sync}, or when flushing dirty buffers. This approach improves the chance, that the file will be written in a contiguous group of blocks, avoiding fragmentation and reducing CPU usage as well.
 
@@ -113,23 +118,29 @@ Delayed allocation, also called \textit{allocate-on-flush} is a feature that, wh
 \section{EXT4}
 Ext4, also called \textit{fourth extended filesystem} is a 48-bit journaling file system, developed as successor of ext3 for linux kernel, improving reliability and performance features.
 
-Traditionally, ext* systems use an indirect block mapping sheme. Such an approach is generaly inefficient for large files, on operations like deleting or truncating. Ext4 use modern approach of \textit{extents}, which positively affect performance and encourage continuous layouts.
+Traditionally, ext* systems use an indirect block mapping sheme. Such an approach is generaly inefficient for large files, on operations like deleting or truncating. Ext4, as well as XFS use approach of \textit{extents}, which positively affect performance and encourage continuous layouts.
 
 When allocating, ext4 use multiblock allocation, which is more efficient way than one block allocation at time, which is present in earlier ext* file systems. Multiblock allocation has far better performance, particulary when in use with delayed allocation and extents.
 
 Similary as xfs, ext4 use delayed allocation design, to increase performance, especially when in use with multiblock allocation and extent-based approach, also reducing fragmentation on the device. For cases of fragmentation that still occur, ext4 provide support for online defragmentation and \textit{e4defrag} tool to defragment either single file, or whole filesystem.
 
+\section{FIO}
+Flexible Input/Output tool is a IO workload generator written by Jens Axboe. It is a tool well known for it's flexibility as well as large group of contributors and users.
+
+
+\section{Fs-drift}
+fs-drift is a workload aging test written by Ben England. It relies on randomly mixed requests generated according to options. These requests can be writes, reads, creates, appends or deletes.
+
+At the beginning of run time, the top directory is empty, and therefore \textit{create} requests success the most, other requests, such as \textit{read} or \textit{delete}, will fail because of lack of files and small probability of randomly choosing existing one. 
+
+Over time, as the filesystem grows, \textit{create} requests began to fail and other requests succede more. Finally, filesystem will reach a state of equilibrium, when requests are equaly likely to execute. From this point, the filesystem will not grow anymore, and the test will run until one of the \textit{STOP} conditions are met (specified with parameters).
+\section{Snapshots}
 
 
 
-
-
-
-
-\chapter{Journaling file systems}
-\chapter{Methodology}
-\section{My aging script}
-My aging tool is a simple approach to write and remove many files of random sized files.
+\chapter{Implementation}
+\section{filesystem\_ager}
+This aging tool is a simple approach to write and remove many files of random size.
 
 The tool consist of three scripts and one common library called \textit{functions}. The scripts are named \textit{filesystem\_ager.py}, \textit{fio\_config\_generator.py} and \textit{random\_deletor.py}.
 
@@ -168,14 +179,61 @@ filesystem\_ager then sums up deleted volume, log it as well as other informatio
 
 Here is a sequence diagram to show the structure of filesystem\_ager.
 
-\section{Aging using fs-drift}
-fs-drift is a workload aging test written by Ben England. It relies on randomly mixed requests generated according to options. These requests can be writes, reads, creates, appends or deletes.
 
-At the beginning of run time, the top directory is empty, and therefore \textit{create} requests success the most, other requests, such as \textit{read} or \textit{delete}, will fail because of lack of files and small probability of randomly choosing existing one. 
+\section{recipe\_fio}
+Measuring a performance is done by a tool I developed, recipe\_fio. Similar to filesytem\_ager, recipe\_fio use fio tool to handle desired IO operations, but instead of focusing on filling the filesystem, the script use measurement features of fio, which consist of performing IO operations and reporting results.
 
-Over time, as the filesystem grows, \textit{create} requests began to fail and other requests succede more. Finally, filesystem will reach a state of equilibrium, when requests are equaly likely to execute. From this point, the filesystem will not grow anymore, and the test will run until one of the \textit{STOP} conditions are met (specified with parameters).
+*talk about used recipe
 
-\section{fs-drift\_matrix}
+For purposes of this thesis, I let recipe\_fio to report bandwidth and operations per second(IOPS).
+
+The main script receives slightly enhanced fio configuration file, enriched of some non-fio parameters, which are used by test only. These parameters are:
+\begin{compactenum}
+  \item used filesystem
+  \item number of test repetitions. For statistical stability, I decided to run the test several times under same conditions.
+  \item specifying a snapshot to be tested
+  \item flag which represents whether or not to rsync data on a result-storing server
+  \end{compactenum}
+
+After compiling, tool parses the parameters and gathers information about system, which consist of: version of kernel, time and date, hostname, RHEL compose, memory, kernel, mount, system info, system variables and fio version.
+
+Then it proceeds to set environment for testing by:
+
+\begin{compactenum}
+  \item Installing fio tool
+  \item Creating directory for results
+  \item Loading given snapshot on a device
+  \item Randomly removing volume from the device to make room for test
+\end{compactenum}
+
+Volume is randomly removed using random\_delete\_volume.py script. This scriptt globs all files in the filesystem, retrieves information about used volume as well as it's overall size. Then proceeds to randomly choosing files to delete and stops when desired volume is freed. The approach of recursively globbing all files may be inefficient, but this way, we can be sure, that volume is deleted from whole device evenly.
+
+Python script run\_tests.py, manages to parse recipe parameter, resulting in creating one or several fio configuration files in the directory, further adding logging parameters to them. Then for every created file, directory on the desired medium is created and fio tool is triggered. If the script succesfully ends, file OK is created in the results directory.
+
+When the measurement is over, bash script generate the name of results, which consist of:
+\begin{compactenum}
+  \item time
+  \item date
+  \item used snapshot
+  \item version of kernel
+  \item version of RHEL compose
+\end{compactenum}
+
+Then proceeds to compress results into tar archive with generated name, and according to -g flag will, or will not, rsync the result onto the data server.
+\section{Inspecting filesystem}
+For determining some overall idea about an extent to which is the filesystem aged or dirty, I wrote scripts that generate histograms representing fragmentation of used space as well as fragmentation of free space. Both scripts use common linux tools and pyplot to generate the graphics. Both scripts can display linear or logarhytmic Y scale.
+
+
+Script extent\_distribution.py makes use of xfs\_io fiemap tool, which is a tool to display extent distribution of a given file and works correctly even for ext* filesystems.
+
+The script will first recursively crawls the whole filesystem from given top folder and makes a list of all files. Fiemap is then run over every file separately. 
+
+The only data, that are then parsed from the output, is how many non-contigous extents does the file have. These integers are aggregated to a single list, from which are then counted, and final histogram is made.
+
+
+Script free\_space\_fragmentation.py use the tool e2freefrag, which runs over a device, and outputs the histogram of free space fragmentation in texutal form. Script will store this output and then easily parse the histogram and aggregate the data into a graphic form.
+
+\section{Aging recipes}
 To determine which fs-drift settings will be the most fitting for purposes of this thesis, I wrote a small python script fs-drift\_matrix.
 
 It is capable of taking matrix of possible fs-drift paramteres from \textit{json} file and then run it on a device.
@@ -186,377 +244,37 @@ As the creator states in README, to fill up a filesystem, maximum number of file
 
 For the purpose of this thesis, desired usage is 60\%-100\% with enough fragmentation to consider the device aged.
 
-\chapter{Age measurement}
-For determining some overall idea about an extent to which is the filesystem aged or dirty, I wrote scripts that generate histograms representing fragmentation of used space as well as fragmentation of free space. Both scripts use common linux tools and pyplot to generate the graphics. Both scripts can display linear or logarhytmic Y scale.
-
-\section{extent distribution}
-Script extent\_distribution.py makes use of xfs\_io fiemap tool, which is a tool to display extent distribution of a given file and works correctly even for ext* filesystems.
-
-The script will first recursively crawls the whole filesystem from given top folder and makes a list of all files. Fiemap is then run over every file separately. 
-
-The only data, that are then parsed from the output, is how many non-contigous extents does the file have. These integers are aggregated to a single list, from which are then counted, and final histogram is made.
-
-\section{free space fragmentation}
-Script free\_space\_fragmentation.py use the tool e2freefrag, which runs over a device, and outputs the histogram of free space fragmentation in texutal form. Script will store this output and then easily parse the histogram and aggregate the data into a graphic form.
-
-\chapter{Measuring performance}
-\section{recipe\_fio}
-Measuring a performance is done by an internal tool I developed, recipe\_fio. Similar to filesytem\_ager, recipe\_fio use fio tool to handle needed IO operations, but instead of focusing on filling the filesystem, the script use measurement features of fio, which consist of performing IO operations and reporting results.
-
-The main script receives slightly enhanced fio config, enriched of some non-fio parameters, which are used by test only. These parameters are:
-\begin{compactenum}
-  \item used filesystem
-  \item number of test repetitions. For statistical stability, we run the test several times under same conditions.
-  \item flag which represents whether or not to rsync data to some result-storing server
-  \end{compactenum}
-
-  
-After compiling, tool parses the parameters and gathers information about system, which consist of: version of kernel, time and date, hostname, RHEL compose, memory, kernel, mount, system info, system variables and fio version.
-
-Then it proceeds to set environment for testing by:
-
-\begin{compactenum}
-  \item Installing fio tool
-  \item Creating directory for results
-\end{compactenum}
-
-Python script run\_tests.py, manages to parse recipe parameter, resulting in creating one or several fio configs in the directory, further adding logging parameters to the configs. Then for every created config, directory on the desired medium is created and fio tool is triggered. If the script succesfully ends, file OK is created in the results directory.
-
-When the testing is over, bash script generate the name of results, which consist of:
-\begin{compactenum}
-  \item time
-  \item date
-  \item used filesystem
-  \item version of kernel
-  \item version of RHEL compose
-\end{compactenum}
-
-Then proceeds to tar the result directory into a tar file with generated name, and according to argument will or will not rsync the result onto the data server.
-
-
-\section{Measuring management}
-Measuring performance of aged filesystem happen in a loop as follows:
-\begin{compactenum}
-  \item inspecting device, logging
-  \item randomly removing volume needed for test to execute
-  \item running test
-  \item cleanup
-\end{compactenum}
-
-Inspection of device is just generating histograms of extent distribution and free space fragmentation.
-
-Volume is randomly removed using random\_delete\_volume.py script. This scriptt globs all files in the filesystem, retrieves information about used volume as well as it's overall size. Then proceeds to randomly choosing files to delete and stops when desired volume is freed. The approach of recursively globbing all files may be inefficient, but this way, we can be sure, that volume is deleted from whole device evenly.
-
-
-Generaly, in our measurements, we focus on iterating through different thead count, while keeping size and blocksize the same. We also test for 4 standard IO operations, respectively:
-\begin{compactenum}
-  \item read
-  \item random read
-  \item write
-  \item random write
-\end{compactenum}
-
-
-\section{Generating results}
-The output of result generator is a htlm report summarising all information about system, links to raw data and charts of measured values.
-*talk about highcharts and how do you represent data
-
-
-\chapter{Practicall part}
-\section{Hardware}
+\section{Data processing}
+\chapter{Testing environment}
 The aging process took place on an ibm3250 machine with following parameters:
 \begin{compactenum}
-  \item Intel(R) Xeon(R) CPU, X2460 2.80Ghz, 8 cores
-  \item RAM ~10GB
-  \item 4x300GB SAS disks + 1x50GB Sas disk
+  \item Intel(R) Xeon(R) CPU, X2460 (2.80Ghz, ??? Cache,8 cores)
+  \item RAM 10GB ???Mhz DDR? ???
+  \item 4x300GB SAS disks + 1x50GB Sas disk ???
 \end{compactenum}
 
-The system installed on machine was ----- with kernel 3.10.0-229.el7.x86_64 
+THIS IS AN EXAMPLE, HOW SHOULD SCECIFICS OF A MACHINE LOOK
+
+2 x Intel Xeon E5-2620 (2.0GHz, 15MB Cache, 6-cores)
+Intel C602 Chipset
+Memory - 16GB (2 x 8GB) 1333Mhz DDR3 Registered RDIMMs
+ CentOS 6.3 64-Bit
+100GB Micron RealSSD P400e Boot SSD
+LSI 9207-8i SAS/SATA 6.0Gb/s HBA (For benchmarking SSDs or HDDs)
+
+The system installed on machine was ----- with kernel 3.10.0-229.el7.x86\_64 
 
 I created a two volume groups, G1 and G2. Each group have a pair of 300GB disks with striping of 2. This setting allows to double the speed of IO operations.
 
 On each volume group i created logical volume of 100GB.
-\chapter{Floats and references}
-\begin{figure}
-  \begin{center}
-    %% PNG and JPG images can be inserted into the document as well,
-    %% but their resolution needs to be adequate. The minimum is
-    %% about 250 pixels per 1 centimeter. That means that a JPG or
-    %% PNG image typeset at 40 × 40 mm should be 1000 × 1000 px
-    %% large at minimum.
-    \includegraphics[width=40mm]{fithesis/logo/mu/fithesis-base.pdf}
-  \end{center}
-  \caption{The logo of the Masaryk University at 40\,mm}
-  \label{fig:mulogo1}
-\end{figure}
 
-\begin{figure}
-  \begin{minipage}{.66\textwidth}
-    \includegraphics[width=\textwidth]{fithesis/logo/mu/fithesis-base.pdf}
-  \end{minipage}
-  \begin{minipage}{.33\textwidth}
-    \includegraphics[width=\textwidth]{fithesis/logo/mu/fithesis-base.pdf} \\
-    \includegraphics[width=\textwidth]{fithesis/logo/mu/fithesis-base.pdf}
-  \end{minipage}
-  \caption{The logo of the Masaryk University at $\frac23$ and
-    $\frac13$ of text width}
-  \label{fig:mulogo2}
-\end{figure}
+\chapter{Results}
+The output of result generator is a htlm report summarising all information about system, links to raw data and charts of measured values.
+*talk about highcharts and how do you represent data
 
-\begin{table}
-  \begin{tabularx}{\textwidth}{lllX}
-    \toprule
-    Day & Min Temp & Max Temp & Summary \\
-    \midrule
-    Monday & $13^{\circ}\mathrm{C}$ & $21^\circ\mathrm{C}$ & A
-    clear day with low wind and no adverse current advisories. \\
-    Tuesday & $11^{\circ}\mathrm{C}$ & $17^\circ\mathrm{C}$ & A
-    trough of low pressure will come from the northwest. \\
-    Wednesday & $10^{\circ}\mathrm{C}$ &
-    $21^\circ\mathrm{C}$ & Rain will spread to all parts during the
-    morning. \\
-    \bottomrule
-  \end{tabularx}
-  \caption{A weather forecast}
-  \label{tab:weather}
-\end{table}
-
-The logo of the Masaryk University is shown in Figure
-\ref{fig:mulogo1} and Figure \ref{fig:mulogo2} at pages
-\pageref{fig:mulogo1} and \pageref{fig:mulogo2}. The weather
-forecast is shown in Table \ref{tab:weather} at page
-\pageref{tab:weather}. The following chapter is Chapter
-\ref{chap:matheq} and starts at page \pageref{chap:matheq}.
-Items \ref{item:star1}, \ref{item:star2}, and
-\ref{item:star3} are starred in the following list:
-\begin{compactenum}
-  \item some text
-  \item some other text
-  \item $\star$ \label{item:star1}
-  \begin{compactenum}
-    \item some text
-    \item $\star$ \label{item:star2}
-    \item some other text
-    \begin{compactenum}
-      \item some text
-      \item some other text
-      \item yet another piece of text
-      \item $\star$ \label{item:star3}
-    \end{compactenum}
-    \item yet another piece of text
-  \end{compactenum}
-  \item yet another piece of text
-\end{compactenum}
-If your reference points to a place that has not yet been typeset,
-the \verb"\ref" command will expand to \textbf{??} during the first
-run of
-\texttt{pdflatex \jobname.tex}
-and a second run is going to be needed for the references to
-resolve. With online services -- such as Overleaf -- this is
-performed automatically.
-
-\chapter{Mathematical equations}
-\label{chap:matheq}
-\TeX{} comes pre-packed with the ability to typeset inline
-equations, such as $\mathrm{e}^{ix}=\cos x+i\sin x$, and display
-equations, such as \[
-  \mathbf{A}^{-1} = \begin{bmatrix}
-  a & b \\ c & d \\
-  \end{bmatrix}^{-1} =
-  \frac{1}{\det(\mathbf{A})} \begin{bmatrix}
-  \,\,\,d & \!\!-b \\ -c & \,a \\
-  \end{bmatrix} =
-  \frac{1}{ad - bc} \begin{bmatrix}
-  \,\,\,d & \!\!-b \\ -c & \,a \\
-  \end{bmatrix}.
-\] \LaTeX{} defines the automatically numbered \texttt{equation}
-environment:
-\begin{equation}
-  \gamma Px = PAx = PAP^{-1}Px.
-\end{equation}
-The package \textsf{amsmath} provides several additional
-environments that can be used to typeset complex equations:
-\begin{enumerate}
-  \item An equation can be spread over multiple lines using the
-    \texttt{multline} environment:
-    \begin{multline}
-      a + b + c + d + e + f + b + c + d + e + f + b + c + d + e +
-f \\
-      + f + g + h + i + j + k + l + m + n + o + p + q
-    \end{multline}
-
-  \item Several aligned equations can be typeset using the
-    \texttt{align} environment:
-    \begin{align}
-              a + b &= c + d     \\
-                  u &= v + w + x \\[1ex]
-      i + j + k + l &= m
-    \end{align}
-
-  \item The \texttt{alignat} environment is similar to
-    \texttt{align}, but it doesn't insert horizontal spaces between
-    the individual columns:
-    \begin{alignat}{2}
-      a + b + c &+ d       &   &= 0 \\
-              e &+ f + g   &   &= 5
-    \end{alignat}
-
-  \item Much like chapter, sections, tables, figures, or list
-    items, equations -- such as \eqref{eq:first} and
-    \eqref{eq:mine} -- can also be labeled and referenced:
-    \begin{alignat}{4}
-      b_{11}x_1 &+ b_{12}x_2  &  &+ b_{13}x_3  &  &             &
-        &= y_1,                   \label{eq:first} \\
-      b_{21}x_1 &+ b_{22}x_2  &  &             &  &+ b_{24}x_4  &
-        &= y_2. \tag{My equation} \label{eq:mine}
-    \end{alignat}
-
-  \item The \texttt{gather} environment makes it possible to
-    typeset several equations without any alignment:
-    \begin{gather}
-      \psi = \psi\psi, \\
-      \eta = \eta\eta\eta\eta\eta\eta, \\
-      \theta = \theta.
-    \end{gather}
-
-  \item Several cases can be typeset using the \texttt{cases}
-    environment:
-    \begin{equation}
-      |y| = \begin{cases}
-        \phantom-y & \text{if }z\geq0, \\
-                -y & \text{otherwise}.
-      \end{cases}
-    \end{equation}
-\end{enumerate}
-For the complete list of environments and commands, consult the
-\textsf{amsmath} package manual\footnote{
-  See \url{http://mirrors.ctan.org/macros/latex/required/amslatex/math/amsldoc.pdf}.
-  The \texttt{\textbackslash url} command is provided by the
-  package \textsf{url}.
-}.
-
-\chapter{\textnormal{We \textsf{have} \texttt{several} \textsc{fonts}
-  \textit{at} \textbf{disposal}}}
-The serified roman font is used for the main body of the text.
-\textit{Italics are typically used to denote emphasis or
-quotations.} \texttt{The teletype font is typically used for source
-code listings.} The \textbf{bold}, \textsc{small-caps} and
-\textsf{sans-serif} variants of the base roman font can be used to
-denote specific types of information.
-
-\tiny We \scriptsize can \footnotesize also \small change \normalsize
-the \large font \Large size, \LARGE although \huge it \Huge
-is \huge usually \LARGE not \Large necessary.\normalsize
-
-A wide variety of mathematical fonts is also available, such as: \[
-  \mathrm{ABC}, \mathcal{ABC}, \mathbf{ABC}, \mathsf{ABC},
-  \mathit{ABC}, \mathtt{ABC}
-\] By loading the \textsf{amsfonts} packages, several additional
-fonts will become available: \[
-  \mathfrak{ABC}, \mathbb{ABC}
-\] Many other mathematical fonts are available\footnote{
-  See \url{http://tex.stackexchange.com/a/58124/70941}.
-}.
-
-\chapter{Inserting the bibliography}
-After loading the \texttt{biblatex} package and linking a
-bibliography data\-base file to the document using the
-\verb"\addbibresource" command, you can start citing the entries.
-This is just dummy text \cite{inbook-full} lightly sprinkled with
-citations \cite[p.~123]{incollection-full}.  Several sources can be
-cited at once \cite{whole-collection, manual-minimal,manual-full}.
-\citetitle{inbook-full} was written by \citeauthor{inbook-full} in
-\citeyear{inbook-full}. We can also produce \textcite{inbook-full}
-or%% Let us define a compound command:
-\def\citeauthoryear#1{(\textcite{#1},~\citeyear{#1})}
-\citeauthoryear{inbook-full}. The full bibliographic citation is:
-\emph{\fullcite{inbook-full}}. We can easily insert a bibliographic
-citation into the footnote\footfullcite{inbook-full}.
-
-The \verb"\nocite" command will not generate any
-output\nocite{booklet-full}, but it will insert its argument into
-the bibliography. The \verb"\nocite{*}" command will insert all the
-records in the bibliography database file into the bibliography.
-Try uncommenting the command
-%% \nocite{*}
-and watch the bibliography section come apart at the seams.
-
-When typesetting the document for the first time, citing a
-\texttt{work} will expand to [\textbf{work}] and the
-\verb"\printbibliography" command will produce no output. It is now
-necessary to generate the bibliography by running \texttt{biber
-\jobname.bcf} from the command line and then by typesetting the
-document again twice. During the first run, the bibliography
-section and the citations will be typeset, and in the second run,
-the bibliography section will appear in the table of contents.
-
-The \texttt{biber} command needs to be executed from within the
-directory, where the \LaTeX\ source file is located. In Windows,
-the command line can be opened in a directory by holding down the
-\keys{Shift} key and by clicking the right mouse button while
-hovering the cursor over a directory.  Select the \menu{Open
-Command Window Here} option in the context menu that opens shortly
-afterwards.
-
-With online services -- such as Overleaf -- all commands are
-executed automatically.
-
-{\csname captions\languagename\endcsname %% Temporarily override
-%% the BibLaTeX localization with the original babel definitions.
-\makeatletter %% Use the correct localization of the quotations.
-  \thesis@selectLocale{\thesis@locale}\makeatother
-\printbibliography[heading=bibintoc]} %% Print the bibliography.
-
-\chapter{Inserting the index}
-After using the \verb"\makeindex" macro and loading the
-\texttt{makeidx} package that provides additional indexing
-commands, index entries can be created by issuing the \verb"\index"
-command. \index{dummy text|(}It is possible to create ranged index
-entries, which will encompass a span of text.\index{dummy text|)}
-To insert complex typographic material -- such as $\alpha$
-\index{alpha@$\alpha$} or \TeX{} \index{TeX@\TeX} --
-into the index, you need to specify a text string, which will
-determine how the entry will be sorted. It is also possible to
-create hierarchal entries. \index{vehicles!trucks}
-\index{vehicles!speed cars}
-
-After typesetting the document, it is necessary to generate the
-index by running
-\begin{center}%
-  \texttt{texindy -I latex -C utf8 -L }$\langle$\textit{locale}%
-  $\rangle$\texttt{ \jobname.idx}
-\end{center}
-from the command line, where $\langle$\textit{locale}$\rangle$
-corresponds to the main locale of your thesis -- such as
-\texttt{english}, and then typesetting the document again.
-
-The \texttt{texindy} command needs to be executed from within the
-directory, where the \LaTeX\ source file is located. In Windows,
-the command line can be opened in a directory by holding down the
-\keys{Shift} key and by clicking the right mouse button while
-hovering the cursor over a directory. Select the \menu{Open Command
-Window Here} option in the context menu that opens shortly
-afterwards.
-
-With online services -- such as Overleaf -- the commands are
-executed automatically, although the locale may be erroneously
-detected, or the \texttt{makeindex} tool (which is only able to
-sort entries that contain digits and letters of the English
-alphabet) may be used instead of \texttt{texindy}. In either case,
-the index will be ill-sorted.
-
-\makeatletter\thesis@blocks@clear\makeatother
-\phantomsection %% Print the index and insert it into the
-\addcontentsline{toc}{chapter}{\indexname} %% table of contents.
-\printindex
-
-\makeatletter\thesis@blocks@clear\makeatother
-%% Patch the appendix hyperrefs (see:
-%% <http://tex.stackexchange.com/q/174887/70941>)
-\renewcommand{\theHchapter}{A\arabic{chapter}}
-\appendix %% and start the appendices.
-
-\chapter{An appendix}
-Here you can insert the appendices of your thesis.
-
+\section{Comparing against fresh filesystems}
+\section{Comparing performance of Ext4 and XFS}
+\section{Comparing overall state of aged EXT4 and XFS}
+\chapter{Conclusion}
+Here I will admit, that these results were not really surprising and ABSOLUTELY no breakthrough, however, as noone really research this branch of QE, the results are definitely a step further in this field.
 \end{document}
