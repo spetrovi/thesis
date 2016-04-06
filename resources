@@ -1,0 +1,11 @@
+http://www.lexjansen.com/wuss/2013/73_Paper.pdf
+https://cs.wikipedia.org/wiki/Solid-state_drive
+SSD jednotky však trpí i mnoha problémy, které jsou dány jejich konstrukcí. Flash paměti mají omezenou životnost maximálním počtem zápisů do stejného místa, který je výrazně nižší, než u klasických pevných disků (udáváno kolem 100 000 zápisů)
+
+
+
+
+http://www.pcmag.com/article2/0,2817,2404258,00.asp
+Fragmentation: Because of their rotary recording surfaces, HDD surfaces work best with larger files that are laid down in contiguous blocks. That way, the drive head can start and end its read in one continuous motion. When hard drives start to fill up, large files can become scattered around the disk platter, which is otherwise known as fragmentation. While read/write algorithms have improved to the point that the effect is minimized, the fact of the matter is that HDDs can become fragmented, while SSDs don't care where the data is stored on its chips, since there's no physical read head. Thus, SSDs are inherently faster.
+http://superuser.com/questions/228657/which-linux-filesystem-works-best-with-ssd/550308
+
