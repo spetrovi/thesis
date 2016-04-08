@@ -9,3 +9,5 @@ http://www.pcmag.com/article2/0,2817,2404258,00.asp
 Fragmentation: Because of their rotary recording surfaces, HDD surfaces work best with larger files that are laid down in contiguous blocks. That way, the drive head can start and end its read in one continuous motion. When hard drives start to fill up, large files can become scattered around the disk platter, which is otherwise known as fragmentation. While read/write algorithms have improved to the point that the effect is minimized, the fact of the matter is that HDDs can become fragmented, while SSDs don't care where the data is stored on its chips, since there's no physical read head. Thus, SSDs are inherently faster.
 http://superuser.com/questions/228657/which-linux-filesystem-works-best-with-ssd/550308
 
+http://dl.acm.org/citation.cfm?id=2830898&dl=ACM&coll=DL&CFID=597933454&CFTOKEN=83963284
+
