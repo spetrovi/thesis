@@ -38,7 +38,7 @@ if [[ -n "${TEST_PARAM_RECIPE_FIO:+x}" ||  "$#" -gt 0 ]]; then  ## Fails if TEST
 	FIOCMD="$TEST_PARAM_RECIPE_FIO"
     fi
     
-    ARGLIST=`getopt -o 's:n:r:' --long 'sync:,numjob:,:freesteps:,snapshot:,device:,recipe:' -n $0 -- $FIOCMD`
+    ARGLIST=`getopt -o 's:n:r:' --long 'sync:,numjob:,free:,snapshot:,device:,recipe:' -n $0 -- $FIOCMD`
     if [ $? -ne 0 ]; then
 	usage_msg;
 	exit 1;
@@ -51,7 +51,7 @@ if [[ -n "${TEST_PARAM_RECIPE_FIO:+x}" ||  "$#" -gt 0 ]]; then  ## Fails if TEST
 	case $1 in
             -s|--sync)        shift;    doRSYNC="$1";;
             -n|--numjob)      shift;    NUMJOB="$1";;
-	    -f|--freesteps)   shift;    FREESTEPS="$1";;
+	    -f|--free)        shift;    FREE="$1";;
 	    -i|--snapshot)    shift;    SNAPSHOT="$1";;
 	    -d|--device)      shift;    DEVICE="$1";;
             -r|--recipe)      shift;    RECIPE="$1";;
@@ -77,26 +77,24 @@ VAR=$(mount -v)
 #TODO BUDE TREBA DEBUGOVAT
 FSYSTEM=$(python -c "execfile('func.py'); get_fs($SNAPSHOT)")
 
-for ((f=1;f<FREESTEPS+1;f++))
+
+for ((i=0;i<NUMJOB;i++))
 do
-	for ((i=0;i<NUMJOB;i++))
-	do
-		mkdir out/tmp
-		if FSYSTEM == 'ext4'
-			then
-				e2image -r $SNAPSHOT $DEVICE
-			else
-				xfs_mdrestore $SNAPSHOT $DEVICE
-		mkdir /lun_test
-		mount $DEVICE /lun_test 
-		echo "Deleting volume">>./out/log.out
-		python random_delete_volume.py '/lun_test' 5*$f
-		echo "Running run_tests.py">>./out/log.out
-		python run_tests.py '${RECIPE}' $i
-		umount /lun_test
-		wipefs -a $DEVICE
-		rm -rf out/tmp
-	done
+	mkdir out/tmp
+	if FSYSTEM == 'ext4'
+		then
+			e2image -r $SNAPSHOT $DEVICE
+		else
+			xfs_mdrestore $SNAPSHOT $DEVICE
+	mkdir /lun_test
+	mount $DEVICE /lun_test 
+	echo "Deleting volume">>./out/log.out
+	python random_delete_volume.py '/lun_test' $FREE
+	echo "Running run_tests.py">>./out/log.out
+	python run_tests.py '${RECIPE}' $i $FREE
+	umount /lun_test
+	wipefs -a $DEVICE
+	rm -rf out/tmp
 done
 
 
