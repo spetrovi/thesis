@@ -1,26 +1,43 @@
 #bin/python
-import subprocess, sys, glob
+import numpy as np
+import matplotlib.pyplot as plt
+import subprocess, sys
+import functions as fun
 from random import randint
 
-def random_deletor(size,modificator,sizeRange,c):
-  if modificator != 0:
-    sizeBit = (int(size[:-1])*1000)/modificator
-  else:
-    return []
-  sizeRange = sizeRange.split(':')
-  lowSizeBit = int(sizeRange[0][:-1])
-  highSizeBit = int(sizeRange[1][:-1])
+def filter_empty_elements(list):
+  return filter(lambda x: x == '', list)
 
-  files_to_delete = []
-  total = 0
-  while (total < sizeBit-highSizeBit or total > sizeBit+highSizeBit):
-    fileNum = randint(0,c)
-    file_to_delete = glob.glob('*.'+str(fileNum)+'.*')
-    if len(file_to_delete)!=0:
-      file_to_delete = file_to_delete[randint(0,len(file_to_delete))]
-      fileSize = int(file_to_delete.split('.')[0])
-      if (total+fileSize < sizeBit+highSizeBit):
-	total += fileSize
-	files_to_delete.append(file_to_delete[0])
-	subprocess.call('rm '+file_to_delete[0],shell=True)
-  return files_to_delete
+#returns total volume used by file
+def get_item_space(item):
+  subprocess.call('du ' +item+ ' > du_tmp/item.du',shell=True)
+  return int(fun.read_file('du_tmp/item.du','r').split('\t')[0])
+
+#returns total volume used by top_directory
+def get_used_space(top_directory):
+  subprocess.call('du -c ' +top_directory+ '| grep total > du_tmp/used.du',shell=True)
+  return int(fun.read_file('du_tmp/used.du','r').split('\t')[0])
+  
+subprocess.call('rm -rf du_tmp; mkdir du_tmp',shell=True)
+top_directory = sys.argv[1]
+percent_to_delete = int(sys.argv[2])
+
+files = fun.recursive_glob(top_directory, '*')
+
+used_space = get_used_space(top_directory)
+
+old_total = get_used_space(top_directory)
+new_total = get_used_space(top_directory)
+deleted_space = old_total - new_total
+
+while deleted_space <= (used_space//100)*percent_to_delete:
+  old_total = new_total
+  new_total = get_used_space(top_directory)
+  
+  item = files[randint(0,len(files)-1)]
+  space = get_item_space(item)
+  subprocess.call('rm -rf '+item,shell=True)
+  
+  deleted_space += (old_total - new_total)
+  files.remove(item)
+

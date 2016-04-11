@@ -2,7 +2,11 @@
 #If argument fs, output from "mount -v" and partition provided, script prints fileSystem name
 import  re,sys, logging, subprocess
 
-def parseVersion(str):
+def get_fs(snapshot_name):
+	return snapshot_name.split('_')[0]
+	
+
+def get_compose(str):
     str=re.sub('[^0-9.]','',str)
     output="RHEL-" + str
     return output
@@ -28,11 +32,7 @@ def fileSystem(fs,recipe):
     subprocess.call(elevator, shell=True)
     return output
 
-logging.basicConfig(filename='./out/log.out',level=logging.DEBUG)
-
-#logging.info("Welcome to func.py, we have obtained these arguments:")
-#for i in range (0, len(sys.argv)):
-    #logging.info(sys.argv[i])
+"""
     
 if (sys.argv[1] == "pv"):
     version=sys.argv[2]
@@ -43,3 +43,4 @@ if (sys.argv[1] == "fs"):
     recipe = sys.argv[3]
     fsystem = fileSystem(fs, recipe)
     print fsystem
+"""

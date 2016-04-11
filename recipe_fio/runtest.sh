@@ -38,7 +38,7 @@ if [[ -n "${TEST_PARAM_RECIPE_FIO:+x}" ||  "$#" -gt 0 ]]; then  ## Fails if TEST
 	FIOCMD="$TEST_PARAM_RECIPE_FIO"
     fi
     
-    ARGLIST=`getopt -o 's:n:r:' --long 'sync:,numjob:,recipe:' -n $0 -- $FIOCMD`
+    ARGLIST=`getopt -o 's:n:r:' --long 'sync:,numjob:,:freesteps:,snapshot:,device:,recipe:' -n $0 -- $FIOCMD`
     if [ $? -ne 0 ]; then
 	usage_msg;
 	exit 1;
@@ -51,6 +51,9 @@ if [[ -n "${TEST_PARAM_RECIPE_FIO:+x}" ||  "$#" -gt 0 ]]; then  ## Fails if TEST
 	case $1 in
             -s|--sync)        shift;    doRSYNC="$1";;
             -n|--numjob)      shift;    NUMJOB="$1";;
+	    -f|--freesteps)   shift;    FREESTEPS="$1";;
+	    -i|--snapshot)    shift;    SNAPSHOT="$1";;
+	    -d|--device)      shift;    DEVICE="$1";;
             -r|--recipe)      shift;    RECIPE="$1";;
 	    -h|--help)		usage_msg;
     				exit 1;;
@@ -59,28 +62,58 @@ if [[ -n "${TEST_PARAM_RECIPE_FIO:+x}" ||  "$#" -gt 0 ]]; then  ## Fails if TEST
     	shift;
     done
 fi
-
-
 mkdir out
+#echo "Running installFio">>./out/log.out
+#bash installFio.sh
 KERNELVERSION=$(uname -r)
 TIME=$(date +%T)
 DATE=$(date +"%b-%d-%Y")
 HOSTNAME=$(hostname)
 VAR=$(cat /etc/redhat-release)
-RHEL=$(python func.py pv "${VAR}")
+#TODO BUDE TREBA DEBUGOVAT
+RHEL=$(python -c "execfile('func.py'); get_compose(\$VAR)")
+#RHEL=$(python -c func.py pv "${VAR}")
 VAR=$(mount -v)
-FSYSTEM=$(python func.py fs "${VAR}" "${RECIPE}")
-RSYNC_SERVER="perf-desktop.brq.redhat.com::perf"
-RSYNC_OPTIONS="-avz --no-owner --no-group --chmod=Da+r,a+w,a+X,Fa+r,a+w"
-RESULTS_ROOT_DIRECTORY="/aging_fs/`hostname`/${KERNELVERSION}"
-RESULT="./$TIME-$DATE-$FSYSTEM-$KERNELVERSION-$RHEL.tar.gz" 
-RESULT=${RESULT//[[:space:]]/}
+#TODO BUDE TREBA DEBUGOVAT
+FSYSTEM=$(python -c "execfile('func.py'); get_fs($SNAPSHOT)")
+
+for ((f=1;f<FREESTEPS+1;f++))
+do
+	for ((i=0;i<NUMJOB;i++))
+	do
+		mkdir out/tmp
+		if FSYSTEM == 'ext4'
+			then
+				e2image -r $SNAPSHOT $DEVICE
+			else
+				xfs_mdrestore $SNAPSHOT $DEVICE
+		mkdir /lun_test
+		mount $DEVICE /lun_test 
+		echo "Deleting volume">>./out/log.out
+		python random_delete_volume.py '/lun_test' 5*$f
+		echo "Running run_tests.py">>./out/log.out
+		python run_tests.py '${RECIPE}' $i
+		umount /lun_test
+		wipefs -a $DEVICE
+		rm -rf out/tmp
+	done
+done
+
+
+
+
+
+
+#RSYNC_SERVER="perf-desktop.brq.redhat.com::perf"
+#RSYNC_OPTIONS="-avz --no-owner --no-group --chmod=Da+r,a+w,a+X,Fa+r,a+w"
+#RESULTS_ROOT_DIRECTORY="/aging_fs/`hostname`/${KERNELVERSION}"
+#RESULT="./$TIME-$DATE-$FSYSTEM-$KERNELVERSION-$RHEL.tar.gz" 
+#RESULT=${RESULT//[[:space:]]/}
 
 PACKAGE="recipe_fio"
-echo "Running installFio">>./out/log.out
-bash installFio.sh
-echo "Running run_tests.py">>./out/log.out
-python run_tests.py "${RECIPE}" "${NUMJOB}"
+
+
+
 echo "Running gather_info.py">>./out/log.out
 python gather_info.py "${VAR}" "${DEST}"
 echo -n " --fsystem=$FSYSTEM" >> ./out/recipe
@@ -88,28 +121,29 @@ echo -n " --fsystem=$FSYSTEM" >> ./out/recipe
 echo "Testing over, the result is: ">>./out/log.out
 echo "$RESULT">>./out/log.out
 tar zcvf $RESULT ./out
-rhts_submit_log -S $RESULT_SERVER -T $TESTID -l $RESULT
+rm -rf ./out
+#rhts_submit_log -S $RESULT_SERVER -T $TESTID -l $RESULT
 
-cd out
-echo "Sending output on server">>log.out
-logs=${logs:-`ls *.out`}
-for log in $logs;do
-	rhts_submit_log -S $RESULT_SERVER -T $TESTID -l $log
-done
-cd ..
+#cd out
+#echo "Sending output on server">>log.out
+#logs=${logs:-`ls *.out`}
+#for log in $logs;do
+#	rhts_submit_log -S $RESULT_SERVER -T $TESTID -l $log
+#done
+#cd ..
 
 # check if there are any ressults, if yes then PASS and send logs to perf-desktop
-if [[ ${doRSYNC} == 1  && -e out/OK ]]
-  then
-      RSYNC_DEST="${RSYNC_SERVER}/${RESULTS_ROOT_DIRECTORY}/"
-      RSYNC_DEST=${RSYNC_DEST//[[:space:]]/}
-      RSYNC_ARCH_COMMAND_LINE="rsync ${RSYNC_OPTIONS} ${RESULT} ${RSYNC_DEST}"
-      ${RSYNC_ARCH_COMMAND_LINE}
-      rhts-report-result $RESULT PASS "./out/log.out"
-      rm -rf out
-  else 
-      rhts-report-result $RESULT FAIL "./out/log.out"
-      rm -rf out
- fi  
+#if [[ ${doRSYNC} == 1  && -e out/OK ]]
+#  then
+#      RSYNC_DEST="${RSYNC_SERVER}/${RESULTS_ROOT_DIRECTORY}/"
+#      RSYNC_DEST=${RSYNC_DEST//[[:space:]]/}
+#      RSYNC_ARCH_COMMAND_LINE="rsync ${RSYNC_OPTIONS} ${RESULT} ${RSYNC_DEST}"
+#      ${RSYNC_ARCH_COMMAND_LINE}
+#      rhts-report-result $RESULT PASS "./out/log.out"
+#      rm -rf out
+#  else 
+#      rhts-report-result $RESULT FAIL "./out/log.out"
+#      rm -rf out
+# fi  
  
 
