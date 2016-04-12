@@ -25,9 +25,9 @@ files = fun.recursive_glob(top_directory, '*')
 
 used_space = get_used_space(top_directory)
 
-old_total = get_used_space(top_directory)
-new_total = get_used_space(top_directory)
-deleted_space = old_total - new_total
+#old_total = used_space
+new_total = used_space
+deleted_space = 0
 
 while deleted_space <= (used_space//100)*percent_to_delete:
   old_total = new_total
@@ -35,6 +35,8 @@ while deleted_space <= (used_space//100)*percent_to_delete:
   
   item = files[randint(0,len(files)-1)]
   space = get_item_space(item)
+  print item
+  print space
   subprocess.call('rm -rf '+item,shell=True)
   
   deleted_space += (old_total - new_total)

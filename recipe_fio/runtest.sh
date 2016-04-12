@@ -38,7 +38,7 @@ if [[ -n "${TEST_PARAM_RECIPE_FIO:+x}" ||  "$#" -gt 0 ]]; then  ## Fails if TEST
 	FIOCMD="$TEST_PARAM_RECIPE_FIO"
     fi
     
-    ARGLIST=`getopt -o 's:n:r:' --long 'sync:,numjob:,free:,snapshot:,device:,recipe:' -n $0 -- $FIOCMD`
+    ARGLIST=`getopt -o 's:n:f:i:d:r:' --long 'sync:,numjob:,free:,snapshot:,device:,recipe:' -n $0 -- $FIOCMD`
     if [ $? -ne 0 ]; then
 	usage_msg;
 	exit 1;
@@ -62,6 +62,7 @@ if [[ -n "${TEST_PARAM_RECIPE_FIO:+x}" ||  "$#" -gt 0 ]]; then  ## Fails if TEST
     	shift;
     done
 fi
+
 mkdir out
 #echo "Running installFio">>./out/log.out
 #bash installFio.sh
@@ -70,28 +71,26 @@ TIME=$(date +%T)
 DATE=$(date +"%b-%d-%Y")
 HOSTNAME=$(hostname)
 VAR=$(cat /etc/redhat-release)
-#TODO BUDE TREBA DEBUGOVAT
-RHEL=$(python -c "execfile('func.py'); get_compose(\$VAR)")
-#RHEL=$(python -c func.py pv "${VAR}")
+RHEL=$(python -c "execfile('func.py'); get_compose('$VAR')")
 VAR=$(mount -v)
-#TODO BUDE TREBA DEBUGOVAT
-FSYSTEM=$(python -c "execfile('func.py'); get_fs($SNAPSHOT)")
+FSYSTEM=$(python -c "execfile('func.py'); get_fs('$SNAPSHOT')")
 
 
 for ((i=0;i<NUMJOB;i++))
 do
 	mkdir out/tmp
-	if FSYSTEM == 'ext4'
+	if [ "$FSYSTEM" == "ext4" ]
 		then
 			e2image -r $SNAPSHOT $DEVICE
 		else
 			xfs_mdrestore $SNAPSHOT $DEVICE
+	fi
 	mkdir /lun_test
 	mount $DEVICE /lun_test 
 	echo "Deleting volume">>./out/log.out
 	python random_delete_volume.py '/lun_test' $FREE
 	echo "Running run_tests.py">>./out/log.out
-	python run_tests.py '${RECIPE}' $i $FREE
+	python run_tests.py $RECIPE $i $FREE
 	umount /lun_test
 	wipefs -a $DEVICE
 	rm -rf out/tmp
@@ -105,8 +104,8 @@ done
 #RSYNC_SERVER="perf-desktop.brq.redhat.com::perf"
 #RSYNC_OPTIONS="-avz --no-owner --no-group --chmod=Da+r,a+w,a+X,Fa+r,a+w"
 #RESULTS_ROOT_DIRECTORY="/aging_fs/`hostname`/${KERNELVERSION}"
-#RESULT="./$TIME-$DATE-$FSYSTEM-$KERNELVERSION-$RHEL.tar.gz" 
-#RESULT=${RESULT//[[:space:]]/}
+RESULT="./$TIME-$DATE-$FSYSTEM-$KERNELVERSION-$RHEL.tar.gz" 
+RESULT=${RESULT//[[:space:]]/}
 
 PACKAGE="recipe_fio"
 
@@ -118,7 +117,7 @@ echo -n " --fsystem=$FSYSTEM" >> ./out/recipe
 
 echo "Testing over, the result is: ">>./out/log.out
 echo "$RESULT">>./out/log.out
-tar zcvf $RESULT ./out
+tar -zcvf $RESULT ./out
 rm -rf ./out
 #rhts_submit_log -S $RESULT_SERVER -T $TESTID -l $RESULT
 

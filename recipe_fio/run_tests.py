@@ -10,13 +10,9 @@ recipe = ' --'.join(sys.argv[1].split('-'))
 _iter = str(sys.argv[2])
 free = sys.argv[3]
 
-#recipeString = ''
-#for i in range (0,len(recipe)):
-#  recipeString = recipeString + ' --'+recipe[i]
+subprocess.call('echo -n '+recipe+' --numjobs'+free+' >> ./out/recipe',shell=True)			
+test ='fio --' + recipe + ' --write_bw_log=./out/job_'+_iter+' --output=./out/job_'+_iter+'.out'+' --write_iops_log=./out/job_'+_iter+' --numjobs='+free
 
-#dest = '/lun_test'
-subprocess.call('echo -n '+recipeString+' --numjobs'+free+' >> ./out/recipe',shell=True)			
-test ='fio' + recipeString + ' --write_bw_log=./out/job_'+_iter+' --output=./out/job_'+_iter+'.out'+' --write_iops_log=./out/job_'+_iter+' --numjobs='+free
 logging.info('initializing')
 logging.info(test)
 subprocess.call(test,shell=True)	
