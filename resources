@@ -19,3 +19,6 @@ https://www.eecs.harvard.edu/margo/papers/hotos11-fsbench/paper.pdf
 Anand Lal Shimpi (2010-04-06). "Western Digital's New VelociRaptor VR200M: 10K RPM at 450GB and 600GB". anandtech.com. Retrieved 2013-12-19.
 
 http://landley.net/kdocs/ols/2006/ols2006v1-pages-193-208.pdf
+
+e2image -r /dev/vg - | bzip2 > res/meno.bz2
+xfsdump -e - /dev/vg| bzip2 > res/meno.bz2
