@@ -86,40 +86,44 @@
 \usepackage{menukeys}
 \begin{document}
 \chapter{Introduction}
-This thesis will debate the effect of aging and fragmentation on filesystem performance, specifically ext4 and xfs.
-Explain further the official topic.
-Performance testing has become stable part of most software develiping companies.
-Nowdays, performance testing is included in most 
-Performance of Red Hat supported filesystems is closely watched by our team, but the effect of aging is not included in the testing matrix and is quite lightly understood in general.
-Therefore, this thesis will try to shed some light as what the effect could possibly be as well as to design somewhat conceptual way of exploring this field further.
+We live in an age of information. Hardware and software technology improves every day. There is an increasing need to wrok with larger and larger databases, multimedia applications and to store great amount of data. This cause great pressure on performance of storing and retrieving information, e.g. input and output (I/O) operations.
 
+The part of an operation system that handles communication with a physical device is called a file system. Because of increasing demands on performance  of I/O operations, there has been quite wide tehcnological progress in approach to performance issues.
 
+In past years, great many tools and tests (e.g. benchmarks) were developed as means for users and researchers to explore behavior and to measure performance of file systems. New versions of file systems are released very often (almost weekly) and therefore there has been an pressure on quality engineers to evaluate new versions fast enough.
 
+The standard work flow consist of running test on freshly installed operation system and newly created file system without running other applications, which might cause noise in measurements and eventually invalid results.
+
+Although this work flow shows great results, it only gives us a general idea about how does file system perform at early stages of its life cycle. Results of these tests are therefore quite unrealistic and won't address the behavior of file system after long-term usage.
+
+Prolonged usage of file system impel it to do more and more optimisations with impact on its perfmormance. The more files has been created, deleted or expanded, the free space of file system is progressingly more fragmented. Such fragmentation means, that blocks of data are scattered through physical device which results in degradation of performance.
+
+The ideal approach for research pointed on effect on age of file system would be to put file system under stress conditions for a few years or months, gathering information in the process, however, such approach is apparently impractical or even impossible, because the demand has to be satisfied in matter of weeks to respond to new versions of file systems.
 
 \chapter{State of art}
-We live in an age of information. Hardware and software technology improves every day. There is a need to work with large databases, multi-media applications and to store great amount of data on a memory device. This cause great pressure on performance of storing and retrieving information, viz. input and output(I/O) operations.
+% We live in an age of information. Hardware and software technology improves every day. There is a need to work with large databases, multi-media applications and to store great amount of data on a memory device. This cause great pressure on performance of storing and retrieving information, viz. input and output(I/O) operations.
 
-Part of an operation system that handles communication with a physical device is called a file system. Because of such increasing requirement on performance of I/O operations, there has been quite wide technological progress in approach to performance issues. 
+% Part of an operation system that handles communication with a physical device is called a file system. Because of such increasing requirement on performance of I/O operations, there has been quite wide technological progress in approach to performance issues. 
 
-In past years, great many tools and tests (e.g. benchmarks) were developed as means for users and researchers to explore behavior and measure performance of file systems. These usually consist of putting file system under some kind of stress, gathering different measurements in the process and computing overall summary after the test is done. Measured parameters are usually bandwidth, latency and IO operations per second.
+% In past years, great many tools and tests (e.g. benchmarks) were developed as means for users and researchers to explore behavior and measure performance of file systems. These usually consist of putting file system under some kind of stress, gathering different measurements in the process and computing overall summary after the test is done. Measured parameters are usually bandwidth, latency and IO operations per second.
 
-The benchmark should be highly configurable, so the researchers can simulate various workloads that would mimic real life scenarios. Stability and reproducibility of tests are also required, if the research is meant to be objective and to have some academic value about file system itself.
+% The benchmark should be highly configurable, so the researchers can simulate various workloads that would mimic real life scenarios. Stability and reproducibility of tests are also required, if the research is meant to be objective and to have some academic value about file system itself.
 
-The standard workflow is tu run benchmark on a clean instance of operation system without other applications running, to avoid noise, and on clean instance of researched file system.
+% The standard workflow is tu run benchmark on a clean instance of operation system without other applications running, to avoid noise, and on clean instance of researched file system.
 
-While this approach brings great results, with correct configuration of the benchmark, it only gives us a general idea about how does file system perform in early stage of it's usage. 
+% While this approach brings great results, with correct configuration of the benchmark, it only gives us a general idea about how does file system perform in early stage of it's usage. 
 
-However, there is a growing demand from users as well as from developers to explore behavior and performance of a file system, that has been running under some defined conditions for longer period of time, months or even years.
+% However, there is a growing demand from users as well as from developers to explore behavior and performance of a file system, that has been running under some defined conditions for longer period of time, months or even years.
 
-Prolonged usage of file system impel it to do more and more optimisations. When there is a lot of free space, there is generally no need for complicated approach. But with more files being deleted, created and expanded, the free space begins to be more and more fragmented. This then leads for files to be spread non contiguously across the physical device.
+% Prolonged usage of file system impel it to do more and more optimisations. When there is a lot of free space, there is generally no need for complicated approach. But with more files being deleted, created and expanded, the free space begins to be more and more fragmented. This then leads for files to be spread non contiguously across the physical device.
 
-This is a problem mainly with regard to devices with moving parts, such as widely used hard disk drive. When working with IO operations on this type of device, the fragmentation cause larger seek times, which is a time for magnetic heads to reach desired location.
+% This is a problem mainly with regard to devices with moving parts, such as widely used hard disk drive. When working with IO operations on this type of device, the fragmentation cause larger seek times, which is a time for magnetic heads to reach desired location.
 
-Above is a great example of how file system has to be flexible to solve such problems as well as of problems that emerge after running file system for a longer period of time.
+% Above is a great example of how file system has to be flexible to solve such problems as well as of problems that emerge after running file system for a longer period of time.
 
-The ideal approach for research pointed on effect on age of file system would be to put file system under defined conditions for a few years or months, gathering information in the process. 
+% The ideal approach for research pointed on effect on age of file system would be to put file system under defined conditions for a few years or months, gathering information in the process. 
 
-However, this is apparently impractical or even impossible, because the demand has to be satisfied in matter of weeks to respond to new versions of file systems, which are developed and released quite often.
+% However, this is apparently impractical or even impossible, because the demand has to be satisfied in matter of weeks to respond to new versions of file systems, which are developed and released quite often.
 
 One of the earliest ideas about how to deal with this problem would be to capture a snapshot of a file system that had already been used for a prolonged time. 
 
@@ -136,18 +140,19 @@ My general idea is to design a set of heavy workloads, simulating aging process,
 \chapter{File systems and used tools}
 Possible other sections to explain terms: journaling filesystem, allocation groups, B+ trees
 \section{File systems}
-File system is a set of tools, methods, logic and structure to control how to store and retreive data on a storage, e.g. a device. It is sometimes called 'bookkeeper' of operational system.
-As analogy to paper-based systems, basic user-accesed units are called files, which could be clustered into directories.
+File system is a set of tools, methods, logic and structure to control how to store and retreive data on and from a storage, e.g. device. It is sometimes called 'bookkeeper' of operational system. As analogy to paper-based systems, basic user-accesed units are called files, which could be clustered into directories.
 
-The system stores files either continuously or scattered across filesystem in form of extents. The basic accesed data unit is called a block, which size can be set to various sizes. Block can be either free or used, meaning there is some data stored or not. Information about how many blocks does a file occupy, as well as other information like date of creation, date of last access or access permissions is called metadata, e.g. data about stored data.
+The system stores files either continuously or scattered across file system in form of extents. The basic accessed data unit is called a block, which capacity can be set to various sizes. Block can be either free or used, meaning there is some data stored or not.
 
-Depending on filesystem, these metadata are stored in various ways (different tables or arrays), but on modern file systems, there are objects called inodes (i stands for index). Each file a filesystem manages is associated with an inode, every inode has its number in an inode table.
+Information about how many blocks does a file occupy, as well as other information like date of creation, date of last access or access permissions is called metadata, e.g. data about stored data. These information is stored separately from the contents of files. On modern file systems, the metadata are stored in objects called inodes (index nodes). Each file a file system manages is associated with an inode and every inode has its number in an inode table. On top of that the file system stores metadata not related to any specific file, such as information about bad sectors, free space or block availability.
+
+% Depending on file system, these metadata are stored in various ways (different tables or arrays), but on modern file systems, there are objects called inodes (i stands for index) which content is separate from the contents of files. Each file a file system manages is associated with an inode, every inode has its number in an inode table.
 
 *este nieco o bitovych mapach volneho miesta.
 
-In this thesis, targeted filesystems will be UNIX XFS and EXT4, which are main Red Hat supported filesystems. These file systems belong to Journaling filesystems group.
+In this thesis, targeted file systems will be UNIX XFS and EXT4, which are main Red Hat supported file systems. These file systems belong to the group of journaling file systems.
 
-Journaling file system keeps a structure called journal, which is a buffer of changes not yet commited to the file system. After system failure, these planned changes can be easily read from the journal, thus making the file system easily fully operational, and in correct(consistent) state again.
+Journaling file system keeps a structure called journal, which is a buffer of changes not yet commited to the file system. After system failure, these planned changes can be easily read from the journal, thus making the file system easily fully operational, and in correct (consistent) state again.
 
 *IO scheduler
 \section{XFS}

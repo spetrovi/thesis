@@ -22,3 +22,5 @@ http://landley.net/kdocs/ols/2006/ols2006v1-pages-193-208.pdf
 
 e2image -r /dev/vg - | bzip2 > res/meno.bz2
 xfsdump -e - /dev/vg| bzip2 > res/meno.bz2
+
+Testing matrix:
