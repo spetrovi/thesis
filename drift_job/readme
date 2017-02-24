@@ -1,0 +1,41 @@
+= Drift job =
+
+== 1. Description ==
+
+Drift job is a simple beaker job to run fs-drift <bengland@redhat.com> on a file system.
+
+To successfully execute a task, you have to already have your device and file system configured. The runtest.sh script takes only one argument, which is a string of fs-drift parameters.
+
+Example:
+runtest.sh "-t /lun2 -d 500 -f 1000 -s 4096"
+
+The output is called drift.log, which is by default sent to beaker and it contains fs-drift output as well as df command output.
+
+== 2. fs-drift ==
+
+fs-drift is a file system ageing test designed to run mixed workload on a file system.
+
+The ratio of executed operations is:
+
+ * read,10
+ * create,30
+ * append,60
+ * delete,5
+ * rename,1
+
+This is specified in my_workload.csv file, if you want to have different distribution fork the drift_job and either edit that file, or create a new one and refer it in multi_thread_config.sh.
+
+If you want to fill a file system, follow instructions:
+
+'To fill up a filesystem, just specify a --max-files and a mean file size such that the product is much greater than the filesystem's space.' 
+
+== 3. Beaker task ==
+Example:
+<task name="/performance/drift_job" role="STANDALONE">
+     <params>
+          <param name="TEST_PARAM_DRIFT_JOB" value="-t /lun2 -d 500 -f 1000 -s 4096"/>
+     </params>
+</task>
+
+
+[1] https://github.com/parallel-fs-utils/fs-drift
