@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import subprocess, sys
-import functions as fun
+import functions as fun #make it func
 from random import randint
 
 def filter_empty_elements(list):
@@ -17,7 +17,7 @@ def get_used_space(top_directory):
   subprocess.call('du -c ' +top_directory+ '| grep total > du_tmp/used.du',shell=True)
   return int(fun.read_file('du_tmp/used.du','r').split('\t')[0])
   
-subprocess.call('rm -rf du_tmp; mkdir du_tmp',shell=True)
+subprocess.call('rm -rf du_tmp/*',shell=True)
 top_directory = sys.argv[1]
 percent_to_delete = int(sys.argv[2])
 

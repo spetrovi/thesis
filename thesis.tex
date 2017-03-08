@@ -191,22 +191,22 @@ At the beginning of run time, the top directory is empty, and therefore \textit{
 
 Over time, as the filesystem grows, \textit{create} requests began to fail and other requests succede more. Finally, filesystem will reach a state of equilibrium, when requests are equaly likely to execute. From this point, the filesystem will not grow anymore, and the test will run until one of the \textit{STOP} conditions are met (specified with parameters).
 
-\section{Snapshots}
-From time reasons, but to ensure stability of results as well, I needed a solution, how to test an aged filesystem with possibility to recover to the pre-test state. For this matter, I made use of kernel native tools for inspecting filesystem in case of corruption or other forensic reasons. These tools have possibility to store only metadata of files, not the actual data, which is a great option for this thesis, as it does not need the randomly generated data inside of files. Moreso it reduces the size of a snapshot to a mere fraction of the acutal volume, and the process of storing the snapshot si very quick.
+\section{File system images}
+To achieve consistency of results and to shorten testing time, file system images are used. Once the image is created, it can be stored for later use and replayed back on device. To save space, only metadata of created file system are used, since content of created files is random and therefore irrelevant. Replayed metadata point at various blocks on device, recreating fragmentation while seldom taking significantly less space. These images can be created by using tools developed to inspect file systems in case of corruption. For ext based file systems, there is e2image tool and for xfs, there is xfs\_metadump. Both tools create images as sparse files, so compression is needed.
 
-Unfortunately, I had to use different tools for either filesystem. For EXT4, the tools is e2image[] and for XFS xfs\_metadump[] to create snapshot and xfs\_mdrestore to restore it.
+E2image tool can save whole ext based file system or just its metadata and offers compresion of image as well. Created images can be further compressed by tools such bzip2 or tar. Creating compressed image using e2image:
 
-The e2image tool can save and restore file system metadata to and from a file. Because the file is marked as 'sparse' to save space, I decided to compress it using bzip2 utility, so I will be free to move the snapshots elsewhere. Usage of e2image for purpose of this thesis:
+\textbf{e2image -Q \$DEVICE \$NAME.qcow2}
 
-\textbf{e2image -r \$DEVICE - |bzip2 > \$NAME}
+Such images can be later replayed back on a device. From that point, file system can be mounted and revised. Replaying compressed image:
 
-\textbf{e2image -I \$DEVICE \$NAME}
+\textbf{e2image -r \$NAME.qcow2 \$DEVICE}
 
-The xfs\_metadump can save file system metadata to a file. For privacy reasons, it obsfucate file names (feature I disabled). As well as e2image tool, the output file is sparse, so I use compression to store the snapshot. Usage of xfs\_metadump purposes of this thesis:
+Xfs\_metadump saves XFS file system metadata to a file. Due to privacy reasons file names are obsfucated (can be disabled by -o parameter). As well as e2image tool, the image file is sparse, but xfs\_metadump doesn't offer a way to compress the output. However, output can be redirected to stdout from where it can be passed to a compression tool. Creating compressed image using xfs\_metadump:
 
-\textbf{xfs\_metadump -o \$DEVICE - |bzip2 > \$NAME}
+\textbf{xfs\_metadump -o \$DEVICE -|bzip2 > \$NAME}
 
-The xfs\_mdrestore restores XFS metadump image to a file system or a device. Usage of xfs\_mdrestore for purpose of this thesis: 
+Such images, when uncompressed can be replayed back on device by tool xfs\_mdrestore. File system can be then mouned and inspected as needed:
 
 \textbf{xfs\_mdrestore \$NAME \$DEVICE}
 
