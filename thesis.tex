@@ -39,6 +39,9 @@
 %% fonts:
 \usepackage{paratype}
 \def\textrussian#1{{\usefont{T2A}{PTSerif-TLF}{m}{rm}#1}}
+\usepackage{xcolor} 
+\newcommand{\todo}[1]{\textcolor{red}{\textbf{#1}}}
+\usepackage{listings}
 %%
 %% The following section sets up the metadata of the thesis.
 \thesissetup{
@@ -140,11 +143,13 @@ My general idea is to design a set of heavy workloads, simulating aging process,
 \chapter{File systems and used tools}
 Possible other sections to explain terms: journaling filesystem, allocation groups, B+ trees
 \section{File systems}
-File system is a set of tools, methods, logic and structure to control how to store and retreive data on and from a storage, e.g. device. It is sometimes called 'bookkeeper' of operational system. As analogy to paper-based systems, basic user-accesed units are called files, which could be clustered into directories.
+File system is a set of tools, methods, logic and structure to control how to store and retreive data on and from a storage, e.g. device. It is sometimes called a 'bookkeeper' of operational system. As an  analogy to paper-based systems. Basic user-accesed units are called files, which could be clustered into directories.
 
-The system stores files either continuously or scattered across file system in form of extents. The basic accessed data unit is called a block, which capacity can be set to various sizes. Block can be either free or used, meaning there is some data stored or not.
+The system stores files either continuously or scattered across device. The basic accessed data unit is called a block, which capacity can be set to various sizes. Blocks are labeled either as free or used.
 
-Information about how many blocks does a file occupy, as well as other information like date of creation, date of last access or access permissions is called metadata, e.g. data about stored data. These information is stored separately from the contents of files. On modern file systems, the metadata are stored in objects called inodes (index nodes). Each file a file system manages is associated with an inode and every inode has its number in an inode table. On top of that the file system stores metadata not related to any specific file, such as information about bad sectors, free space or block availability.
+Files which are non-continous are stored in form of extents, which is one or more blocks associated with the file, but stored elsewhere.  
+
+Information about how many blocks does a file occupy, as well as other information like date of creation, date of last access or access permissions is known as metadata, e.g. data about stored data. This information is stored separately from the content of files. On modern file systems, metadata are stored in objects called inodes (index nodes). Each file a file system manages is associated with an inode and every inode has its number in an inode table. On top of that the file system stores metadata unrelated to any specific file, such as information about bad sectors, free space or block availability.
 
 % Depending on file system, these metadata are stored in various ways (different tables or arrays), but on modern file systems, there are objects called inodes (i stands for index) which content is separate from the contents of files. Each file a file system manages is associated with an inode, every inode has its number in an inode table.
 
@@ -152,33 +157,30 @@ Information about how many blocks does a file occupy, as well as other informati
 
 In this thesis, targeted file systems will be UNIX XFS and EXT4, which are main Red Hat supported file systems. These file systems belong to the group of journaling file systems.
 
-Journaling file system keeps a structure called journal, which is a buffer of changes not yet commited to the file system. After system failure, these planned changes can be easily read from the journal, thus making the file system easily fully operational, and in correct (consistent) state again.
+Journaling file system keeps a structure called journal, which is a buffer of changes not yet commited to the file system. After system failure, these planned changes can be easily read from the journal, thus making the file system easily fully operational, and in correct and consistent state again.
 
 *IO scheduler
 \section{XFS}
 XFS is a 64-bit journaling file system created by Silicon Graphics, Inc(SGI) in 1993. It is known for great performance in execution of paralel I/O operations, because of its architecture based on allocation groups.
 
 Allocation groups are euqally sized linear regions within file system. Each allocation group manages its own inodes and free space, therefore increasing parallelism.
-Architecture of this design enables for significant scalability of bandwidth, threads, and size of filesystem, as well as its files, simply because multiple processes and threads can access the file system simultaneously.
+Architecture of this design enables for significant scalability of bandwidth, threads, and size of file system, as well as files, simply because multiple processes and threads can access the file system simultaneously.
 
-XFS allocates space as extents stored in pairs of B+ trees, each pair for each allocation group (imrpoving performance especially when handling large files). One of the B+ trees is indexed by the length of the free extents, while the other is indexed by the starting block of the free extents. This dual indexing scheme allows for the highly efficient location of free extents for file system operations.
+XFS allocates space as extents stored in pairs of B+ trees, each pair for each allocation group (improving performance especially when handling large files). One of the B+ trees is indexed by the length of the free extents, while the other is indexed by the starting block of the free extents. This dual indexing scheme allows for the highly efficient location of free extents for file system operations.
 
-Extent describes one or more contiguous blocks, which can considerably shorten list of blocks.
- 
-Metadata journaling ensures consistency of data in case of emergency situations as f.e. system crash.
+Prevention of file system fragmentation consist mainly of a feature called \textit{delayed allocation} as well as online defragmentation(\textit{xfs\_fsr}), that can turururu
 
-Prevention of file system fragmentation consist mainly of \textit{delayed allocation} feature as well as online defragmentation(\textit{xfs\_fsr}), that can turururu
-
-Delayed allocation, also called \textit{allocate-on-flush} is a feature that, when a file is written to the buffer cache, substracts space from the free-space counter, but won't allocate the free-space bitmap. The data is held in memory, instead, until it must be flushed (to storage) because of memory pressure when calling Unix \textit{sync}, or when flushing dirty buffers. This approach improves the chance, that the file will be written in a contiguous group of blocks, avoiding fragmentation and reducing CPU usage as well.
+Delayed allocation, also called \textit{allocate-on-flush} is a feature that, when a file is written to the buffer cache, substracts space from the free-space counter, but won't allocate the free-space bitmap. The data is held in memory until it have to be stored because of system call (such as \textit{sync}). This approach improves the chance, that the file will be written in a contiguous group of blocks, avoiding fragmentation and reducing CPU usage as well.
 
 \section{EXT4}
-Ext4, also called \textit{fourth extended filesystem} is a 48-bit journaling file system, developed as successor of ext3 for linux kernel, improving reliability and performance features.
+Ext4, also called fourth extended filesystem is a 48-bit journaling file system developed as successor of ext3 for Linux kernel, improving reliability and performance features.
 
-Traditionally, ext* systems use an indirect block mapping sheme. Such an approach is generaly inefficient for large files, on operations like deleting or truncating. Ext4, as well as XFS use approach of \textit{extents}, which positively affect performance and encourage continuous layouts.
+Traditionally, ext* systems use an indirect block mapping sheme. Such approach is generaly inefficient for large files when using operations like deleting or truncating. Ext4, as well as XFS use approach of \textit{extents}, which positively affect performance and encourage ?continuous layouts?.
 
-When allocating, ext4 use multiblock allocation, which is more efficient way than one block allocation at time, which is present in earlier ext* file systems. Multiblock allocation has far better performance, particulary when in use with delayed allocation and extents.
+When allocating, ext4 use multiblock allocation. 
+\todo{?what is multiblock allocation?}
 
-Similary as xfs, ext4 use delayed allocation design, to increase performance, especially when in use with multiblock allocation and extent-based approach, also reducing fragmentation on the device. For cases of fragmentation that still occur, ext4 provide support for online defragmentation and \textit{e4defrag} tool to defragment either single file, or whole filesystem.
+Similary as xfs, ext4 use delayed allocation to increase performance, especially when in use with multiblock allocation and extent-based approach, also reducing fragmentation on the device. For cases of fragmentation that still occur, ext4 provide support for online defragmentation and \textit{e4defrag} tool to defragment either single file, or whole file system.
 
 \section{FIO}
 Flexible Input/Output tool is a IO workload generator written by Jens Axboe. It is a tool well known for it's flexibility as well as large group of contributors and users.
@@ -189,76 +191,90 @@ fs-drift is a workload aging test written by Ben England. It relies on randomly 
 
 At the beginning of run time, the top directory is empty, and therefore \textit{create} requests success the most, other requests, such as \textit{read} or \textit{delete}, will fail because of lack of files and small probability of randomly choosing existing one. 
 
-Over time, as the filesystem grows, \textit{create} requests began to fail and other requests succede more. Finally, filesystem will reach a state of equilibrium, when requests are equaly likely to execute. From this point, the filesystem will not grow anymore, and the test will run until one of the \textit{STOP} conditions are met (specified with parameters).
+Over time, as the file system grows, \textit{create} requests began to fail and other requests succede more. Finally, file system will reach a state of equilibrium, when requests are equaly likely to execute. From this point, the file system would not grow anymore, and the test runs until one of the \textit{STOP} conditions are met (specified with parameters).
+
+Fs-drift is very flexible and can be used to simulate lots of different workloads by operating with various file sizes, request types and different kinds of random distribution.
 
 \section{File system images}
-To achieve consistency of results and to shorten testing time, file system images are used. Once the image is created, it can be stored for later use and replayed back on device. To save space, only metadata of created file system are used, since content of created files is random and therefore irrelevant. Replayed metadata point at various blocks on device, recreating fragmentation while seldom taking significantly less space. These images can be created by using tools developed to inspect file systems in case of corruption. For ext based file systems, there is e2image tool and for xfs, there is xfs\_metadump. Both tools create images as sparse files, so compression is needed.
+To achieve consistency of results and to shorten testing time, file system images are used. Once the image is created, it can be stored for later use and replayed back on device. To save space, only metadata of created file system are used, since content of created files is random and therefore irrelevant. Replayed metadata point at various blocks on device, recreating fragmentation while seldom taking significantly less space. These images can be created by using tools developed to inspect file systems in case of emergency. For ext based file systems, there is e2image tool and for xfs, there is xfs\_metadump. Both tools create images as sparse files, so compression is needed.
 
-E2image tool can save whole ext based file system or just its metadata and offers compresion of image as well. Created images can be further compressed by tools such bzip2 or tar. Creating compressed image using e2image:
+E2image tool can save whole ext based file system or just its metadata and offers compresion of image as well. Created images can be further compressed by tools such bzip2 or tar.
 
-\textbf{e2image -Q \$DEVICE \$NAME.qcow2}
+\noindent Creating compressed image using e2image:
+\begin{lstlisting}[language=bash]
+  e2image -Q $DEVICE $NAME.qcow2
+\end{lstlisting}
 
-Such images can be later replayed back on a device. From that point, file system can be mounted and revised. Replaying compressed image:
+\noindent Such images can be later replayed back on a device. From that point, file system can be mounted and revised.
 
-\textbf{e2image -r \$NAME.qcow2 \$DEVICE}
+\noindent Replaying compressed image:
+\begin{lstlisting}[language=bash]
+  e2image -r $NAME.qcow2 $DEVICE
+\end{lstlisting}
 
 Xfs\_metadump saves XFS file system metadata to a file. Due to privacy reasons file names are obsfucated (can be disabled by -o parameter). As well as e2image tool, the image file is sparse, but xfs\_metadump doesn't offer a way to compress the output. However, output can be redirected to stdout from where it can be passed to a compression tool. Creating compressed image using xfs\_metadump:
 
-\textbf{xfs\_metadump -o \$DEVICE -|bzip2 > \$NAME}
+\begin{lstlisting}[language=bash]
+  xfs_metadump -o $DEVICE -|bzip2 > $NAME
+\end{lstlisting}
 
 Such images, when uncompressed can be replayed back on device by tool xfs\_mdrestore. File system can be then mouned and inspected as needed:
 
-\textbf{xfs\_mdrestore \$NAME \$DEVICE}
+\begin{lstlisting}[language=bash]
+  xfs_mdrestore $NAME $DEVICE
+\end{lstlisting}
 
 \chapter{Storage media}
-In this thesis, I would like to adress only the most wide spreaded media used in both professional and non-professional environment. The first distinction I want to make is a type of computer bus interface. In this thesis, the testing would take place with two types of interfaces: SATA and SAS. The second distinction of devices is a type of drive, either HDD or SSD.
 \section{SATA}
 \section{SAS}
 \section{HDD}
 \section{SDD}
 \chapter{Implementation}
 \section{filesystem\_ager}
-This aging tool is a simple approach to write and remove many files of random size.
+%This aging tool is a simple approach to write and remove many files of random size.
 
-The tool consist of three scripts and one common library called \textit{functions}. The scripts are named \textit{filesystem\_ager.py}, \textit{fio\_config\_generator.py} and \textit{random\_deletor.py}.
+%The tool consist of three scripts and one common library called \textit{functions}. The scripts are named \textit{filesystem\_ager.py}, \textit{fio\_config\_generator.py} and \textit{random\_deletor.py}.
 
-The workflow consist of calling filesystem\_ager, with desired parameters. Script manages triggering fio\_config\_generator, calling fio tool on generated config and triggering random deletor. These three actions are repeated given number of times.
-Parameters of filesystem\_ager are: 
-\begin{compactenum}
-  \item Total desired size do be written in one cycle
-  \item Denominator of total desired size (Total desired size will be divided by this number)
-  \item Range of size of written files
-  \item Number of cycles
-\end{compactenum}
+%The workflow consist of calling filesystem\_ager, with desired parameters. Script manages triggering fio\_config\_generator, calling fio tool on generated config and triggering random deletor. These three actions are repeated given number of times.
+%Parameters of filesystem\_ager are: 
+%\begin{compactenum}
+%  \item Total desired size do be written in one cycle
+%  \item Denominator of total desired size (Total desired size will be divided by this number)
+%  \item Range of size of written files
+%  \item Number of cycles
+%\end{compactenum}
 
-Although FIO tool has some parameters to randomize the size of files which are written, the management of file sizes and randomisation, as well as naming of files is handled by fio\_config\_generator instead, to provide more control over those qualities.
-Parameters of this script are:
-\begin{compactenum}
-  \item Total deisred size to be written
-  \item Range of size of written files
-\end{compactenum}
+%Although FIO tool has some parameters to randomize the size of files which are written, the management of file sizes and randomisation, as well as naming of files is handled by fio\_config\_generator instead, to provide more control over those qualities.
+%Parameters of this script are:
+%\begin{compactenum}
+%  \item Total deisred size to be written
+%  \item Range of size of written files
+%\end{compactenum}
 
-The script will generate global settings of a workload, then proceeds to generate jobs for every file that will be written. File size is always the name of that file, and these are gathered to a list, then list of generated files is returned and script ends. Including file size in its name, as well as indexation of files will help effectively search and delete files in the random deletion process, without need to search for files on the disk and examine them for size. Simplistic approach in fio config will hopefully result in compatibility and reliability in use with any fio version.
+%The script will generate global settings of a workload, then proceeds to generate jobs for every file that will be written. File size is always the name of that file, and these are gathered to a list, then list of generated files is returned and script ends. Including file size in its name, as well as indexation of files will help effectively search and delete files in the random deletion process, without need to search for files on the disk and examine them for size. Simplistic approach in fio config will hopefully result in compatibility and reliability in use with any fio version.
 
-After config file is generated, filesystem\_ager will run fio tool on generated config and therefore, files are written on the device.
+%After config file is generated, filesystem\_ager will run fio tool on generated config and therefore, files are written on the device.
 
-The removing of files is handled by random\_deletor script. Its parameters are:
-\begin{compactenum}
-  \item Total written size
-  \item Denominator of total size
-  \item Range of size of written files
-  \item Number of existent files
-\end{compactenum}
+%The removing of files is handled by random\_deletor script. Its parameters are:
+%\begin{compactenum}
+%  \item Total written size
+%  \item Denominator of total size
+%  \item Range of size of written files
+%  \item Number of existent files
+%\end{compactenum}
 
-If denominator equals zero, random\_deletor wont remove any files and will return empty list. Otherwise, desired range of deletion is estimated. Random\_deletor then proceeds to remove files while desired volume is not deleted. Files are randomly selected through choosing random integer from zero to number of existent files. This step may seem inefficient, but with large amounts of generated files, the time to perform succesfull selection will not change dramatically. Selected file name is then parsed for size information, and if it fits into desired volume to remove, it is deleted, through subprocess command. Names of removed files are gathered in a list and returned.
+%If denominator equals zero, random\_deletor wont remove any files and will return empty list. Otherwise, desired range of deletion is estimated. Random\_deletor then proceeds to remove files while desired volume is not deleted. Files are randomly selected through choosing random integer from zero to number of existent files. This step may seem inefficient, but with large amounts of generated files, the time to perform succesfull selection will not change dramatically. Selected file name is then parsed for size information, and if it fits into desired volume to remove, it is deleted, through subprocess command. Names of removed files are gathered in a list and returned.
 
-Number of deleted files is substracted from number of existent files.
-filesystem\_ager then sums up deleted volume, log it as well as other information and triggers the cycle again.
+%Number of deleted files is substracted from number of existent files.
+%filesystem\_ager then sums up deleted volume, log it as well as other information and triggers the cycle again.
 
-However, after few runs, I decided not to use this approach for actual aging, because the time needed to fill and appropriately age the filesystem simply took very long. Instead, I was looking for other, already created tools I could use.
+%However, after few runs, I decided not to use this approach for actual aging, because the time needed to fill and appropriately age the filesystem simply took very long. Instead, I was looking for other, already created tools I could use.
 
 
-\section{recipe\_fio}
+\section{Performance testing of images}
+Performance testing of created images is done by a package recipe\_fio\_aging. Upon instalation, the package finds and downloads coresponding file system image according to obtained parameters. As shown, images are stored compressed, therefore decompression is needed after download. Once these steps are succesfully completed, the image can be replayed on the device by using presented tools (e2image, xfs\_mdrestore).
+
+
 Measuring a performance is done by a tool I developed, recipe\_fio. Similar to filesytem\_ager, recipe\_fio use fio tool to handle desired IO operations, but instead of focusing on filling the filesystem, the script use measurement features of fio, which consist of performing IO operations and reporting results.
 
 *talk about used recipe
