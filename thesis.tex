@@ -89,44 +89,29 @@
 \usepackage{menukeys}
 \begin{document}
 \chapter{Introduction}
-We live in an age of information. Hardware and software technology improves every day. There is an increasing need to wrok with larger and larger databases, multimedia applications and to store great amount of data. This cause great pressure on performance of storing and retrieving information, e.g. input and output (I/O) operations.
+We live in an age of information. Hardware and software technology improves every day. There is a need to work with large databases, multi-media applications and to store great amount of data on a memory device. This cause great pressure on performance of storing and retrieving information, viz. input and output(I/O) operations.
 
-The part of an operation system that handles communication with a physical device is called a file system. Because of increasing demands on performance  of I/O operations, there has been quite wide tehcnological progress in approach to performance issues.
+Part of an operation system that handles communication with a physical device is called a file system. Because of such increasing requirement on performance of I/O operations, there has been quite wide technological progress in approach to performance issues. 
 
-In past years, great many tools and tests (e.g. benchmarks) were developed as means for users and researchers to explore behavior and to measure performance of file systems. New versions of file systems are released very often (almost weekly) and therefore there has been an pressure on quality engineers to evaluate new versions fast enough.
+In past years, great many tools and tests (e.g. benchmarks) were developed as means for users and researchers to explore behavior and measure performance of file systems. These usually consist of putting file system under some kind of stress, gathering different measurements in the process and computing overall summary after the test is done. Measured parameters are usually bandwidth, latency and IO operations per second.
 
-The standard work flow consist of running test on freshly installed operation system and newly created file system without running other applications, which might cause noise in measurements and eventually invalid results.
+The benchmark should be highly configurable, so the researchers can simulate various workloads that would mimic real life scenarios. Stability and reproducibility of tests are also required, if the research is meant to be objective and to have some academic value about file system itself.
 
-Although this work flow shows great results, it only gives us a general idea about how does file system perform at early stages of its life cycle. Results of these tests are therefore quite unrealistic and won't address the behavior of file system after long-term usage.
+The standard workflow is tu run benchmark on a clean instance of operation system without other applications running, to avoid noise, and on clean instance of researched file system.
 
-Prolonged usage of file system impel it to do more and more optimisations with impact on its perfmormance. The more files has been created, deleted or expanded, the free space of file system is progressingly more fragmented. Such fragmentation means, that blocks of data are scattered through physical device which results in degradation of performance.
+While this approach brings great results, with correct configuration of the benchmark, it only gives us a general idea about how does file system perform in early stage of it's usage. 
 
-The ideal approach for research pointed on effect on age of file system would be to put file system under stress conditions for a few years or months, gathering information in the process, however, such approach is apparently impractical or even impossible, because the demand has to be satisfied in matter of weeks to respond to new versions of file systems.
+However, there is a growing demand from users as well as from developers to explore behavior and performance of a file system, that has been running under some defined conditions for longer period of time, months or even years.
 
-\chapter{State of art}
-% We live in an age of information. Hardware and software technology improves every day. There is a need to work with large databases, multi-media applications and to store great amount of data on a memory device. This cause great pressure on performance of storing and retrieving information, viz. input and output(I/O) operations.
+Prolonged usage of file system impel it to do more and more optimisations. When there is a lot of free space, there is generally no need for complicated approach. But with more files being deleted, created and expanded, the free space begins to be more and more fragmented. This then leads for files to be spread non contiguously across the physical device.
 
-% Part of an operation system that handles communication with a physical device is called a file system. Because of such increasing requirement on performance of I/O operations, there has been quite wide technological progress in approach to performance issues. 
+This is a problem mainly with regard to devices with moving parts, such as widely used hard disk drive. When working with IO operations on this type of device, the fragmentation cause larger seek times, which is a time for magnetic heads to reach desired location.
 
-% In past years, great many tools and tests (e.g. benchmarks) were developed as means for users and researchers to explore behavior and measure performance of file systems. These usually consist of putting file system under some kind of stress, gathering different measurements in the process and computing overall summary after the test is done. Measured parameters are usually bandwidth, latency and IO operations per second.
+Above is a great example of how file system has to be flexible to solve such problems as well as of problems that emerge after running file system for a longer period of time.
 
-% The benchmark should be highly configurable, so the researchers can simulate various workloads that would mimic real life scenarios. Stability and reproducibility of tests are also required, if the research is meant to be objective and to have some academic value about file system itself.
+The ideal approach for research pointed on effect on age of file system would be to put file system under defined conditions for a few years or months, gathering information in the process. 
 
-% The standard workflow is tu run benchmark on a clean instance of operation system without other applications running, to avoid noise, and on clean instance of researched file system.
-
-% While this approach brings great results, with correct configuration of the benchmark, it only gives us a general idea about how does file system perform in early stage of it's usage. 
-
-% However, there is a growing demand from users as well as from developers to explore behavior and performance of a file system, that has been running under some defined conditions for longer period of time, months or even years.
-
-% Prolonged usage of file system impel it to do more and more optimisations. When there is a lot of free space, there is generally no need for complicated approach. But with more files being deleted, created and expanded, the free space begins to be more and more fragmented. This then leads for files to be spread non contiguously across the physical device.
-
-% This is a problem mainly with regard to devices with moving parts, such as widely used hard disk drive. When working with IO operations on this type of device, the fragmentation cause larger seek times, which is a time for magnetic heads to reach desired location.
-
-% Above is a great example of how file system has to be flexible to solve such problems as well as of problems that emerge after running file system for a longer period of time.
-
-% The ideal approach for research pointed on effect on age of file system would be to put file system under defined conditions for a few years or months, gathering information in the process. 
-
-% However, this is apparently impractical or even impossible, because the demand has to be satisfied in matter of weeks to respond to new versions of file systems, which are developed and released quite often.
+However, this is apparently impractical or even impossible, because the demand has to be satisfied in matter of weeks to respond to new versions of file systems, which are developed and released quite often.
 
 One of the earliest ideas about how to deal with this problem would be to capture a snapshot of a file system that had already been used for a prolonged time. 
 
@@ -141,7 +126,6 @@ Unfortunately the demand from users and developers has yet not been met by stand
 My general idea is to design a set of heavy workloads, simulating aging process, to run on different types of devices and at least two types of file systems and then to execute a series of performance tests. Results of these tests could be then compared to fresh file systems, showing performance differences between them. Comparing different aged file systems between each other would clearly be an interesting topic of research as well.
 
 \chapter{File systems and used tools}
-Possible other sections to explain terms: journaling filesystem, allocation groups, B+ trees
 \section{File systems}
 File system is a set of tools, methods, logic and structure to control how to store and retreive data on and from a storage, e.g. device. It is sometimes called a 'bookkeeper' of operational system. As an  analogy to paper-based systems. Basic user-accesed units are called files, which could be clustered into directories.
 
@@ -153,13 +137,12 @@ Information about how many blocks does a file occupy, as well as other informati
 
 % Depending on file system, these metadata are stored in various ways (different tables or arrays), but on modern file systems, there are objects called inodes (i stands for index) which content is separate from the contents of files. Each file a file system manages is associated with an inode, every inode has its number in an inode table.
 
-*este nieco o bitovych mapach volneho miesta.
+\todo(bit maps)
 
 In this thesis, targeted file systems will be UNIX XFS and EXT4, which are main Red Hat supported file systems. These file systems belong to the group of journaling file systems.
 
 Journaling file system keeps a structure called journal, which is a buffer of changes not yet commited to the file system. After system failure, these planned changes can be easily read from the journal, thus making the file system easily fully operational, and in correct and consistent state again.
 
-*IO scheduler
 \section{XFS}
 XFS is a 64-bit journaling file system created by Silicon Graphics, Inc(SGI) in 1993. It is known for great performance in execution of paralel I/O operations, because of its architecture based on allocation groups.
 
@@ -175,16 +158,14 @@ Delayed allocation, also called \textit{allocate-on-flush} is a feature that, wh
 \section{EXT4}
 Ext4, also called fourth extended filesystem is a 48-bit journaling file system developed as successor of ext3 for Linux kernel, improving reliability and performance features.
 
-Traditionally, ext* systems use an indirect block mapping sheme. Such approach is generaly inefficient for large files when using operations like deleting or truncating. Ext4, as well as XFS use approach of \textit{extents}, which positively affect performance and encourage ?continuous layouts?.
+%Traditionally, ext* systems use an indirect block mapping sheme. Such approach is generaly inefficient for large files when using operations like deleting or truncating. Ext4, as well as XFS use approach of \textit{extents}, which positively affect performance and encourage ?continuous layouts?.
 
-When allocating, ext4 use multiblock allocation. 
-\todo{?what is multiblock allocation?}
+%When allocating, ext4 use multiblock allocation. 
 
 Similary as xfs, ext4 use delayed allocation to increase performance, especially when in use with multiblock allocation and extent-based approach, also reducing fragmentation on the device. For cases of fragmentation that still occur, ext4 provide support for online defragmentation and \textit{e4defrag} tool to defragment either single file, or whole file system.
 
 \section{FIO}
 Flexible Input/Output tool is a IO workload generator written by Jens Axboe. It is a tool well known for it's flexibility as well as large group of contributors and users.
-
 
 \section{Fs-drift}
 fs-drift is a workload aging test written by Ben England. It relies on randomly mixed requests generated by inner heuristic (according to parameters). These requests can be writes, reads, creates, appends or deletes.
@@ -225,12 +206,21 @@ Such images, when uncompressed can be replayed back on device by tool xfs\_mdres
 \end{lstlisting}
 
 \chapter{Storage media}
+\section{HDD and SSD}
+HDD is a rotational disk, which requires specific approach from kernel, to ensure the lowest possible seek time. Seek time is a time for moving parts of the device to find next relevant block of data. This affect overall performance greatly, because with large fragmentation, seek time becomes quite high.
+
+As for SSD, this type of device does not have any moving parts, which make perform really well. One of the problems, however, is limited lifecycle of memory cells. SSD manufacturers deal with this problem by adding controler with its own scheduler, which make sure, no parts of the device are used significantly more than other parts.
+
+When aging the filesystems, I expect for those grown on HDD to perform significantly slower after aging process, and I expect SSD filesystems not to be affected at all, or maybe significantly less.
+
+
 \section{SATA}
 \section{SAS}
 \section{HDD}
 \section{SDD}
-\chapter{Implementation}
-\section{filesystem\_ager}
+
+\chapter{Workflow}
+%\section{filesystem\_ager}
 %This aging tool is a simple approach to write and remove many files of random size.
 
 %The tool consist of three scripts and one common library called \textit{functions}. The scripts are named \textit{filesystem\_ager.py}, \textit{fio\_config\_generator.py} and \textit{random\_deletor.py}.
@@ -269,112 +259,79 @@ Such images, when uncompressed can be replayed back on device by tool xfs\_mdres
 %filesystem\_ager then sums up deleted volume, log it as well as other information and triggers the cycle again.
 
 %However, after few runs, I decided not to use this approach for actual aging, because the time needed to fill and appropriately age the filesystem simply took very long. Instead, I was looking for other, already created tools I could use.
+\section{Workflow of image creating}
 
-
-\section{Performance testing of images}
-Performance testing of created images is done by a package recipe\_fio\_aging. Upon instalation, the package finds and downloads coresponding file system image according to obtained parameters. As shown, images are stored compressed, therefore decompression is needed after download. Once these steps are succesfully completed, the image can be replayed on the device by using presented tools (e2image, xfs\_mdrestore).
-
-
-Measuring a performance is done by a tool I developed, recipe\_fio. Similar to filesytem\_ager, recipe\_fio use fio tool to handle desired IO operations, but instead of focusing on filling the filesystem, the script use measurement features of fio, which consist of performing IO operations and reporting results.
-
-*talk about used recipe
-
-For purposes of this thesis, I let recipe\_fio to report bandwidth and operations per second(IOPS).
-
-The main script receives slightly enhanced fio configuration file, enriched of some non-fio parameters, which are used by test only. These parameters are:
-\begin{compactenum}
-  \item used filesystem
-  \item number of test repetitions. For statistical stability, I decided to run the test several times under same conditions.
-  \item specifying a snapshot to be tested
-  \item flag which represents whether or not to rsync data on a result-storing server
-  \end{compactenum}
-
-After compiling, tool parses the parameters and gathers information about system, which consist of: version of kernel, time and date, hostname, RHEL compose, memory, kernel, mount, system info, system variables and fio version.
-
-Then it proceeds to set environment for testing by:
-
-\begin{compactenum}
-  \item Installing fio tool
-  \item Creating directory for results
-  \item Loading given snapshot on a device
-  \item Randomly removing volume from the device to make room for test
-\end{compactenum}
-
-Volume is randomly removed using random\_delete\_volume.py script. This scriptt globs all files in the filesystem, retrieves information about used volume as well as it's overall size. Then proceeds to randomly choosing files to delete and stops when desired volume is freed. The approach of recursively globbing all files may be inefficient, but this way, we can be sure, that volume is deleted from whole device evenly.
-
-Python script run\_tests.py, manages to parse recipe parameter, resulting in creating one or several fio configuration files in the directory, further adding logging parameters to them. Then for every created file, directory on the desired medium is created and fio tool is triggered. If the script succesfully ends, file OK is created in the results directory.
-
-When the measurement is over, bash script generate the name of results, which consist of:
-\begin{compactenum}
-  \item time
-  \item date
-  \item used snapshot
-  \item version of kernel
-  \item version of RHEL compose
-\end{compactenum}
-
-Then proceeds to compress results into tar archive with generated name, and according to -g flag will, or will not, rsync the result onto the data server.
-\section{Inspecting filesystem}
-For determining some overall idea about an extent to which is the filesystem aged or dirty, I wrote scripts that generate histograms representing fragmentation of used space as well as fragmentation of free space. Both scripts use common linux tools and pyplot to generate the graphics. Both scripts can display linear or logarhytmic Y scale.
-
-
-Script extent\_distribution.py makes use of xfs\_io fiemap tool, which is a tool to display extent distribution of a given file and works correctly even for ext* filesystems.
-
-The script will first recursively crawls the whole filesystem from given top folder and makes a list of all files. Fiemap is then run over every file separately. 
-
-The only data, that are then parsed from the output, is how many non-contigous extents does the file have. These integers are aggregated to a single list, from which are then counted, and final histogram is made.
-
-Script free\_space\_fragmentation.py use the tool e2freefrag, which runs over a device, and outputs the histogram of free space fragmentation in texutal form. Script will store this output and then easily parse the histogram and aggregate the data into a graphic form.
-
-\section{Aging recipes}
-To determine which fs-drift settings will be the most fitting for purposes of this thesis, I wrote a small python script fs-drift\_matrix.
-
-It is capable of taking matrix of possible fs-drift paramteres from \textit{json} file and then run it on a device.
-
-After every run, histograms-generating scripts are triggered to store histograms of \textit{free space} and \textit{used space} fragmentation. Also outputs of the \textit{fs-drift} script and \textit{df} command are logged.
-
+\section{Fs-drift settings}
 As the creator states in README, to fill up a filesystem, maximum number of files and mean size of file should be defined such that the product is greater than the available space.
 
 For the purpose of this thesis, desired usage is 60\%-100\% with enough fragmentation to consider the device aged.
 
-\section{Data processing}
-\chapter{Testing environment}
-The aging process took place on an ibm3250 machine with following parameters:
+\section{Workflow of performance testing}
+Performance testing of created images is done by a package recipe\_fio\_aging. Upon instalation of necessary tools (libs, fio), the package finds and downloads coresponding file system image according to obtained parameters. As shown, images are stored compressed, therefore decompression is needed after download. Once these steps are succesfully completed, the image can be replayed on the device by using presented tools (e2image, xfs\_mdrestore). If the image restoring completes succesfully, file system can be mounted and worked with exactly like it would be just after the aging process.
+
+After image restoration, some files (according to given parameter) are deleted to create space for the FIO test to take place. The files to be removed are choosen randomly until desired amount of volume has been freed. By using this workflow, e.g. freeing some amount of space, we can simulate aged file system in various phases of aging by using just one image of a very fragmented file system.
+
+When free space is reclaimed, FIO test will take place using parameters given to recipe\_fio\_aging. The overall space occupied by the test should not be larger than available space on the file system, otherwise the test will either fail completely or report incorrect results.
+
+For statistical correctness, the FIO test can run several times in a row. After last iteration, the results are compressed and sent to data-collecting server.
+
+Parameters available for recipe\_fio\_aging:
 \begin{compactenum}
+  \item -s|--sync, flag to signalise wheather or not to send data to server (usefull for developing purposes)
+  \item -n|--numjobs, number of test repetitions. For statistical stability
+  \item -m|--mountpoint
+  \item -d|--device
+  \item -r|--recipe, parameters to pass to FIO test
+  \item -t|--tag, string to distinguish different tests
+  \end{compactenum}
+
+\section{FIO settings}
+%Volume is randomly removed using random\_delete\_volume.py script. This scriptt globs all files in the filesystem, retrieves information about used volume as well as it's overall size. Then proceeds to randomly choosing files to delete and stops when desired volume is freed. The approach of recursively globbing all files may be inefficient, but this way, we can be sure, that volume is deleted from whole device evenly.
+
+%\section{Inspecting filesystem}
+
+%To determine overall idea about an extent to which is the file system aged, scripts that generate histograms representing fragmentation of used space as well as fragmentation of free space. Both scripts use common linux tools and pyplot to generate the graphics. Both scripts can display linear or logarhytmic Y scale.
+
+%Script extent\_distribution.py makes use of xfs\_io fiemap tool, which is a tool to display extent distribution of a given file and works correctly even for ext* filesystems.
+
+%The script will first recursively crawls the whole filesystem from given top folder and makes a list of all files. Fiemap is then run over every file separately. 
+
+%The only data, that are then parsed from the output, is how many non-contigous extents does the file have. These integers are aggregated to a single list, from which are then counted, and final histogram is made.
+
+%Script free\_space\_fragmentation.py use the tool e2freefrag, which runs over a device, and outputs the histogram of free space fragmentation in texutal form. Script will store this output and then easily parse the histogram and aggregate the data into a graphic form.
+
+\chapter{Testing environment}
+The aging process took place on these servers:
+\begin{compactenum}
+  \item durden
   \item Intel(R) Xeon(R) CPU, X2460 (2.80Ghz, ??? Cache,8 cores)
-  \item RAM 10GB ???Mhz DDR? ???
-  \item 4x300GB SAS disks + 1x50GB Sas disk ???
+  \item RAM 10GB
+  \item 4x300GB SAS HDD, 1x50GB SAS SSD
 \end{compactenum}
 
-THIS IS AN EXAMPLE, HOW SHOULD SCECIFICS OF A MACHINE LOOK
+\begin{compactenum}
+  \item joker
+  \item Intel(R) Xeon(R) CPU, X2460 (2.80Ghz, ??? Cache,8 cores)
+  \item RAM 10GB
+  \item 4x300GB SAS HDD, 1x50GB SAS SSD
+\end{compactenum}
 
-2 x Intel Xeon E5-2620 (2.0GHz, 15MB Cache, 6-cores)
-Intel C602 Chipset
-Memory - 16GB (2 x 8GB) 1333Mhz DDR3 Registered RDIMMs
- CentOS 6.3 64-Bit
-100GB Micron RealSSD P400e Boot SSD
-LSI 9207-8i SAS/SATA 6.0Gb/s HBA (For benchmarking SSDs or HDDs)
 
-The system installed on machine was ----- with kernel 3.10.0-229.el7.x86\_64 
+%2 x Intel Xeon E5-2620 (2.0GHz, 15MB Cache, 6-cores)
+%Intel C602 Chipset
+%Memory - 16GB (2 x 8GB) 1333Mhz DDR3 Registered RDIMMs
+% CentOS 6.3 64-Bit
+%100GB Micron RealSSD P400e Boot SSD
+%LSI 9207-8i SAS/SATA 6.0Gb/s HBA (For benchmarking SSDs or HDDs)
 
-I created a two volume groups, G1 and G2. Each group have a pair of 300GB disks with striping of 2. This setting allows to double the speed of IO operations.
-
-On each volume group i created logical volume of 100GB.
-\section{HDD and SSD}
-HDD is a rotational disk, which requires specific approach from kernel, to ensure the lowest possible seek time. Seek time is a time for moving parts of the device to find next relevant block of data. This affect overall performance greatly, because with large fragmentation, seek time becomes quite high.
-
-As for SSD, this type of device does not have any moving parts, which make perform really well. One of the problems, however, is limited lifecycle of memory cells. SSD manufacturers deal with this problem by adding controler with its own scheduler, which make sure, no parts of the device are used significantly more than other parts.
-
-When aging the filesystems, I expect for those grown on HDD to perform significantly slower after aging process, and I expect SSD filesystems not to be affected at all, or maybe significantly less.
+The system installed on machines is RHEL-7.2 with kernel 3.10.0-514.el7.x86\_64 
 
 \chapter{Results}
 The output of result generator is a htlm report summarising all information about system, links to raw data and charts of measured values.
-*talk about highcharts and how do you represent data
 
-\section{Comparing against fresh filesystems}
-\section{Comparing performance of Ext4 and XFS}
-\section{Comparing overall state of aged EXT4 and XFS}
-\section{Comparing rotational and solid state disks}
+\section{Performance of aged file system}
+\section{Differences betweem XFS and EXT4}
+\section{Differences accross different storage}
 \chapter{Conclusion}
 Here I will admit, that these results were not really surprising and ABSOLUTELY no breakthrough, however, as noone really research this branch of QE, the results are definitely a step further in this field.
 \end{document}
