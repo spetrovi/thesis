@@ -36,7 +36,7 @@ if [[ -n "${TEST_PARAM_DRIFT_JOB:+x}" ||  "$#" -gt 0 ]]; then  ## Fails if TEST_
 	DRIFTCMD="$TEST_PARAM_DRIFT_JOB"
     fi   
 
-    ARGLIST=`getopt -o 's:r:d:m:t:' --long 'sync:,recipe:,device:,tag:,mountpoint:' -n $0 -- $FIOCMD`
+    ARGLIST=`getopt -o 's:r:d:m:t:' --long 'sync:,recipe:,disk:,mountpoint:,tag:' -n $0 -- $DRIFTCMD`
     if [ $? -ne 0 ]; then
 	usage_msg;
 	exit 1;
@@ -71,7 +71,7 @@ if [[ -e /root/storagePASS ]]
 	FSYSTEM=$(python -c "execfile('func.py'); get_fs('$MOUNTPOINT')")
 	HOST=$(python -c "execfile('func.py'); nice_hostname('$HOSTNAME')")
 	
-	RESULT="./$(date '+%Y-%b-%d_%Hh%Mm%Ss')-drift_job-$TAG"
+	RESULT="./$(date '+%Y-%b-%d_%Hh%Mm%Ss')-drift_job-$FSYSTEM-$TAG"
 	RESULT=${RESULT//[[:space:]]/}
 
 	JOBID=$(python -c "execfile('func.py'); get_jobid()")
@@ -88,9 +88,10 @@ if [[ -e /root/storagePASS ]]
 	echo -n " --fsystem=$FSYSTEM" >> ./out/recipe #carefull
 	
 	echo -n "create image" >> ./out/log.out
+	umount $DISK
 	if [ "$FSYSTEM" == "ext4" ]
 		then
-			e2image -r $DISK - |bzip2 > $RESULT
+			e2image -Q $DISK $RESULT.qcow2; bzip2 -z $RESULT.qcow2
 		else
 			xfs_metadump -o $DISK - |bzip2 > $RESULT
 	fi
@@ -122,13 +123,16 @@ if [[ -e /root/storagePASS ]]
 	       TMPD=$(mktemp -d -t)
 	       rsync ${RSYNC_OPTIONS} ${TMPD}/ ${RSYNC_SERVER}/fsage_thesis/${RESULTS_ROOT_DIRECTORY}
 	       rsync ${RSYNC_OPTIONS} ${TMPD}/ ${RSYNC_SERVER}/fsage_thesis/${RESULTS_ROOT_DIRECTORY}/${JOBID}_${HOST}
+	       rsync ${RSYNC_OPTIONS} ${TMPD}/ ${RSYNC_SERVER}/fsage_thesis/${RESULTS_ROOT_DIRECTORY}/images
 
-	       RSYNC_DEST="${RSYNC_SERVER}/fs_sync/${RESULTS_ROOT_DIRECTORY}/${JOBID}_${HOST}"
+	       rsync ${RSYNC_OPTIONS} *.bz2 ${RSYNC_SERVER}/fsage_thesis/${RESULTS_ROOT_DIRECTORY}/images
+
+	       RSYNC_DEST="${RSYNC_SERVER}/fsage_thesis/${RESULTS_ROOT_DIRECTORY}/${JOBID}_${HOST}"
 	       RSYNC_DEST=${RSYNC_DEST//[[:space:]]/}
 	       echo "${RSYNC_DEST}" > /tmp/rsync_dest
 	       rsync ${RSYNC_OPTIONS} $RESULT.tar.xz ${RSYNC_DEST}
 	       rsync ${RSYNC_OPTIONS} $RESULT.properties ${RSYNC_DEST}
-	       rsync ${RSYNC_OPTIONS} $RESULT.bz2 ${RSYNC_DEST}
+	       
 	       
        	       rhts-report-result $RESULT PASS "./out/log.out"
 	       rm -rf out

@@ -16,6 +16,15 @@ def gather_info():
   subprocess.call('sysctl -a > ./out/sysctl_info',shell=True)
   subprocess.call('tuned-adm active > ./out/tuned_info',shell=True)
 
+
+def used_space_frag(mountpoint, index):
+	data = get_data(mountpoint)
+	extents = open('./out/'+str(index*10)+'/extents.frag','w')
+	for i in range(0,len(data)):
+ 		extents.write(str(count_extents(data[i]))+'\n')
+	extents.close()
+
+
 #log free space histogram and df every 20 minutes
 class log_free_space(object):
     def __init__(self, device):

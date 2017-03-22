@@ -2,14 +2,21 @@
 
 == 1. Description ==
 
-Drift job is a simple beaker job to run fs-drift <bengland@redhat.com> on a file system.
+Drift job is a simple beaker job to run fs-drift <bengland@redhat.com> on a file system, while gathering info about fragmentation. After fs-drift is done, metadata image is created and sent to server.
 
-To successfully execute a task, you have to already have your device and file system configured. The runtest.sh script takes only one argument, which is a string of fs-drift parameters.
+To successfully execute a task, you have to already have your device and file system configured. For that purpose, please use storage_generator. The runtest.sh script takes these arguments:
+-s, do or do not sync with server (1 to do, 0 to not)
+-r, fs-drift parameters in format: -option_args-option2_args2. EXAMPLE: -r -t_/RHTSSpareLUN1-d_500 (will run fs-drift on /RHTSspareLUN1 for 500 seconds)
+-d, device on which the testing folder is mounted on (/dev/sda1, /dev/mapper/vg-testLV1)
+only one argument, which is a string of fs-drift parameters.
 
 Example:
-runtest.sh "-t /lun2 -d 500 -f 1000 -s 4096"
+runtest.sh -s 0 -r -t_/RHTSspareLUN1-d_500 -d /dev/sda1
 
-The output is called drift.log, which is by default sent to beaker and it contains fs-drift output as well as df command output.
+The output is 3 files:
+$RESULT.tar.xz, containing logs
+$RESULT.properties, containing info about test
+$RESULT.bz2, containing metadata image
 
 == 2. fs-drift ==
 
@@ -33,9 +40,12 @@ If you want to fill a file system, follow instructions:
 Example:
 <task name="/performance/drift_job" role="STANDALONE">
      <params>
-          <param name="TEST_PARAM_DRIFT_JOB" value="-t /lun2 -d 500 -f 1000 -s 4096"/>
+          <param name="TEST_PARAM_DRIFT_JOB" value="-s 0 -r -t_/RHTSspareLUN1-d_500 -d /dev/sda1"/>
      </params>
 </task>
+
+storage for connor using:
+-s create -f xfs -t single -m /RHTSspareLUN1 -d /dev/sda -T 4SASHDD_xfs
 
 
 [1] https://github.com/parallel-fs-utils/fs-drift
