@@ -1,0 +1,118 @@
+<job retention_tag="scratch" group="perf-test">
+  <whiteboard>joker.tpb.lab.eng.brq.redhat.com drift_job, 1SATASSD, 2SATASSDLVM</whiteboard>
+  <recipeSet priority="High">
+    <recipe whiteboard="" role="None" ks_meta="method=http beah_rpm=beah" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <kickstart><![CDATA[
+
+install
+lang en_US.UTF-8
+skipx
+keyboard us
+rootpw redhat 
+firewall --disabled
+authconfig --enableshadow --enablemd5
+selinux --enforcing
+timezone --utc Europe/Prague
+
+bootloader --location=mbr --driveorder=sda
+zerombr
+clearpart --all --initlabel --drives=sda
+part /boot --fstype=ext2 --size=200 --asprimary --label=BOOT --ondisk=sda
+part /mnt/tests --fstype=ext4 --size=40960 --asprimary --label=MNT --ondisk=sda
+part / --fstype=ext4 --size=1 --grow --asprimary --label=ROOT  --ondisk=sda
+reboot
+%packages --excludedocs --ignoremissing --nobase
+@core
+wget
+python
+perl-devel
+parted
+cpuspeed
+perl
+dhcpv6-client
+dhclient
+yum
+yum-rhn-plugin
+yum-security
+yum-updatesd
+openssh-server
+openssh-clients
+bc
+screen
+nfs-utils
+seekwatcher
+sysstat
+xfsprogs
+e2fsprogs
+hdparm
+sdparm
+gcc
+tuned
+cpufrequtils
+cryptsetup-luks
+vim-enhanced
+rsync
+lvm2
+smartmontools
+git
+iotop
+%end
+
+			
+]]></kickstart>
+      <watchdog panic="None"/>
+      <packages/>
+      <ks_appends/>
+      <repos/>
+      <distroRequires>
+			<and>
+				<distro_family op="=" value="RedHatEnterpriseLinux7"/>
+				<distro_variant op="=" value="Server"/>
+				<distro_name op="=" value="RHEL-7.2"/>
+				<distro_arch op="=" value="x86_64"/>
+			</and>
+		</distroRequires>
+      <hostRequires force="joker.tpb.lab.eng.brq.redhat.com"/>
+      <partitions/>
+      <task name="/distribution/install" role="STANDALONE"/>
+      <task name="/performance/identity/ssh" role="STANDALONE"/>
+      <task name="/performance/runcommand/certification" role="STANDALONE">
+        <params>
+          <param name="RUNCOMMAND" value="tuned-adm profile latency-performance"/>
+        </params>
+      </task>
+      <task name="/kernel_fsperf/storage_generator" role="STANDALONE">
+        <params>
+          <param name="TEST_PARAM_STORAGE_GENERATOR" value="-s create -f ext4 -t single -m /RHTSspareLUN1 -d /dev/sde -T 1SATASSD_ext4"/>
+        </params>
+      </task>
+      <task name="/performance/drift_job" role="STANDALONE">
+        <params>
+          <param name="TEST_PARAM_DRIFT_JOB" value="-s 1 -r -t_/RHTSspareLUN1-d_18000-f_100000000-s_1000000-+v_100-l_5-D_5-w_wtable.csv-i_1200 -d /dev/sde1 -m /RHTSspareLUN1 -t 1SATASSD"/>
+        </params>
+      </task>
+      <task name="/kernel_fsperf/storage_generator" role="STANDALONE">
+        <params>
+          <param name="TEST_PARAM_STORAGE_GENERATOR" value="-s remove -t single -m /RHTSspareLUN1 -d /dev/sde -T 1SATASSD_ext4"/>
+        </params>
+      </task>
+      <task name="/kernel_fsperf/storage_generator" role="STANDALONE">
+        <params>
+          <param name="TEST_PARAM_STORAGE_GENERATOR" value="-s create -f ext4 -t lvm -m /RHTSspareLUN1 -r jokerlvm -T 2SATASSDLVM_ext4"/>
+        </params>
+      </task>
+      <task name="/performance/drift_job" role="STANDALONE">
+        <params>
+          <param name="TEST_PARAM_DRIFT_JOB" value="-s 1 -r -t_/RHTSspareLUN1-d_18000-f_100000000-s_1000000-+v_100-l_5-D_5-w_wtable.csv-i_1200 -d /dev/vg/testLV1 -m /RHTSspareLUN1 -t 2SATASSDLVM"/>
+        </params>
+      </task>
+      <task name="/kernel_fsperf/storage_generator" role="STANDALONE">
+        <params>
+          <param name="TEST_PARAM_STORAGE_GENERATOR" value="-s remove -t lvm -m /RHTSspareLUN1 -r jokerlvm -T 2SATASSDLVM"/>
+        </params>
+      </task>
+    </recipe>
+  </recipeSet>
+</job>
+
