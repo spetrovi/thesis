@@ -57,12 +57,12 @@ class Boxplots:
 	    for i, line in enumerate(openfileobject):
 			data.append(float(line.split(',')[1])) #lines are in format 'time,_type,operation,blocksize'
 			times.append(int(line.split(',')[0]))
-    low = str(round(np.min(data)+0.001,2)) #in case there were zero value, otherwise log plot would not work
-    high = str(round(np.max(data)+0.001,2))
-    q1 = str(round(np.percentile(data,25)+0.001,2))
-    q3 = str(round(np.percentile(data,75)+0.001,2))
-    median = str(round(np.median(data)+0.001,2))
-    stdev = str(round(np.std(data),2)).split('.')[0]
+    low = str(round(np.min(data)//1000+0.001,2)) #in case there were zero value, otherwise log plot would not work
+    high = str(round(np.max(data)//1000+0.001,2))
+    q1 = str(round(np.percentile(data,25)//1000+0.001,2))
+    q3 = str(round(np.percentile(data,75)//1000+0.001,2))
+    median = str(round(np.median(data)//1000+0.001,2))
+    stdev = str(round(np.std(data)//1000,2))#.split('.')[0]
     return {'low':low, 'q1':q1, 'median':median, 'q3':q3, 'high':high, 'stdev':stdev}
 
 
@@ -82,7 +82,7 @@ class Tar:
     self.boxplots = Boxplots(self.depth)
     #self.threads_data = Threads(int(self.number_of_threads), self.options.storage_string)
     subprocess.call('mkdir '+self.destination+'/'+self.tar_name+'/',shell=True)
-    subprocess.call('rm -rf ./out/*/*.log',shell=True)
+#    subprocess.call('rm -rf ./out/*/*.log',shell=True)
     subprocess.call('mv out/* '+self.destination+'/'+self.tar_name,shell=True)
     subprocess.call('rmdir out',shell=True)
     
@@ -101,7 +101,7 @@ class Charts:
     self.gains = []
     self.median_diffs()
     self.table = ''
-    self.box_highchart = self.generate_box_highchart()
+    self.box_highchart = self.generate_box_highchart('bw')
     self.make_table()
 
   def make_table(self):
@@ -117,9 +117,9 @@ class Charts:
 	tr.th
 	tr.th('median')
 	tr.th
-	tr.th('first_quartile')
+	tr.th('first quartile')
 	tr.th
-	tr.th('third_quartile')		
+	tr.th('third quartile')		
 	tr.th
 	tr.th('max')
 	tr.th
@@ -130,30 +130,30 @@ class Charts:
 	tr.th
 	tr.th('logs')
 	tr = table.tr
-	tr.th('Freed')
+	tr.th('Free')
 	for i in range(0,7):
-		tr.td('set1')
-		tr.td('set2')
+		tr.th('set1')
+		tr.th('set2')
 	for i in range(0, int(self.tar1.depth)):		
 			tr = table.tr
 			tr.td(str((i+1)*10))
-			tr.td(tar1.boxplots.bw[i]['median'])
-			tr.td(tar2.boxplots.bw[i]['median'])
+			tr.td(tar1.boxplots.bw[i]['median']+'MB/s')
+			tr.td(tar2.boxplots.bw[i]['median']+'MB/s')
 
-			tr.td(tar1.boxplots.bw[i]['q1'])
-			tr.td(tar2.boxplots.bw[i]['q1'])
+			tr.td(tar1.boxplots.bw[i]['q1']+'MB/s')
+			tr.td(tar2.boxplots.bw[i]['q1']+'MB/s')
 
-			tr.td(tar1.boxplots.bw[i]['q3'])
-			tr.td(tar2.boxplots.bw[i]['q3'])
+			tr.td(tar1.boxplots.bw[i]['q3']+'MB/s')
+			tr.td(tar2.boxplots.bw[i]['q3']+'MB/s')
 
-			tr.td(tar1.boxplots.bw[i]['high'])
-			tr.td(tar2.boxplots.bw[i]['high'])
+			tr.td(tar1.boxplots.bw[i]['high']+'MB/s')
+			tr.td(tar2.boxplots.bw[i]['high']+'MB/s')
 
-			tr.td(tar1.boxplots.bw[i]['low'])
-			tr.td(tar2.boxplots.bw[i]['low'])
+			tr.td(tar1.boxplots.bw[i]['low']+'MB/s')
+			tr.td(tar2.boxplots.bw[i]['low']+'MB/s')
 
-			tr.td(tar1.boxplots.bw[i]['stdev'])
-			tr.td(tar2.boxplots.bw[i]['stdev'])
+			tr.td(tar1.boxplots.bw[i]['stdev']+'MB/s')
+			tr.td(tar2.boxplots.bw[i]['stdev']+'MB/s')
 	
 
 #TODO
@@ -172,82 +172,33 @@ class Charts:
 	self.gains.append(diff)
       self.diffs.append(diff)
 
-  def generate_box_highchart(self):
-    count = (len(self.chart_description.split('<br>'))-2)*20
-    js = 'var '
-    js += self.ID+''';\n$(document).ready(function () {'''+self.ID+'''= new Highcharts.Chart({
-      chart: {zoomType: 'xy',
-      width: 900,
-      height: '''
-    js+=str(600+count)
-    js+=  ''',\n backgroundColor: '#F2F2F2',\n'''
-    js+= 'spacingBottom: '+ str(count)
-    js+=''',\nevents: {
-                    load: function () {
-                        var label = this.renderer.label("'''
-    js += self.chart_description
-    js += '''")
-                        .css({
-                            width: '450px',
-                            color: '#222',
-                            fontSize: '16px'
-                        })
-                        
-                        .add();
-                
-                        label.align(Highcharts.extend(label.getBBox(), {
-                            align: 'left',
-                            x: 0, // offset
-                            verticalAlign: 'bottom',
-                            y: '''
-    js += str(count)+''' // offset'''
-    js += '''
-                        }), null, 'spacingBox');
-                
-                    }
-                },'''
-    
-    
-    
-    js += '''\n renderTo: \''''+self.ID+'''\'},\ntitle: {text: \'Total througput using '''+self.tar1.operation+''' operation\'},'''
-    js += '''xAxis: [{categories: ['''
-    for tick in range(1,int(self.tar1.depth)+1):
-      js += '''\''''+str(tick*10)+'''\', '''
-    js += '''],'''
-    js += '''title: {text: 'Percent of deleted volunme'}}],
-      yAxis: [{labels: { formatter: function () {return this.value;}},
-      title: {text: 'Throughput [MB/s]'}}],
-      tooltip: {shared: true},
-      series: [
-      {
-      name: \''''
-    #js += self.options.baseline
-    js += 'baseline'
-    js += '''\',\ncolor: '#0000ff',
-      type: 'boxplot',
-      data: [ '''
-    for boxplot in self.tar1.boxplots.bw:
-#      js += ' '.join(str(boxplot).split(':')[:-2])+''',\n'''
-      js += '''{low: '''+boxplot['low']+''', q1: '''+boxplot['q1']+''', median: '''+boxplot['median']+''', q3: '''+boxplot['q3']+''', high: '''+boxplot['high']+''' },\n'''
-    js += '''],visible: true,\n	tooltip: {headerFormat: '<em>Number of threads {point.key}</em><br/>'}\n},\n{\n	name: \''''+'tar2'
-    js += '''\',\ncolor: '#89F54E',\n	type: 'boxplot',\n	data: [\n'''
-    
-    for boxplot in self.tar2.boxplots.bw:
-#      js += ' '.join(str(boxplot).split(':')[:-2])+''',\n'''
-      js += '''{low: '''+boxplot['low']+''', q1: '''+boxplot['q1']+''', median: '''+boxplot['median']+''', q3: '''+boxplot['q3']+''', high: '''+boxplot['high']+''' },\n'''
-    js += '''],visible: true,\n	tooltip: {headerFormat: '<em>Number of threads {point.key}</em><br/>'}\n}]});})\n'''
-    return js[:-3]+self.create_button()
-
-  def create_button(self):
-    button = '''var chart = $('#container').highcharts(),
-        type = 1,
-        types = ['linear', 'logarithmic'],
-        lineColor = 'red';
-
-    $('#'''+self.ID+'_button'+'''\').click(function () {'''
-    button += self.ID+'''.yAxis[0].update({\n            type: types[type]\n        });'''
-    button +='''\ntype += 1;\n        if (type === types.length) {\n            type = 0;\n        }\n    });\n})'''
-    return button
+  def generate_box_highchart(self, _type):
+	if _type == 'bw':
+		ylabel = 'Throughput [MB/s]'
+		data1 = self.tar1.boxplots.bw
+		data2 =	self.tar2.boxplots.bw
+	if _type == 'lat':
+		ylabel = 'Latency [ms]'
+		data1 = self.tar1.boxplots.lat
+		data2 =	self.tar2.boxplots.lat
+	template = read_file('boxplot.js','r')
+	count = (len(self.chart_description.split('<br>'))-2)*20
+	template = self.ID.join(template.split('XXX_NAME_XXX'))
+	template = self.chart_description.join(template.split('XXX_RENDER_LABEL_XXX'))
+	ticks = ''
+	for tick in range(1,int(self.tar1.depth)+1):
+      		ticks += '''\''''+str(tick*10)+'''\', '''
+	template = ticks.join(template.split('XXX_TICKS_XXX'))
+	template = ylabel.join(template.split('XXX_YLABEL_XXX'))
+	values = ''
+        for boxplot in data1:
+	      values += '''{low: '''+boxplot['low']+''', q1: '''+boxplot['q1']+''', median: '''+boxplot['median']+''', q3: '''+boxplot['q3']+''', high: '''+boxplot['high']+''' },\n'''
+	template = values.join(template.split('XXX_DATA_SET1_XXX'))
+	values = ''
+	for boxplot in data2:
+		values += '''{low: '''+boxplot['low']+''', q1: '''+boxplot['q1']+''', median: '''+boxplot['median']+''', q3: '''+boxplot['q3']+''', high: '''+boxplot['high']+''' },\n'''
+	template = values.join(template.split('XXX_DATA_SET2_XXX'))
+	return template
 
 class Report:
   def __init__(self,path1, path2, destination):
@@ -261,10 +212,10 @@ class Report:
 	
 
   def save(self):
-    f = open(self.destination+self.charts[0].ID+'.js', 'w')
+    f = open(self.destination+'/'+self.charts[0].ID+'.js', 'w')
     f.write(self.charts[0].box_highchart)
     f.close()
-    f = open(self.destination+'index.html','w+')
+    f = open(self.destination+'/index.html','w+')
     f.write(str(self.report))
     f.close()	
 
@@ -336,10 +287,10 @@ class Report:
 	for chart in self.charts:
 		r.script('', type='text/javascript', src=chart.ID+'.js')
 
-	r += self.create_toc()
+	#r += self.create_toc()
 	
         for chart in self.charts:
-		r.a(name=chart.ID)
+		r.a('',name=chart.ID)
 		h = r.h3(id='summary top')
 		for item in chart.chart_description.split('<br>'):
 			h.li(item)
@@ -374,8 +325,8 @@ class Report:
 
     
 
-path = '1772420_draven/2017-Mar-21_17h01m35s-recipe_fio_aging-1SASHDD.tar.xz'
-r = Report(path,path,'./')
+path = '1782476_draven/2017-Mar-28_05h34m31s-recipe_fio_aging-1SASHDD.tar.xz'
+r = Report(path,path,'./res')
 r.save()
 #print tar.boxplots.free_space_histograms[0].generate_histogram_script()
 #tar.boxplots.extent_histograms[4].save()
