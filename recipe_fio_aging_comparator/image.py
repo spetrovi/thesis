@@ -15,7 +15,7 @@ def tr(val):
 	if suf == 'M': return val*1000000
 	if suf == 'G': return val*1000000000
 
-def 3d_image(fsystem, destination):
+def d_image(fsystem, destination):
 	ID = 'image_'+str(randint(0,1000))
 	raw_files = glob.glob('./out/free_space_*.log')
 	raw_files.sort(key=lambda x: int(x.split('free_space_')[1][:-4]))
@@ -46,7 +46,7 @@ def 3d_image(fsystem, destination):
 		data += ']},'
 	template = data.join(template.split('XXX_DATA_XXX'))
 
-	template = 'ferko'.join(template.split('XXX_NAME_XXX'))
+	template = ID.join(template.split('XXX_NAME_XXX'))
 	_file = open(destination+ID+'.js','w')
 	_file.write(template)
 	_file.close()

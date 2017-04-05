@@ -5,6 +5,7 @@ import numpy as np
 from html import HTML
 from free_space_frag import Free_space_fragmentation
 from extent_distribution import Extent_distribution
+from image import d_image
 def untar(source):
 	if source[-2:] == 'xz':
 		subprocess.call('tar -Jxf '+source+' -C ./',shell=True)
@@ -27,7 +28,7 @@ def get_value(string, parameter):
 
 class Boxplots:
   def __init__(self, depth):
-    self.depth = depth
+    self.depth = int(depth)
     self.free_space_logs = []
     self.free_space_histograms = []
     self.extent_histograms = []
@@ -36,11 +37,7 @@ class Boxplots:
     #self.iops_boxplots = []
     self.lat = []
     self.fio_outputs = []
-    for i in range(1, 6):
-	self.free_space_logs.append(read_file('./out/'+str(i*10)+'/free_space.frag', 'r'))
-	self.free_space_histograms.append(Free_space_fragmentation(read_file('./out/'+str(i*10)+'/free_space.frag','r'),'ext4'))
-	self.used_space_logs.append(read_file('./out/'+str(i*10)+'/extents.frag', 'r'))
-        self.extent_histograms.append(Extent_distribution(read_file('./out/'+str(i*10)+'/extents.frag','r')))
+    for i in range(1, depth+1):
 	fio_out_files = glob.glob('./out/'+str(i*10)+'/*.out')
 	for out in fio_out_files: self.fio_outputs.append(read_file(out, 'r'))
 	#TODO add df.frag
@@ -73,18 +70,32 @@ class Tar:
     self.tar = tar
     self.tar_name = tar.split('/')[-1:][0][:-7]
     self.properties = read_file(self.tar[:-7]+'.properties','r')
-    self.depth = get_value(self.properties,'depth')
+    self.depth = int(get_value(self.properties,'depth'))
     self.recipe = self.make_recipe()
     self.operation = get_value('\n'.join(self.recipe.split(' ')),'rw')
+    self.fsystem = get_value(self.properties,'filesystem')
+    self.free_space_histograms = []
+    self.extent_distribution = []
+    self.image = get_value(self.properties,'image')
+    self.host = get_value(self.properties,'hostname').split('.')[0]
+    self.image_ID = ''
+
+  def generate_3d_image(self):
+	untar(self.host+'_images/'+self.image.split('.')[0]+'.tar.xz')
+	self.image_ID = d_image(self.fsystem, self.destination)
+	
 
   def process(self):
     untar(self.tar)
     self.boxplots = Boxplots(self.depth)
+    for i in range(1, self.depth+1):
+	self.free_space_histograms.append(Free_space_fragmentation(read_file('./out/'+str(i*10)+'/free_space.frag','r'),self.fsystem))
+        self.extent_distribution.append(Extent_distribution(read_file('./out/'+str(i*10)+'/extents.frag','r')))
     #self.threads_data = Threads(int(self.number_of_threads), self.options.storage_string)
     subprocess.call('mkdir '+self.destination+'/'+self.tar_name+'/',shell=True)
 #    subprocess.call('rm -rf ./out/*/*.log',shell=True)
     subprocess.call('mv out/* '+self.destination+'/'+self.tar_name,shell=True)
-    subprocess.call('rmdir out',shell=True)
+    subprocess.call('rm -rf out',shell=True)
     
   def make_recipe(self):
 	return get_value(self.properties, 'recipe')+' filesystem='+get_value(self.properties,'filesystem')+' kernel='+get_value(self.properties,'kernel')+'_'+get_value(self.properties,'build')+' depth='+get_value(self.properties,'depth')
@@ -164,7 +175,6 @@ class Charts:
 
   def median_diffs(self):
     for i, item in enumerate(self.tar1.boxplots.bw):
-      print self.tar2.boxplots.bw[i]
       diff = round(((float(self.tar2.boxplots.bw[i]['median'])-float(item['median']))/float(item['median']))*100,2)
       if diff < 0:
 	self.regresions.append(diff)
@@ -230,6 +240,10 @@ class Report:
 	r.script('', src="http://code.highcharts.com/highcharts.js")
 	r.script('', src="http://code.highcharts.com/highcharts-more.js")
 	r.script('', src="http://code.highcharts.com/modules/exporting.js")
+#	r.script('', src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js")
+	r.script('', src="https://code.highcharts.com/highcharts-3d.js")
+
+
 	r.link(rel="stylesheet", type="text/css", href="stylesheet.css")
 	r.br
 	r.font(size='3')
@@ -288,7 +302,13 @@ class Report:
 		r.script('', type='text/javascript', src=chart.ID+'.js')
 
 	#r += self.create_toc()
-	
+	r.dt.strong('Image')
+	if self.tar1.image == self.tar2.image:
+		self.tar1.generate_3d_image()
+		image_ID = self.tar1.image_ID
+		r.script('', type='text/javascript', src=image_ID+'.js')
+		r.li.div(id=image_ID, align='left')
+
         for chart in self.charts:
 		r.a('',name=chart.ID)
 		h = r.h3(id='summary top')
@@ -326,7 +346,7 @@ class Report:
     
 
 path = '1782476_draven/2017-Mar-28_05h34m31s-recipe_fio_aging-1SASHDD.tar.xz'
-r = Report(path,path,'./res')
+r = Report(path,path,'./res/')
 r.save()
 #print tar.boxplots.free_space_histograms[0].generate_histogram_script()
 #tar.boxplots.extent_histograms[4].save()

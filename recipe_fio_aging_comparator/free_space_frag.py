@@ -5,9 +5,7 @@ def remove_space(line):
 
 class Free_space_fragmentation:
   def __init__(self, _file, fsystem):
-		#self.file = _file
 		self.fsystem = fsystem
-		#ffh = read_file(_file)
 		ffh = _file.split('\n')
 		self.bins = []
 		self.extents = []
@@ -23,21 +21,22 @@ class Free_space_fragmentation:
   				self.extents.append(int(histogram[i][2]))
  	 			self.blocks.append(int(histogram[i][3]))
 		if fsystem == 'xfs':
+			ffh = filter(lambda x: x.find('from') < 0 and x.find('from') < 0 and x.find('free') < 0, ffh)[:-1]
 			histogram = {}
-			for line in ffh:	
+			for line in ffh:
 				line = filter(lambda x: x!= '', line.split(' '))
 				tick = line[0]+'-'+line[1]
 				if histogram.has_key(tick):
 					histogram[tick][0]+=int(line[2])
 					histogram[tick][1]+=int(line[3])
-				else:
+				else:	
 					histogram[tick] = [int(line[2]), int(line[3])]
-				histogram = sorted(histogram.items(), key=lambda x: int(x[0].split('-')[0]))
+			histogram = sorted(histogram.items(), key=lambda x: int(x[0].split('-')[0]))
 			for i in range(0,len(histogram)):
   				tick = histogram[i][0].split('-')
-  				if len(tick[0]) < 3: self.bins.append(str(tick[0])+'K-'+str(tick[1])+'K')
-  				if len(tick[0]) >= 3 and len(tick[0]) < 6: self.bins.append(str(int(tick[0])/1000)+'M-'+str(int(tick[1])/1000)+'M')
-  				if len(tick[0]) >= 6: self.bins.append(str(int(tick[0])/1000000)+'G-'+str(int(tick[1])/1000000)+'G')
+  				if len(tick[0]) < 4: self.bins.append(str(tick[0])+'K-'+str(tick[1])+'K')
+  				if len(tick[0]) > 3 and len(tick[0]) <7: self.bins.append(str(int(tick[0])/1000)+'M-'+str(int(tick[1])/1000)+'M')
+  				if len(tick[0]) > 7: self.bins.append(str(int(tick[0])/1000000)+'G-'+str(int(tick[1])/1000000)+'G')
   				self.extents.append(histogram[i][1][0])
 				self.blocks.append(histogram[i][1][1])
 		self.ID = 'free_hist_'+fsystem+'_'+str(randint(0,10000)) #hash
