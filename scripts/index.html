@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+	<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+	<title>free space fragmentation</title>
+	<script type='text/javascript' src='http://code.jquery.com/jquery-1.9.1.js'></script>
+        </head>
+        <body>
+	<script src="http://code.highcharts.com/highcharts.js"></script>
+	<script src="http://code.highcharts.com/highcharts-more.js"></script>
+	<script src="http://code.highcharts.com/modules/exporting.js"></script>
+	<link rel="stylesheet" type="text/css" href="stylesheet.css">
+	<br>
+	<font size="3"><style>
+	    table {
+	    width:20%;
+	    }
+	    table, th, td{
+	    border: 1px solid black;
+	    border-collapse: collapse;
+	    font-size: 14px;
+	    }
+	    th, td{
+	    padding: 5px;
+	    text-align: left;
+	    }
+	    table#t01 tr:nth-child(even) {
+	    background-color: #eee;
+	    }
+	    table#t01 tr:nth-child(odd) {
+	    background-color:#fff;
+	    }
+	    table#t01 th	{
+	    background-color: white;
+	    color: black;
+	    }
+	    </style>
+	    </head>
+	<DT><CENTER><STRONG>free space fragmentation on /dev/sda</CENTER> </STRONG>
+  <br>              
+  <br><script type='text/javascript' src='free_hist_histogram.js'></script>
+<a name="free_hist"_ /a>
+<h3 id="summary top">Free space fragmentation</h3>
+<div class="main">
+<table>
+<tr>
+<td><div id="free_hist_histogram" align="center" margin: 0 auto"></div></td>
+<LI>Change between linear and logarithmic Y axis
+<br
+><button id="free_hist_histogram_button" class="autocompare">LinY/LogY</button>
+</tr>
+</table>
+
+<br>
+<br>
+<a href="#TOC">Go back to TOC</a>
+

@@ -54,12 +54,12 @@ class Boxplots:
 	    for i, line in enumerate(openfileobject):
 			data.append(float(line.split(',')[1])) #lines are in format 'time,_type,operation,blocksize'
 			times.append(int(line.split(',')[0]))
-    low = str(round(np.min(data)//1000+0.001,2)) #in case there were zero value, otherwise log plot would not work
-    high = str(round(np.max(data)//1000+0.001,2))
-    q1 = str(round(np.percentile(data,25)//1000+0.001,2))
-    q3 = str(round(np.percentile(data,75)//1000+0.001,2))
-    median = str(round(np.median(data)//1000+0.001,2))
-    stdev = str(round(np.std(data)//1000,2))#.split('.')[0]
+    low = str(round(np.min(data)/1000+0.001,2)) #in case there were zero value, otherwise log plot would not work
+    high = str(round(np.max(data)/1000+0.001,2))
+    q1 = str(round(np.percentile(data,25)/1000+0.001,2))
+    q3 = str(round(np.percentile(data,75)/1000+0.001,2))
+    median = str(round(np.median(data)/1000+0.001,2))
+    stdev = str(round(np.std(data)/1000,2))#.split('.')[0]
     return {'low':low, 'q1':q1, 'median':median, 'q3':q3, 'high':high, 'stdev':stdev}
 
 
@@ -177,7 +177,7 @@ class Charts:
     for i, item in enumerate(self.tar1.boxplots.bw):
       diff = round(((float(self.tar2.boxplots.bw[i]['median'])-float(item['median']))/float(item['median']))*100,2)
       if diff < 0:
-	self.regresions.append(diff)
+	self.regressions.append(diff)
       if diff > 0:
 	self.gains.append(diff)
       self.diffs.append(diff)
@@ -214,7 +214,7 @@ class Report:
   def __init__(self,path1, path2, destination):
 	self.destination = destination
 	self.tar1 = Tar(path1, destination)
-	self.tar2 = Tar(path1, destination)
+	self.tar2 = Tar(path2, destination)
 	self.tar1.process()
 	self.tar2.process()
         self.charts = [Charts(self.tar1, self.tar2)]
@@ -276,19 +276,21 @@ class Report:
 	r.br
 	r.dt.strong('Kernels')
 	ul = r.ul
-	ul.li('Set1: 3.10.514...')
-	ul.li('Set2: 3.10.514...')
+	ul.li('set1: '+get_value(self.tar1.properties,'kernel'))
+	ul.li('set2: '+get_value(self.tar2.properties,'kernel'))
 	
 	r.dt
 	r.strong('Builds')
 	ul = r.ul
-	ul.li('Set1: RHEL7')
-	ul.li('Set2: RHEL7')
+	ul.li('set1: '+get_value(self.tar1.properties,'build'))
+	ul.li('set2: '+get_value(self.tar2.properties,'build'))
 	
 	r.dt.strong('Machine')
-	ul = r.ul
-	ul.li.a('',href="https://beaker.engineering.redhat.com/view/"+'draven'+"#details")
-	ul.li('RAM '+'ram')
+	if get_value(self.tar1.properties,'hostname') == get_value(self.tar2.properties,'hostname'):
+		ul = r.ul
+		ul.li.a(get_value(self.tar1.properties,'hostname'),href="https://beaker.engineering.redhat.com/view/"+get_value(self.tar1.properties,'hostname')+"#details")
+		#ul.li('RAM '+'ram')
+
 	r.strong('Test script, raw data and test logs')
 	ul = r.ul
 	ul.li.a('Test Bash script', href="http://pkgs.devel.redhat.com/cgit/tests/performance/tree/recipe_fio/runtest.sh")
@@ -345,11 +347,11 @@ class Report:
 
     
 
-path = '1782476_draven/2017-Mar-28_05h34m31s-recipe_fio_aging-1SASHDD.tar.xz'
-r = Report(path,path,'./res/')
+path1 = '1794838_draven/2017-Apr-05_05h35m11s-recipe_fio_aging-1SASHDD-MOVDIST.tar.xz'
+path2 = '1796493_draven/2017-Apr-06_08h18m38s-recipe_fio_aging-1SASHDD-MOVDIST.tar.xz'
+r = Report(path1,path2,'./res/')
 r.save()
-#print tar.boxplots.free_space_histograms[0].generate_histogram_script()
-#tar.boxplots.extent_histograms[4].save()
+
 
 
 

@@ -1,0 +1,50 @@
+   from      to extents  blocks    pct
+      1       1       4       4   0.00
+16777216 18249408       1 18206928 100.00
+total free extents 5
+total free blocks 18206932
+average free extent size 3.64139e+06
+   from      to extents  blocks    pct
+      1       1       4       4   0.00
+  32768   65535       1   45109   0.25
+16777216 18249408       1 17651774  99.75
+total free extents 6
+total free blocks 17696887
+average free extent size 2.94948e+06
+   from      to extents  blocks    pct
+      1       1       5       5   0.00
+16777216 18249408       1 18213748 100.00
+total free extents 6
+total free blocks 18213753
+average free extent size 3.03563e+06
+   from      to extents  blocks    pct
+      1       1       4       4   0.00
+16777216 18249408       1 18070660 100.00
+total free extents 5
+total free blocks 18070664
+average free extent size 3.61413e+06
+   from      to extents  blocks    pct
+      1       1       4       4   0.00
+16777216 18249408       1 18206928 100.00
+total free extents 5
+total free blocks 18206932
+average free extent size 3.64139e+06
+   from      to extents  blocks    pct
+      1       1       4       4   0.00
+  32768   65535       1   45109   0.25
+16777216 18249408       1 17651774  99.75
+total free extents 6
+total free blocks 17696887
+average free extent size 2.94948e+06
+   from      to extents  blocks    pct
+      1       1       5       5   0.00
+16777216 18249408       1 18213748 100.00
+total free extents 6
+total free blocks 18213753
+average free extent size 3.03563e+06
+   from      to extents  blocks    pct
+      1       1       4       4   0.00
+16777216 18249408       1 18070660 100.00
+total free extents 5
+total free blocks 18070664
+average free extent size 3.61413e+06
