@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.3.8)  6 APR 2017 19:09
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.3.8)  12 APR 2017 18:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -2156,7 +2156,7 @@ Package microtype Info: Character `029' is missing
 (microtype)             in font `T1/qpl/m/sc/17.28'.
 (microtype)             Ignoring protrusion settings for this character.
 
-<fithesis/logo/mu/fithesis-fi-color.pdf, id=133, 291.0875pt x 292.09125pt>
+<fithesis/logo/mu/fithesis-fi-color.pdf, id=137, 291.0875pt x 292.09125pt>
 File: fithesis/logo/mu/fithesis-fi-color.pdf Graphic file (type pdf)
 
 <use fithesis/logo/mu/fithesis-fi-color.pdf>
@@ -2294,116 +2294,106 @@ Package microtype Info: Loading generic settings for font family
 
 ]
 Chapter 1.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [1
+[1
 
 
-]
-[2] [3] [4
+] [2
 
 
 ]
 Chapter 2.
-[5]
+[3]
 Underfull \vbox (badness 4634) has occurred while \output is active []
 
- [6]
-[7] <../scripts/fig1.png, id=279, 578.16pt x 433.62pt>
+ [4]
+[5] <../scripts/fig1.png, id=276, 294.1389pt x 229.0959pt>
 File: ../scripts/fig1.png Graphic file (type png)
 
 <use ../scripts/fig1.png>
-Package pdftex.def Info: ../scripts/fig1.png used on input line 184.
-(pdftex.def)             Requested size: 252.94388pt x 189.70828pt.
- <../scripts/fig2.png, id=281, 578.16pt x 433.62pt>
+Package pdftex.def Info: ../scripts/fig1.png used on input line 197.
+(pdftex.def)             Requested size: 252.94388pt x 197.01863pt.
+
+<../scripts/fig2.png, id=278, 286.9119pt x 229.0959pt>
 File: ../scripts/fig2.png Graphic file (type png)
 
 <use ../scripts/fig2.png>
-Package pdftex.def Info: ../scripts/fig2.png used on input line 190.
-(pdftex.def)             Requested size: 252.94388pt x 189.70828pt.
- <../scripts/fig3.png, id=282, 578.16pt x 433.62pt>
+Package pdftex.def Info: ../scripts/fig2.png used on input line 203.
+(pdftex.def)             Requested size: 252.94388pt x 201.97556pt.
+
+<../scripts/fig3.png, id=279, 286.9119pt x 229.0959pt>
 File: ../scripts/fig3.png Graphic file (type png)
 
 <use ../scripts/fig3.png>
-Package pdftex.def Info: ../scripts/fig3.png used on input line 196.
-(pdftex.def)             Requested size: 252.94388pt x 189.70828pt.
+Package pdftex.def Info: ../scripts/fig3.png used on input line 213.
+(pdftex.def)             Requested size: 252.94388pt x 201.97556pt.
 
-
-LaTeX Warning: Float too large for page by 108.27681pt on input line 200.
-
-[8] [9 <../scripts/fig1.png> <../scripts/fig2.png> <../scripts/fig3.png>]
 (/usr/local/texlive/2016/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2015/06/04 1.6 listings language file
 )
 (/usr/local/texlive/2016/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2015/06/04 1.6 listings language file
-) [10
-
-]
+) [6]
+[7 <../scripts/fig1.png> <../scripts/fig2.png>] [8 <../scripts/fig3.png>]
 Chapter 3.
-[11
+[9
 
 
-] [12
+] [10
 
 
 ]
 Chapter 4.
-[13]
-Overfull \hbox (26.7962pt too wide) in paragraph at lines 311--312
+[11]
+Overfull \hbox (26.7962pt too wide) in paragraph at lines 328--329
 \T1/qpl/m/n/12 (-20) Performance test-ing of cre-ated im-ages is done by a pack
 -age recipe_fio_aging.
  []
 
-[14] [15] [16
+[12] [13] [14
 
 
 ]
 Chapter 5.
-[17] [18
+[15] [16
 
 
 ]
 Chapter 6.
-[19] [20
+[17] [18
 
 
 ]
 Chapter 7.
-[21]
+[19]
 
 Package catoptions Warning: Undefined options 
 (catoptions)                [Family, Option, Value]: 
 (catoptions)                fontenc.sty,T1,. 
 (catoptions)                Default action already taken in each case .
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 378.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 378.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 395.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 395.
 (./thesis.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 378.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 378.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 395.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 395.
+Package rerunfilecheck Info: File `thesis.out' has not changed.
+(rerunfilecheck)             Checksum: 0BF682F20B0F59BDD686BB9A424EF46A;1676.
 
 
-Package rerunfilecheck Warning: File `thesis.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
-Package rerunfilecheck Info: Checksums for `thesis.out':
-(rerunfilecheck)             Before: 5E7E89484E7CE8CA98642AC70233B667;1605
-(rerunfilecheck)             After:  0BF682F20B0F59BDD686BB9A424EF46A;1676.
 Package logreq Info: Writing requests to 'thesis.run.xml'.
 \openout1 = `thesis.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 43855 strings out of 493013
- 784988 string characters out of 6133329
- 1483312 words of memory out of 5000000
- 46480 multiletter control sequences out of 15000+600000
- 63647 words of font info for 97 fonts, out of 8000000 for 9000
+ 43850 strings out of 493013
+ 784951 string characters out of 6133329
+ 1483314 words of memory out of 5000000
+ 46481 multiletter control sequences out of 15000+600000
+ 63381 words of font info for 95 fonts, out of 8000000 for 9000
  1143 hyphenation exceptions out of 8191
- 62i,8n,99p,10398b,1791s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 62i,8n,99p,10398b,1807s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/local/t
 exlive/2016/texmf-dist/fonts/enc/dvips/tex-gyre/q-ec.enc}{/usr/local/texlive/20
 16/texmf-dist/fonts/enc/dvips/tex-gyre/q-ec-sc.enc}</usr/local/texlive/2016/tex
@@ -2412,10 +2402,10 @@ f-dist/fonts/type1/public/tex-gyre/qplb.pfb></usr/local/texlive/2016/texmf-dist
 /fonts/type1/public/tex-gyre/qplr.pfb></usr/local/texlive/2016/texmf-dist/fonts
 /type1/public/tex-gyre/qplri.pfb></usr/local/texlive/2016/texmf-dist/fonts/type
 1/urw/palatino/uplr8a.pfb>
-Output written on thesis.pdf (37 pages, 227737 bytes).
+Output written on thesis.pdf (35 pages, 205748 bytes).
 PDF statistics:
- 424 PDF objects out of 1000 (max. 8388607)
- 347 compressed objects within 4 object streams
- 98 named destinations out of 1000 (max. 500000)
- 14689 words of extra memory for PDF output out of 17280 (max. 10000000)
+ 416 PDF objects out of 1000 (max. 8388607)
+ 341 compressed objects within 4 object streams
+ 96 named destinations out of 1000 (max. 500000)
+ 14697 words of extra memory for PDF output out of 17280 (max. 10000000)
 

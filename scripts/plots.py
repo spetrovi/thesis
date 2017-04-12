@@ -5,16 +5,17 @@ import math
 
 def figure1():
 	x = [i for i in range(21)]
-	y = [0.4 for i in range(21)]
+	y = [0.05 for i in range(21)]
 
 	fig, ax = plt.subplots()
 	ax.plot(x,y)
-	ax.yaxis.set_ticklabels([])
+#	ax.yaxis.set_ticklabels([])
 	ax.set_ylabel('Probability of access')
 	ax.set_xlabel('File index')
-	ax.set_ylim([0,0.5])
+	ax.set_ylim([0,0.1])
 	ax.grid()
-	plt.savefig('fig1')
+	fig.set_size_inches(4, 3)
+	plt.savefig('fig1',bbox_inches='tight')
 
 def figure2():
 	mu = 0
@@ -27,12 +28,13 @@ def figure2():
 
 	fig, ax = plt.subplots()
 	ax.plot(x,y)
-	ax.yaxis.set_ticklabels([])
+#	ax.yaxis.set_ticklabels([])
 	ax.set_ylabel('Probability of access')
 	ax.set_xlabel('File index')
 	ax.set_ylim([0,0.5])
 	ax.grid()
-	plt.savefig('fig2')
+	fig.set_size_inches(4, 3)
+	plt.savefig('fig2',bbox_inches='tight')
 
 def figure3():
 	mu = 5
@@ -80,13 +82,14 @@ def figure3():
 	ax.annotate('', xy=(10,0.1), xytext=(5,0.1), arrowprops=dict(facecolor='red', shrink=0.05))
 	ax.annotate('', xy=(15,0.12), xytext=(10,0.12), arrowprops=dict(facecolor='red', shrink=0.05))
 #	ax.annotate('moving average', xy=(5.2,0.2), xytext=(5.2,0.21))
-	ax.yaxis.set_ticklabels([])
+#	ax.yaxis.set_ticklabels([])
 	ax.set_ylabel('Probability of access')
 	ax.set_xlabel('File index')
 #	plt.show()
 	ax.set_ylim([0,0.5])
 	ax.grid()
-	plt.savefig('fig3')
+	fig.set_size_inches(4, 3)
+	plt.savefig('fig3',bbox_inches='tight')
 figure1()
 figure2()
 figure3()
