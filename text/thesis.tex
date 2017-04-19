@@ -115,6 +115,10 @@ File systems, as well as other complex software is subjected to progressing degr
 
 Despite occurance of this problem is well known, its effects on the file system performance is not well understood. Moreso, coverage of file system aging in testing matrixes is almost non-existent.
 
+Performance testing of aged file systems fundamentaly consists of two steps. First is to bring fresh file system to an aged state and second is the actual performance test of the aged instance. In this thesis these two steps are represented by two automated workflows. 
+
+To be able to include aging tests in testing matrix, two condintions have to be met. Firstly, the workflows have to be automated. Secondly, the testing time should not take too much time to complete. New versions of file systems are released quite often (almost weekly), therefore testing of current version has to be completed before new version is released.
+
 The aim of this thesis is to explore these effects on modern file systems and provide a workflow to simulate aging process as well as workflow to measure performance of aged file systems.
 
 %%However file system running continuously for a long time would be subjected to progressing degradation (also referred as Software aging citation ISSRE10). This degradation would cause problems in performance and functionality or even eventual system crash.
