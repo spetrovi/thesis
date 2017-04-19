@@ -92,39 +92,22 @@
 \usepackage{mwe}
 \begin{document}
 \chapter{Introduction}
-%%We live in an age of information. Hardware and software technology improves every day. There is a need to work with large databases, multi-media applications and to store great amount of data on a memory device. This cause great pressure on performance of storing and retrieving information, e.g. input and output (I/O) operations.
+Large, growing databases, multi-media and other storage based applications need to be supported by high-performing infrastructure layer of storing and retrieving information. Such infrastructure have to be provided by operating systems (OS) in form of file system.
 
-%%Because of great progress in technology and computing, there is a high demand on hardware and software performance. Large, growing databases, multi-media and other storage based applications need to be supported by high-performing infrastructure layer of storing and retreiving information. Such layer of infrastructure is called a file system.
-Performance testing is an integral part of developement cycle of most of produced software. However, as complexity of software grows, performance testing has become and interesting challenge for quality engineers.
+Originally, file system was a simple tool developed to handle communication between OS and physical device, but today, it is a very complex piece of software with large set of tools and features to go with. Performance testing is an integral part of development cycle of most of produced software. Because of growing complexity of file systems, performance testing took of as and important part of file system evaluation.
 
-Large, growing databases, multi-media and other storage based applications need to be supported by high-performing infrastructure layer of storing and retreiving information, therefore such infrastructure have to be provided by operating systems (OS) in form of file system.
+The standard workflow of performance testing of file systems is to run benchmark (e.g. testing tool) on a clean instance of OS and on a clean instance of tested file system. Generally, this workflow present stable and meaningful results, yet, it only gives overall idea of file system behavior in early stage of its life cycle. 
 
-Originally, file system was a simple tool to handle communication between OS and physical device. Over time, many features were added and today, file system is very complex piece of software with large set of tools and features to go with. Because of its complexity as well as technology demands, performance testing took of as meaningfull and important part of file system evaluation.
+File systems, as well as other complex software is subjected to progressive degradation, referred to as software aging~\cite{Cotroneo:2010:SAA:1913797.1914413}. Causes of file system aging are many, but mostly fragmentation of free space, unclustered blocks of data and unreleased memory. This degradation cause problems in performance and functionality over time. Understanding of performance changes of aged file system can help developers in implementing prevention . Such testing fundamentally consists of two steps. First is to bring fresh file system to an aged state and second is the actual performance test of the aged instance.
 
-%%Considering that new versions of file systems are released very often (almost weekly), performance testing have to be very swift, so it can be included in periodic testing matrix. 
+Foremost, this thesis describe implementation of flexible tests which represent the aforementioned steps. The first test is able to age fresh file system and store the result as an image for later use. The performance statistics collected in the process, as well as resulting layout can be used to evaluate ability of file system to respond to aging. Second test can evaluate resulting image even further by releasing some space and conducting performance test on resulting layout.
 
-%%Part of an operating system that handles communication with a physical device is called a file system. Because of such increasing requirement on performance of I/O operations, there has been quite wide technological progress in approach to performance issues. 
-%%Considering the complexity of this software, it
-%%In past years, great many tools and tests (e.g. benchmarks) were developed as means for users and researchers to explore behavior and measure performance of file systems. These usually consist of putting file system under some kind of workload, gathering different measurements in the process and computing overall summary after the test is done. Measured parameters are usually bandwidth, latency and IO operations per second.
+Furthermore, using developed tests to test different configurations of file systems and storage is demonstrated. The subject of research are differences between popular Linux file systems (XFS, Ext4) and storage technology (HDD, SSD) in context of aging. Because of nature of collected data, a processing tool was implemented to parse large amount of information into human readable reports. All the generated reports are part of this thesis in form of Appendix A.
 
-%%The benchmark should be highly configurable, so the researchers can simulate various workloads that would mimic real life scenarios. Stability and reproducibility of tests are also required, if the research is meant to be objective and to have some academic value about file system itself.
+The aging tests implemented in this thesis are established as part of testing cycle in Red Hat Kernel Performance team.
 
-The standard workflow of performance testing of file systems is to run benchmark (e.g. testing tool) on a clean instance of OS and on a clean instance of tested file system. Generally, this workflow present stable and meaningfull results, yet, it only gives overall idea of file system behavior in early stage of its life-cycle. 
-
-File systems, as well as other complex software is subjected to progressing degradation, referred to as software aging~\cite{Cotroneo:2010:SAA:1913797.1914413}. Causes of file system degradation are many, but mostly growing fragmentation of free space, unclustered blocks of data and unreleased memory. Such degradation causes problems in performance and functionality of file system.
-
-Despite occurance of this problem is well known, its effects on the file system performance is not well understood. Moreso, coverage of file system aging in testing matrixes is almost non-existent.
-
-Performance testing of aged file systems fundamentaly consists of two steps. First is to bring fresh file system to an aged state and second is the actual performance test of the aged instance. In this thesis these two steps are represented by two automated workflows. 
-
-To be able to include aging tests in testing matrix, two condintions have to be met. Firstly, the workflows have to be automated. Secondly, the testing time should not take too much time to complete. New versions of file systems are released quite often (almost weekly), therefore testing of current version has to be completed before new version is released.
-
-The aim of this thesis is to explore these effects on modern file systems and provide a workflow to simulate aging process as well as workflow to measure performance of aged file systems.
-
-%%However file system running continuously for a long time would be subjected to progressing degradation (also referred as Software aging citation ISSRE10). This degradation would cause problems in performance and functionality or even eventual system crash.
-
-%The coverage of file system aging in testing matrixes is not widely spread.
-\chapter{State of art}
+In the second chapter, the text present already conducted research of this topic. Third chapter introduce tools used to 
+\chapter{Previous research}
 
 
 
@@ -158,8 +141,8 @@ The aim of this thesis is to explore these effects on modern file systems and pr
 
 %%The workflows created for this thesis will be included in Red Hat File system performance testing campaigns.
 
-\chapter{File systems and used tools}
-\section{File systems}
+
+\chapter{File systems}
 File system is a set of tools, methods, logic and structure to control how to store and retreive data on and from a storage, e.g. device. It is sometimes called a 'bookkeeper' of operational system. As an  analogy to paper-based systems. Basic user-accesed units are called files, which could be clustered into directories.
 
 The system stores files either continuously or scattered across device. The basic accessed data unit is called a block, which capacity can be set to various sizes. Blocks are labeled either as free or used.
@@ -177,19 +160,18 @@ In this thesis, targeted file systems will be UNIX XFS and EXT4, which are main 
 Journaling file system keeps a structure called journal, which is a buffer of changes not yet commited to the file system. After system failure, these planned changes can be easily read from the journal, thus making the file system easily fully operational, and in correct and consistent state again.
 
 \section{XFS}
-XFS is a 64-bit journaling file system created by Silicon Graphics, Inc(SGI) in 1993. It is known for great performance in execution of paralel I/O operations, because of its architecture based on allocation groups.
+%%XFS is a 64-bit journaling file system created by Silicon Graphics, Inc(SGI) in 1993. It is known for great performance in execution of paralel I/O operations, because of its architecture based on allocation groups.
 
-Allocation groups are euqally sized linear regions within file system. Each allocation group manages its own inodes and free space, therefore increasing parallelism.
-Architecture of this design enables for significant scalability of bandwidth, threads, and size of file system, as well as files, simply because multiple processes and threads can access the file system simultaneously.
+Allocation groups are euqally sized linear regions within file system. Each allocation group manages its own inodes and free space, therefore increasing parallelism. Architecture of this design enables for significant scalability of bandwidth, threads, and size of file system, as well as files, simply because multiple processes and threads can access the file system simultaneously.
 
 XFS allocates space as extents stored in pairs of B+ trees, each pair for each allocation group (improving performance especially when handling large files). One of the B+ trees is indexed by the length of the free extents, while the other is indexed by the starting block of the free extents. This dual indexing scheme allows for the highly efficient location of free extents for file system operations.
 
-Prevention of file system fragmentation consist mainly of a feature called \textit{delayed allocation} as well as online defragmentation(\textit{xfs\_fsr}), that can turururu
+Prevention of file system fragmentation consist mainly of a features called \textit{delayed allocation} and online defragmentation(\textit{xfs\_fsr}).
 
 Delayed allocation, also called \textit{allocate-on-flush} is a feature that, when a file is written to the buffer cache, substracts space from the free-space counter, but won't allocate the free-space bitmap. The data is held in memory until it have to be stored because of system call (such as \textit{sync}). This approach improves the chance, that the file will be written in a contiguous group of blocks, avoiding fragmentation and reducing CPU usage as well.
 
-\section{EXT4}
-Ext4, also called fourth extended filesystem is a 48-bit journaling file system developed as successor of ext3 for Linux kernel, improving reliability and performance features.
+\section{Ext4}
+Ext4, also called fourth extended filesystem is a 48-bit journaling file system developed as successor of Ext3 for Linux kernel, improving reliability and performance features.
 
 %Traditionally, ext* systems use an indirect block mapping sheme. Such approach is generaly inefficient for large files when using operations like deleting or truncating. Ext4, as well as XFS use approach of \textit{extents}, which positively affect performance and encourage ?continuous layouts?.
 
@@ -197,8 +179,20 @@ Ext4, also called fourth extended filesystem is a 48-bit journaling file system 
 
 Similary as xfs, ext4 use delayed allocation to increase performance, especially when in use with multiblock allocation and extent-based approach, also reducing fragmentation on the device. For cases of fragmentation that still occur, ext4 provide support for online defragmentation and \textit{e4defrag} tool to defragment either single file, or whole file system.
 
+\chapter{Used tools}
+In this chapter, I presnet tools which were used to implement automatised tests for creating and storing aged file systems and measuring their performance. I will describe the main features and sposob how are used. All the presented tools are open source projects.
+
+\section{BeakerLib}
+BeakerLib is a beaker beaker beaker beaker.
+
 \section{FIO}
-Flexible Input/Output tool is a IO workload generator written by Jens Axboe. It is a tool well known for it's flexibility as well as large group of contributors and users.
+Flexible Input/Output tool is a IO workload generator written by Jens Axboe. It is a tool well known for it's flexibility as well as large group of users and contributors. The flexibility is integral for conductuing less artifical and more natural performance tests. However, approaching more natural test behavior, stability of results drop, so ideal equilibrium between these two parameters has to be found.
+
+FIO accept
+
+%%priklad logu
+
+ 
 
 \section{Fs-drift}
 fs-drift is a very flexible aging test, that can be used to simulate lots of different workloads. The test is based on random file access and randomly generated mix of requests. These requests can be writes, reads, creates, appends, truncates or deletes.
@@ -236,6 +230,9 @@ Furthermore, fs-drift offers one more option to influence random distribution. A
 \end{figure}
 
 \section{Storage generator}
+
+\chapter{Creating aged file system}
+
 \section{File system images}
 To achieve consistency of results and to shorten testing time, file system images are used. Once the image is created, it can be stored for later use and replayed back on device. To save space, only metadata of created file system are used, since content of created files is random and therefore irrelevant. Replayed metadata point at various blocks on device, recreating fragmentation while seldom taking significantly less space. These images can be created by using tools developed to inspect file systems in case of emergency. For ext based file systems, there is e2image tool and for xfs, there is xfs\_metadump. Both tools create images as sparse files, so compression is needed.
 
@@ -265,21 +262,6 @@ Such images, when uncompressed can be replayed back on device by tool xfs\_mdres
   xfs_mdrestore $NAME $DEVICE
 \end{lstlisting}
 
-\chapter{Storage media}
-\section{HDD and SSD}
-HDD is a rotational disk, which requires specific approach from kernel, to ensure the lowest possible seek time. Seek time is a time for moving parts of the device to find next relevant block of data. This affect overall performance greatly, because with large fragmentation, seek time becomes quite high.
-
-As for SSD, this type of device does not have any moving parts, which make perform really well. One of the problems, however, is limited lifecycle of memory cells. SSD manufacturers deal with this problem by adding controler with its own scheduler, which make sure, no parts of the device are used significantly more than other parts.
-
-When aging the filesystems, I expect for those grown on HDD to perform significantly slower after aging process, and I expect SSD filesystems not to be affected at all, or maybe significantly less.
-
-
-\section{SATA}
-\section{SAS}
-\section{HDD}
-\section{SDD}
-
-\chapter{Workflow}
 %\section{filesystem\_ager}
 %This aging tool is a simple approach to write and remove many files of random size.
 
@@ -319,7 +301,8 @@ When aging the filesystems, I expect for those grown on HDD to perform significa
 %filesystem\_ager then sums up deleted volume, log it as well as other information and triggers the cycle again.
 
 %However, after few runs, I decided not to use this approach for actual aging, because the time needed to fill and appropriately age the filesystem simply took very long. Instead, I was looking for other, already created tools I could use.
-\section{Workflow of image creating}
+
+\section{Implementation}
 Workflow of image creating is contained in the package drift\_job. After extracting fs-drift, the main script starts python script, which handles the process of running fs-drift. Settings of fs-drift are passed as a parameter and are parsed inside the script. Before running the fs-drift, python daemon thread is created to log free space fragmentation periodically while fs-drift is running. After the aging process is done, overall fragmentation is computed.
 
 After the aging process, the script use system tools to create and compress the image. Information about system is gathered as well and all the logs are archived and sent to data collecting server.
@@ -332,7 +315,7 @@ Parameters available for drift\_job:
   \item -t|--tag, string to distinguish different tests
   \end{compactenum}
 
-\section{Fs-drift settings}
+\section{Fs-drift/aging settings}
 As the creator states in README, to fill up a file system, maximum number of files and mean size of file should be defined such that the product is greater than the available space. So if the workload is supposed to fill 500GB of space, while having maximum file size of 1GB (therefore mean size is 500MB), maximum number of files should be much higher than 1000. Optimal approach is to define seemingly no upper limit to let the fs-drift fill the volume, therefore numbers as high as $10^8$.
 
 Parameter -t specifies the top directory, which will be used in test, in this workflow it is set to \$MOUNTPOINT.
@@ -343,7 +326,9 @@ The fs-drift allows directories up to defined level to create. The directory in 
 
 Duration of the test is set to 5 hours so the test is usable for testing campaign without oversaturating of the servers.
 
-\section{Workflow of performance testing}
+\chapter{Performance testing of aged file system}
+
+\section{Test structure}
 Performance testing of created images is done by a package recipe\_fio\_aging. Upon instalation of necessary tools (libs, fio), the package finds and downloads coresponding file system image according to obtained parameters. As shown, images are stored compressed, therefore decompression is needed after download. Once these steps are succesfully completed, the image is restored on the device by using presented tools (e2image, xfs\_mdrestore). If the image restoring completes succesfully, file system can be mounted and worked with exactly like it would be just after the aging process.
 
 After image restoration, some amount of the files needs to be deleted to create space for the performance test to take place. The files to be removed are chosen randomly until desired amount of volume has been freed. By using this workflow, e.g. freeing some amount of space, we can simulate aged file system in various phases of aging by using just one image of a very fragmented file system.
@@ -362,7 +347,7 @@ Parameters available for recipe\_fio\_aging:
   \item -t|--tag, string to distinguish different tests
   \end{compactenum}
 
-\section{FIO settings}
+\section{Benchmark settings}
 To ensure stability of test results, I decided to use simple form of standard performance test.
 %Volume is randomly removed using random\_delete\_volume.py script. This scriptt globs all files in the filesystem, retrieves information about used volume as well as it's overall size. Then proceeds to randomly choosing files to delete and stops when desired volume is freed. The approach of recursively globbing all files may be inefficient, but this way, we can be sure, that volume is deleted from whole device evenly.
 
@@ -379,6 +364,17 @@ To ensure stability of test results, I decided to use simple form of standard pe
 %Script free\_space\_fragmentation.py use the tool e2freefrag, which runs over a device, and outputs the histogram of free space fragmentation in texutal form. Script will store this output and then easily parse the histogram and aggregate the data into a graphic form.
 
 \chapter{Testing environment}
+\section{Storage}
+HDD is a rotational disk, which requires specific approach from kernel, to ensure the lowest possible seek time. Seek time is a time for moving parts of the device to find next relevant block of data. This affect overall performance greatly, because with large fragmentation, seek time becomes quite high.
+
+As for SSD, this type of device does not have any moving parts, which make perform really well. One of the problems, however, is limited lifecycle of memory cells. SSD manufacturers deal with this problem by adding controler with its own scheduler, which make sure, no parts of the device are used significantly more than other parts.
+
+When aging the filesystems, I expect for those grown on HDD to perform significantly slower after aging process, and I expect SSD filesystems not to be affected at all, or maybe significantly less.
+
+\subsection{HDD}
+\subsection{SSD}
+
+\section{Used machines}
 The aging process took place on these Machines:
 \begin{compactenum}
   \item Model: LENOVO System x3250 M6
