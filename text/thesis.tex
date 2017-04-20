@@ -92,13 +92,11 @@
 \usepackage{mwe}
 \begin{document}
 \chapter{Introduction}
-High performing infrastructure layer of storing and retrieving information is needed in computing to support large databases, multi-media and other storage based applications. Such infrastructure have to be provided by operating systems (OS) in form of file system. 
-
-%%Large, growing databases, multi-media and other storage based applications need to be supported by high-performing infrastructure layer of storing and retrieving information. Such infrastructure have to be provided by operating systems (OS) in form of file system.
+File systems remain an important part of modern storage solutions.  Large, growing databases, multi-media and other storage based applications need to be supported by high-performing infrastructure layer of storing and retrieving information. Such infrastructure have to be provided by operating systems (OS) in form of file system.
 
 Originally, file system was a simple tool developed to handle communication between OS and physical device, but today, it is a very complex piece of software with large set of tools and features to go with. Performance testing is an integral part of development cycle of most of produced software. Because of growing complexity of file systems, performance testing took of as and important part of file system evaluation.
 
-The standard workflow of performance testing of file systems is to run benchmark (e.g. testing tool) on a clean instance of OS and on a clean instance of tested file system. Generally, this workflow present stable and meaningful results, yet, it only gives overall idea of file system behavior in early stage of its life cycle. 
+The standard workflow of performance testing of file systems is to run benchmark (e.g. testing tool) on a clean instance of OS and on a clean instance of tested file system~\cite{fsbench-article:qhe}. Generally, this workflow present stable and meaningful results, yet, it only gives overall idea of file system behavior in early stage of its life cycle. 
 
 File systems, as well as other complex software is subjected to progressive degradation, referred to as software aging~\cite{Cotroneo:2010:SAA:1913797.1914413}. Causes of file system aging are many, but mostly fragmentation of free space, unclustered blocks of data and unreleased memory. This degradation cause problems in performance and functionality over time. Understanding of performance changes of aged file system can help developers in implementing prevention . Such testing fundamentally consists of two steps. First is to bring fresh file system to an aged state and second is the actual performance test of the aged instance.
 
