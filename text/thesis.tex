@@ -92,7 +92,9 @@
 \usepackage{mwe}
 \begin{document}
 \chapter{Introduction}
-Large, growing databases, multi-media and other storage based applications need to be supported by high-performing infrastructure layer of storing and retrieving information. Such infrastructure have to be provided by operating systems (OS) in form of file system.
+High performing infrastructure layer of storing and retrieving information is needed in computing to support large databases, multi-media and other storage based applications. Such infrastructure have to be provided by operating systems (OS) in form of file system. 
+
+%%Large, growing databases, multi-media and other storage based applications need to be supported by high-performing infrastructure layer of storing and retrieving information. Such infrastructure have to be provided by operating systems (OS) in form of file system.
 
 Originally, file system was a simple tool developed to handle communication between OS and physical device, but today, it is a very complex piece of software with large set of tools and features to go with. Performance testing is an integral part of development cycle of most of produced software. Because of growing complexity of file systems, performance testing took of as and important part of file system evaluation.
 
@@ -143,9 +145,10 @@ In the second chapter, the text present already conducted research of this topic
 
 
 \chapter{File systems}
-File system is a set of tools, methods, logic and structure to control how to store and retreive data on and from a storage, e.g. device. It is sometimes called a 'bookkeeper' of operational system. As an  analogy to paper-based systems. Basic user-accesed units are called files, which could be clustered into directories.
+File system is a set of tools, methods, logic and structure to control how to store and retreive data on and from device.
 
-The system stores files either continuously or scattered across device. The basic accessed data unit is called a block, which capacity can be set to various sizes. Blocks are labeled either as free or used.
+
+ The system stores files either continuously or scattered across device. The basic accessed data unit is called a block, which capacity can be set to various sizes. Blocks are labeled either as free or used.
 
 Files which are non-continous are stored in form of extents, which is one or more blocks associated with the file, but stored elsewhere.  
 
@@ -155,7 +158,7 @@ Information about how many blocks does a file occupy, as well as other informati
 
 \todo(bit maps)
 
-In this thesis, targeted file systems will be UNIX XFS and EXT4, which are main Red Hat supported file systems. These file systems belong to the group of journaling file systems.
+In this thesis, targeted file systems are two most popular Linux file systems, XFS and EXT4 (linux file system evolutin), which are also main Red Hat supported file systems citation. These file systems belong to the group of journaling file systems.
 
 Journaling file system keeps a structure called journal, which is a buffer of changes not yet commited to the file system. After system failure, these planned changes can be easily read from the journal, thus making the file system easily fully operational, and in correct and consistent state again.
 
