@@ -8,50 +8,50 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {3}\bfseries File systems}{5}{chapter.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.1}\slshape XFS}{5}{section.3.1}
+\contentsline {section}{\numberline {3.1}\slshape XFS}{6}{section.3.1}
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {3.2}\slshape Ext4}{6}{section.3.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {4}\bfseries Used tools}{7}{chapter.4}
+\contentsline {chapter}{\numberline {4}\bfseries Used tools}{9}{chapter.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.1}\slshape BeakerLib}{7}{section.4.1}
+\contentsline {section}{\numberline {4.1}\slshape Beaker}{9}{section.4.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.2}\slshape FIO}{7}{section.4.2}
+\contentsline {section}{\numberline {4.2}\slshape FIO}{10}{section.4.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.3}\slshape Fs-drift}{7}{section.4.3}
+\contentsline {section}{\numberline {4.3}\slshape Fs-drift}{10}{section.4.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.4}\slshape Storage generator}{8}{section.4.4}
+\contentsline {section}{\numberline {4.4}\slshape Storage generator}{11}{section.4.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {5}\bfseries Creating aged file system}{11}{chapter.5}
+\contentsline {chapter}{\numberline {5}\bfseries Creating aged file system}{15}{chapter.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5.1}\slshape File system images}{11}{section.5.1}
+\contentsline {section}{\numberline {5.1}\slshape File system images}{15}{section.5.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5.2}\slshape Implementation}{12}{section.5.2}
+\contentsline {section}{\numberline {5.2}\slshape Implementation}{16}{section.5.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5.3}\slshape Fs-drift/aging settings}{12}{section.5.3}
+\contentsline {section}{\numberline {5.3}\slshape Fs-drift/aging settings}{16}{section.5.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {6}\bfseries Performance testing of aged file system}{15}{chapter.6}
+\contentsline {chapter}{\numberline {6}\bfseries Performance testing of aged file system}{19}{chapter.6}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.1}\slshape Test structure}{15}{section.6.1}
+\contentsline {section}{\numberline {6.1}\slshape Test structure}{19}{section.6.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6.2}\slshape Benchmark settings}{16}{section.6.2}
+\contentsline {section}{\numberline {6.2}\slshape Benchmark settings}{20}{section.6.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {7}\bfseries Testing environment}{17}{chapter.7}
+\contentsline {chapter}{\numberline {7}\bfseries Testing environment}{21}{chapter.7}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {7.1}\slshape Storage}{17}{section.7.1}
+\contentsline {section}{\numberline {7.1}\slshape Storage}{21}{section.7.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {7.1.1}\rmfamily HDD}{17}{subsection.7.1.1}
+\contentsline {subsection}{\numberline {7.1.1}\rmfamily HDD}{21}{subsection.7.1.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {7.1.2}\rmfamily SSD}{17}{subsection.7.1.2}
+\contentsline {subsection}{\numberline {7.1.2}\rmfamily SSD}{21}{subsection.7.1.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {7.2}\slshape Used machines}{17}{section.7.2}
+\contentsline {section}{\numberline {7.2}\slshape Used machines}{21}{section.7.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {8}\bfseries Results}{19}{chapter.8}
+\contentsline {chapter}{\numberline {8}\bfseries Results}{23}{chapter.8}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {8.1}\slshape Performance of aged file system}{19}{section.8.1}
+\contentsline {section}{\numberline {8.1}\slshape Performance of aged file system}{23}{section.8.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {8.2}\slshape Differences betweem XFS and EXT4}{19}{section.8.2}
+\contentsline {section}{\numberline {8.2}\slshape Differences betweem XFS and EXT4}{23}{section.8.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {8.3}\slshape Differences accross different storage}{19}{section.8.3}
+\contentsline {section}{\numberline {8.3}\slshape Differences accross different storage}{23}{section.8.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {9}\bfseries Conclusion}{21}{chapter.9}
+\contentsline {chapter}{\numberline {9}\bfseries Conclusion}{25}{chapter.9}

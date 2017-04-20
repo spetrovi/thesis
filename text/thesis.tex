@@ -90,6 +90,8 @@
 \usepackage{url}
 \usepackage{menukeys}
 \usepackage{mwe}
+\renewcommand{\lstlistingname}{Example}
+\renewcommand{\lstlistlistingname}{List of \lstlistingname s}
 \begin{document}
 \chapter{Introduction}
 File systems remain an important part of modern storage solutions.  Large, growing databases, multi-media and other storage based applications need to be supported by high-performing infrastructure layer of storing and retrieving information. Such infrastructure have to be provided by operating systems (OS) in form of file system.
@@ -106,7 +108,7 @@ Furthermore, using developed tests to test different configurations of file syst
 
 The aging tests implemented in this thesis are established as part of testing cycle in Red Hat Kernel Performance team.
 
-In the second chapter, the text present already conducted research of this topic. Third chapter introduce tools used to 
+In the second chapter, the text present already conducted research of this topic. Third chapter introduce tools used in implementation of tests, while describing their relevant features.
 \chapter{Previous research}
 
 
@@ -143,48 +145,103 @@ In the second chapter, the text present already conducted research of this topic
 
 
 \chapter{File systems}
+In this chapter, I present basic information about file systems and describe main features of chosen file system in regard of fragmentation and scalability, which are important topics when discussing file system aging.
+
 File system is a set of tools, methods, logic and structure to control how to store and retreive data on and from device.
 
-
- The system stores files either continuously or scattered across device. The basic accessed data unit is called a block, which capacity can be set to various sizes. Blocks are labeled either as free or used.
+The system stores files either continuously or scattered across device. The basic accessed data unit is called a block, which capacity can be set to various sizes. Blocks are labeled as either free or used.
 
 Files which are non-continous are stored in form of extents, which is one or more blocks associated with the file, but stored elsewhere.  
 
-Information about how many blocks does a file occupy, as well as other information like date of creation, date of last access or access permissions is known as metadata, e.g. data about stored data. This information is stored separately from the content of files. On modern file systems, metadata are stored in objects called inodes (index nodes). Each file a file system manages is associated with an inode and every inode has its number in an inode table. On top of that the file system stores metadata unrelated to any specific file, such as information about bad sectors, free space or block availability.
+Information about how many blocks does a file occupy, as well as other information like date of creation, date of last access or access permissions is known as metadata, e.g. data about stored data. This information is stored separately from the content of files. On modern file systems, metadata are stored in objects called index nodes (e.g. inodes). Each file a file system manages is associated with an inode and every inode has its number in an inode table. On top of that the file system stores metadata about itself (unrelated to any specific file), such as information about bad sectors, free space or block availability in a structure called superblock.
 
-% Depending on file system, these metadata are stored in various ways (different tables or arrays), but on modern file systems, there are objects called inodes (i stands for index) which content is separate from the contents of files. Each file a file system manages is associated with an inode, every inode has its number in an inode table.
-
-\todo(bit maps)
-
-In this thesis, targeted file systems are two most popular Linux file systems, XFS and EXT4 (linux file system evolutin), which are also main Red Hat supported file systems citation. These file systems belong to the group of journaling file systems.
+In this thesis, targeted file systems are two most popular Linux file systems, XFS and Ext4~\cite{Lu:2014:SLF:2578042.2560012}, which are also main Red Hat supported file systems. These file systems belong to the group of file systems called journaling file systems.
 
 Journaling file system keeps a structure called journal, which is a buffer of changes not yet commited to the file system. After system failure, these planned changes can be easily read from the journal, thus making the file system easily fully operational, and in correct and consistent state again.
 
 \section{XFS}
-%%XFS is a 64-bit journaling file system created by Silicon Graphics, Inc(SGI) in 1993. It is known for great performance in execution of paralel I/O operations, because of its architecture based on allocation groups.
+XFS~\cite{xfs:page} is a 64-bit journaling file system known for its high scalability (up to 9 exabytes) and great performance. Such performance is reached by architecture based on allocation groups.
 
 Allocation groups are euqally sized linear regions within file system. Each allocation group manages its own inodes and free space, therefore increasing parallelism. Architecture of this design enables for significant scalability of bandwidth, threads, and size of file system, as well as files, simply because multiple processes and threads can access the file system simultaneously.
 
-XFS allocates space as extents stored in pairs of B+ trees, each pair for each allocation group (improving performance especially when handling large files). One of the B+ trees is indexed by the length of the free extents, while the other is indexed by the starting block of the free extents. This dual indexing scheme allows for the highly efficient location of free extents for file system operations.
+XFS allocates space as extents stored in pairs of B+ trees, each pair for each allocation group (improving performance especially when handling large files). One of the B+ trees is indexed by the length of the free extents, while the other is indexed by the starting block of the free extents. This dual indexing scheme allows efficient location of free extents for I/O operations.
 
-Prevention of file system fragmentation consist mainly of a features called \textit{delayed allocation} and online defragmentation(\textit{xfs\_fsr}).
+Prevention of file system fragmentation consist mainly of a features called delayed allocation and online defragmentation.
 
-Delayed allocation, also called \textit{allocate-on-flush} is a feature that, when a file is written to the buffer cache, substracts space from the free-space counter, but won't allocate the free-space bitmap. The data is held in memory until it have to be stored because of system call (such as \textit{sync}). This approach improves the chance, that the file will be written in a contiguous group of blocks, avoiding fragmentation and reducing CPU usage as well.
+Delayed allocation, also called allocate-on-flush is a feature that, when a file is written to the buffer cache, substracts space from the free-space counter, but won't allocate the free-space bitmap. The data is held in memory until it have to be stored because of system call. This approach improves the chance, that the file will be written in a contiguous group of blocks, avoiding fragmentation and reducing CPU usage as well.
 
 \section{Ext4}
-Ext4, also called fourth extended filesystem is a 48-bit journaling file system developed as successor of Ext3 for Linux kernel, improving reliability and performance features.
+Ext4, also called fourth extended filesystem is a 48-bit journaling file system developed as successor of Ext3 for Linux kernel, improving reliability and performance features. Ext4 is scalable up to 1 exbibyte (approx. 1.15 exabyte). Traditional Ext2 and Ext3 block mapping scheme was replaced by extent based approach similar to XFS, which positively affects performance.
 
-%Traditionally, ext* systems use an indirect block mapping sheme. Such approach is generaly inefficient for large files when using operations like deleting or truncating. Ext4, as well as XFS use approach of \textit{extents}, which positively affect performance and encourage ?continuous layouts?.
-
-%When allocating, ext4 use multiblock allocation. 
-
-Similary as xfs, ext4 use delayed allocation to increase performance, especially when in use with multiblock allocation and extent-based approach, also reducing fragmentation on the device. For cases of fragmentation that still occur, ext4 provide support for online defragmentation and \textit{e4defrag} tool to defragment either single file, or whole file system.
+Similarly to XFS, Ext4 use delayed allocation to increase performance and reduce fragmentation. For cases of fragmentation that still occur, Ext4 provide support for online defragmentation and e4defrag tool to defragment either single file, or whole file system.
 
 \chapter{Used tools}
-In this chapter, I presnet tools which were used to implement automatised tests for creating and storing aged file systems and measuring their performance. I will describe the main features and sposob how are used. All the presented tools are open source projects.
+In this chapter, I presnet tools which were used to implement automated tests for creating and storing aged file systems and measuring their performance. I will describe the main features and means of their usage. All the presented tools are open source projects.
 
-\section{BeakerLib}
-BeakerLib is a beaker beaker beaker beaker.
+\section{Beaker}
+Beaker is a project aimed at automating testing workflow. The software can reserve machine from a pool of labs, install OS and packages, configure environment and perform tasks. The whole process is guided by sequence of instructions in an XML format. Further, I will show few examples of beaker usage.
+
+\lstset{language=XML, 
+numbers=left, 
+frame=single, 
+commentstyle=\color{dkgreen}, 
+basicstyle={\scriptsize\ttfamily}, 
+keywordstyle=\color{blue}, 
+%identifierstyle=\color{blue}, 
+%stringstyle=\color{mauve},
+captionpos=t,
+showstringspaces=false,
+breaklines=true,
+breakatwhitespace=false,
+tabsize=3,
+caption={sdad},
+}
+
+
+\begin{lstlisting}[language=xml, caption={Specifying OS to be installed}][frame=single]
+<distroRequires>
+  <and>
+    <distro_family op="=" value="RedHatEnterpriseLinux7"/>
+    <distro_variant op="=" value="Server"/>
+    <distro_name op="=" value="RHEL-7.2"/>
+    <distro_arch op="=" value="x86_64"/>
+  </and>
+</distroRequires>
+\end{lstlisting}
+
+\begin{lstlisting}[language=xml, caption={Configuring environment using kickstart}][frame=single]
+<kickstart>
+  <![CDATA[
+    install
+    lang en_US.UTF-8
+    skipx
+    keyboard us
+    rootpw redhat
+    firewall --disabled
+    authconfig --enableshadow --enablemd5
+    selinux --enforcing
+    timezone --utc Europe/Prague
+
+    bootloader --location=mbr --driveorder=sda
+    zerombr
+    clearpart --all --initlabel --drives=sda
+    part /boot --fstype=ext2 --size=200 --asprimary --label=BOOT --ondisk=sda
+    part /mnt/tests --fstype=ext4 --size=40960 --asprimary --label=MNT --ondisk=sda
+    part / --fstype=ext4 --size=1 --grow --asprimary --label=ROOT  --ondisk=sda
+    reboot
+    %packages --excludedocs --ignoremissing --nobase
+    @core
+    wget
+    python
+    dhcpv6-client
+    dhclient
+    yum
+]]>
+</kickstart>
+\end{lstlisting}
+
+
+
 
 \section{FIO}
 Flexible Input/Output tool is a IO workload generator written by Jens Axboe. It is a tool well known for it's flexibility as well as large group of users and contributors. The flexibility is integral for conductuing less artifical and more natural performance tests. However, approaching more natural test behavior, stability of results drop, so ideal equilibrium between these two parameters has to be found.
