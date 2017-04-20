@@ -291,11 +291,36 @@ Furthermore, fs-drift offers one more option to influence random distribution. A
 \end{figure}
 
 \section{Storage generator}
-Storage generator is a beaker task developed by Jozef Mikovič. It is capable of automated configuration of storage on a machine. 
+Storage generator is a beaker task developed by Jozef Mikovič. It is capable of automated configuration of storage on a machine. In a single-device mode, storage generator simply creates new partition on a given device and creates and mounts file system. In a recipe mode, storage generator follows set of bash instruction to create more advanced configurations such as merging multiple devices using LVM, creating LVM cache or encrypted volume.
+
+\begin{lstlisting}[language=xml, caption={Configuring storage using storage generator in beaker environment}][frame=single]
+      <task name="/kernel_fsperf/storage_generator" role="STANDALONE">
+        <params>
+          <param name="TEST_PARAM_STORAGE_GENERATOR" value="-s create -f xfs -t lvm -m /RHTSspareLUN1 -r jokerlvm -T 2SATASSDLVM_xfs"/>
+        </params>
+      </task>
+\end{lstlisting}
+
 \chapter{Creating aged file system}
+In this chapter, I describe possibilities of aging new file system, creating file system images and usage of implemented testing task.
+
+To achieve consistency of results and to shorten testing time, file system images are used. Once the image is created, it can be stored for later use and reloaded back on device. To save space, only metadata of created file system is used, since content of created files is random and therefore irrelevant. Replayed metadata point at various blocks on device, recreating fragmentation while seldom taking significantly less space.
+
+\section{Aging process}
+
+As the creator states in README, to fill up a file system, maximum number of files and mean size of file should be defined such that the product is greater than the available space. So if the workload is supposed to fill 500GB of space, while having maximum file size of 1GB (therefore mean size is 500MB), maximum number of files should be much higher than 1000. Optimal approach is to define seemingly no upper limit to let the fs-drift fill the volume, therefore numbers as high as $10^8$.
+
+%Parameter -t specifies the top directory, which will be used in test, in this workflow it is set to \$MOUNTPOINT.
+
+\todo{toto prepisat podla 9year old bench study}
+There is an option to specifiy user-defined file to use as a workload table, which is a desired percentual representation of operations in a workload. Since the goal of this workload is to create fragmented file system in a short time, read and rename operations are irrelevant. Therefore only create, append and delete have representation in this workload. The optimal results were reached when every operation had equal representation, e.g. 33\%
+
+%The fs-drift allows directories up to defined level to create. The directory in which a file is directly affect its chance to be selected for a chosen operation, so by using only one directory, the equilibrium happens too fast, long before the file system is filled completely. Therefore we allow up to three levels of directories to be created.
+
+Duration of the test is set to 5 hours so the test is usable for testing campaign without oversaturating of the servers.
 
 \section{File system images}
-To achieve consistency of results and to shorten testing time, file system images are used. Once the image is created, it can be stored for later use and replayed back on device. To save space, only metadata of created file system are used, since content of created files is random and therefore irrelevant. Replayed metadata point at various blocks on device, recreating fragmentation while seldom taking significantly less space. These images can be created by using tools developed to inspect file systems in case of emergency. For ext based file systems, there is e2image tool and for xfs, there is xfs\_metadump. Both tools create images as sparse files, so compression is needed.
+ These images can be created by using tools developed to inspect file systems in case of emergency. For ext based file systems, there is e2image tool and for xfs, there is xfs\_metadump. Both tools create images as sparse files, so compression is needed.
 
 E2image tool can save whole ext based file system or just its metadata and offers compresion of image as well. Created images can be further compressed by tools such bzip2 or tar.
 
@@ -380,9 +405,9 @@ Such images, when uncompressed can be replayed back on device by tool xfs\_mdres
 %However, after few runs, I decided not to use this approach for actual aging, because the time needed to fill and appropriately age the filesystem simply took very long. Instead, I was looking for other, already created tools I could use.
 
 \section{Implementation}
-Workflow of image creating is contained in the package drift\_job. After extracting fs-drift, the main script starts python script, which handles the process of running fs-drift. Settings of fs-drift are passed as a parameter and are parsed inside the script. Before running the fs-drift, python daemon thread is created to log free space fragmentation periodically while fs-drift is running. After the aging process is done, overall fragmentation is computed.
+Workflow of image creating is contained in the beaker task drift\_job. After extracting fs-drift, the main script starts python script, which handles the process of running fs-drift. Settings of fs-drift are passed as a parameter and are parsed inside the script. Before running the fs-drift, python daemon thread is triggered to log free space fragmentation periodically while fs-drift is running. After the aging process is done, overall fragmentation is logged.
 
-After the aging process, the script use system tools to create and compress the image. Information about system is gathered as well and all the logs are archived and sent to data collecting server.
+After the aging process, the script use presented system tools to create and compress the image. Information about system is gathered as well and all the logs are archived and sent to data collecting server.
 Parameters available for drift\_job:
 \begin{compactenum}
   \item -s|--sync, flag to signalise wheather or not to send data to server (usefull for developing purposes)
@@ -392,18 +417,26 @@ Parameters available for drift\_job:
   \item -t|--tag, string to distinguish different tests
   \end{compactenum}
 
-\section{Fs-drift/aging settings}
-As the creator states in README, to fill up a file system, maximum number of files and mean size of file should be defined such that the product is greater than the available space. So if the workload is supposed to fill 500GB of space, while having maximum file size of 1GB (therefore mean size is 500MB), maximum number of files should be much higher than 1000. Optimal approach is to define seemingly no upper limit to let the fs-drift fill the volume, therefore numbers as high as $10^8$.
-
-Parameter -t specifies the top directory, which will be used in test, in this workflow it is set to \$MOUNTPOINT.
-
-There is an option to specifiy user-defined file to use as a workload table, which is a desired percentual representation of operations in a workload. Since the goal of this workload is to create fragmented file system in a short time, read and rename operations are irrelevant. Therefore only create, append and delete have representation in this workload. The optimal results were reached when every operation had equal representation, e.g. 33\%
-
-The fs-drift allows directories up to defined level to create. The directory in which a file is directly affect its chance to be selected for a chosen operation, so by using only one directory, the equilibrium happens too fast, long before the file system is filled completely. Therefore we allow up to three levels of directories to be created.
-
-Duration of the test is set to 5 hours so the test is usable for testing campaign without oversaturating of the servers.
-
 \chapter{Performance testing of aged file system}
+In this chapter, I describe structure of performance test which use images created by previous workflow. In the first section, I present settings of FIO benchmark for the optimal results and in section two, I describe implementation of this test as beaker task.
+
+
+
+\section{Benchmark settings}
+To ensure stability of test results, I decided to use simple form of standard performance test.
+%Volume is randomly removed using random\_delete\_volume.py script. This scriptt globs all files in the filesystem, retrieves information about used volume as well as it's overall size. Then proceeds to randomly choosing files to delete and stops when desired volume is freed. The approach of recursively globbing all files may be inefficient, but this way, we can be sure, that volume is deleted from whole device evenly.
+
+%\section{Inspecting filesystem}
+
+%To determine overall idea about an extent to which is the file system aged, scripts that generate histograms representing fragmentation of used space as well as fragmentation of free space. Both scripts use common linux tools and pyplot to generate the graphics. Both scripts can display linear or logarhytmic Y scale.
+
+%Script extent\_distribution.py makes use of xfs\_io fiemap tool, which is a tool to display extent distribution of a given file and works correctly even for ext* filesystems.
+
+%The script will first recursively crawls the whole filesystem from given top folder and makes a list of all files. Fiemap is then run over every file separately. 
+
+%The only data, that are then parsed from the output, is how many non-contigous extents does the file have. These integers are aggregated to a single list, from which are then counted, and final histogram is made.
+
+%Script free\_space\_fragmentation.py use the tool e2freefrag, which runs over a device, and outputs the histogram of free space fragmentation in texutal form. Script will store this output and then easily parse the histogram and aggregate the data into a graphic form.
 
 \section{Test structure}
 Performance testing of created images is done by a package recipe\_fio\_aging. Upon instalation of necessary tools (libs, fio), the package finds and downloads coresponding file system image according to obtained parameters. As shown, images are stored compressed, therefore decompression is needed after download. Once these steps are succesfully completed, the image is restored on the device by using presented tools (e2image, xfs\_mdrestore). If the image restoring completes succesfully, file system can be mounted and worked with exactly like it would be just after the aging process.
@@ -424,32 +457,8 @@ Parameters available for recipe\_fio\_aging:
   \item -t|--tag, string to distinguish different tests
   \end{compactenum}
 
-\section{Benchmark settings}
-To ensure stability of test results, I decided to use simple form of standard performance test.
-%Volume is randomly removed using random\_delete\_volume.py script. This scriptt globs all files in the filesystem, retrieves information about used volume as well as it's overall size. Then proceeds to randomly choosing files to delete and stops when desired volume is freed. The approach of recursively globbing all files may be inefficient, but this way, we can be sure, that volume is deleted from whole device evenly.
-
-%\section{Inspecting filesystem}
-
-%To determine overall idea about an extent to which is the file system aged, scripts that generate histograms representing fragmentation of used space as well as fragmentation of free space. Both scripts use common linux tools and pyplot to generate the graphics. Both scripts can display linear or logarhytmic Y scale.
-
-%Script extent\_distribution.py makes use of xfs\_io fiemap tool, which is a tool to display extent distribution of a given file and works correctly even for ext* filesystems.
-
-%The script will first recursively crawls the whole filesystem from given top folder and makes a list of all files. Fiemap is then run over every file separately. 
-
-%The only data, that are then parsed from the output, is how many non-contigous extents does the file have. These integers are aggregated to a single list, from which are then counted, and final histogram is made.
-
-%Script free\_space\_fragmentation.py use the tool e2freefrag, which runs over a device, and outputs the histogram of free space fragmentation in texutal form. Script will store this output and then easily parse the histogram and aggregate the data into a graphic form.
-
 \chapter{Testing environment}
-\section{Storage}
-HDD is a rotational disk, which requires specific approach from kernel, to ensure the lowest possible seek time. Seek time is a time for moving parts of the device to find next relevant block of data. This affect overall performance greatly, because with large fragmentation, seek time becomes quite high.
-
-As for SSD, this type of device does not have any moving parts, which make perform really well. One of the problems, however, is limited lifecycle of memory cells. SSD manufacturers deal with this problem by adding controler with its own scheduler, which make sure, no parts of the device are used significantly more than other parts.
-
-When aging the filesystems, I expect for those grown on HDD to perform significantly slower after aging process, and I expect SSD filesystems not to be affected at all, or maybe significantly less.
-
-\subsection{HDD}
-\subsection{SSD}
+In this chapter, I describe testing environment and storage used for testing with created tests.
 
 \section{Used machines}
 The aging process took place on these Machines:
@@ -478,8 +487,20 @@ The aging process took place on these Machines:
 	\end{compactenum}
 \end{compactenum}
 
-
 The system installed on machines is RHEL-7.2 with kernel 3.10.0-514.el7.x86\_64 
+
+
+\section{Storage}
+HDD is a rotational disk, which requires specific approach from kernel, to ensure the lowest possible seek time. Seek time is a time for moving parts of the device to find next relevant block of data. This affect overall performance greatly, because with large fragmentation, seek time becomes quite high.
+
+As for SSD, this type of device does not have any moving parts, which make perform really well. One of the problems, however, is limited lifecycle of memory cells. SSD manufacturers deal with this problem by adding controler with its own scheduler, which make sure, no parts of the device are used significantly more than other parts.
+
+When aging the filesystems, I expect for those grown on HDD to perform significantly slower after aging process, and I expect SSD filesystems not to be affected at all, or maybe significantly less.
+
+\subsection{HDD}
+\subsection{SSD}
+
+
 
 \chapter{Results}
 The output of result generator is a htlm report summarising all information about system, links to raw data and charts of measured values.
