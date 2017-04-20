@@ -92,6 +92,8 @@
 \usepackage{mwe}
 \renewcommand{\lstlistingname}{Example}
 \renewcommand{\lstlistlistingname}{List of \lstlistingname s}
+
+
 \begin{document}
 \chapter{Introduction}
 File systems remain an important part of modern storage solutions.  Large, growing databases, multi-media and other storage based applications need to be supported by high-performing infrastructure layer of storing and retrieving information. Such infrastructure have to be provided by operating systems (OS) in form of file system.
@@ -181,6 +183,7 @@ In this chapter, I presnet tools which were used to implement automated tests fo
 \section{Beaker}
 Beaker is a project aimed at automating testing workflow. The software can reserve machine from a pool of labs, install OS and packages, configure environment and perform tasks. The whole process is guided by sequence of instructions in an XML format. Further, I will show few examples of beaker usage.
 
+
 \lstset{language=XML, 
 numbers=left, 
 frame=single, 
@@ -188,13 +191,13 @@ commentstyle=\color{dkgreen},
 basicstyle={\scriptsize\ttfamily}, 
 keywordstyle=\color{blue}, 
 %identifierstyle=\color{blue}, 
-%stringstyle=\color{mauve},
+stringstyle=\color{red},
 captionpos=t,
 showstringspaces=false,
 breaklines=true,
 breakatwhitespace=false,
 tabsize=3,
-caption={sdad},
+caption={},
 }
 
 
@@ -288,7 +291,7 @@ Furthermore, fs-drift offers one more option to influence random distribution. A
 \end{figure}
 
 \section{Storage generator}
-
+Storage generator is a beaker task developed by Jozef Mikovič. It is capable of automated configuration of storage on a machine. 
 \chapter{Creating aged file system}
 
 \section{File system images}
@@ -296,28 +299,44 @@ To achieve consistency of results and to shorten testing time, file system image
 
 E2image tool can save whole ext based file system or just its metadata and offers compresion of image as well. Created images can be further compressed by tools such bzip2 or tar.
 
-\noindent Creating compressed image using e2image:
-\begin{lstlisting}[language=bash]
-  e2image -Q $DEVICE $NAME.qcow2
+\lstset{language=bash, 
+numbers=none, 
+frame=single, 
+commentstyle=\color{dkgreen}, 
+basicstyle={\scriptsize\ttfamily}, 
+keywordstyle=\color{blue}, 
+%identifierstyle=\color{blue}, 
+stringstyle=\color{red},
+captionpos=t,
+showstringspaces=false,
+breaklines=true,
+breakatwhitespace=false,
+tabsize=3,
+caption={sdad},
+}
+
+%%\noindent Creating compressed image using e2image:
+\begin{lstlisting}[language=bash, caption={Creating compressed image using e2image}][frame=single]
+  $ e2image -Q $DEVICE $NAME.qcow2
 \end{lstlisting}
 
 \noindent Such images can be later replayed back on a device. From that point, file system can be mounted and revised.
 
-\noindent Replaying compressed image:
-\begin{lstlisting}[language=bash]
-  e2image -r $NAME.qcow2 $DEVICE
+%%noindent :
+\begin{lstlisting}[language=bash, caption={Reloading compressed image}][frame=single]
+  $ e2image -r $NAME.qcow2 $DEVICE
 \end{lstlisting}
 
-Xfs\_metadump saves XFS file system metadata to a file. Due to privacy reasons file names are obsfucated (can be disabled by -o parameter). As well as e2image tool, the image file is sparse, but xfs\_metadump doesn't offer a way to compress the output. However, output can be redirected to stdout from where it can be passed to a compression tool. Creating compressed image using xfs\_metadump:
+Xfs\_metadump saves XFS file system metadata to a file. Due to privacy reasons file names are obsfucated (can be disabled by -o parameter). As well as e2image tool, the image file is sparse, but xfs\_metadump doesn't offer a way to compress the output. However, output can be redirected to stdout from where it can be passed to a compression tool.
 
-\begin{lstlisting}[language=bash]
-  xfs_metadump -o $DEVICE -|bzip2 > $NAME
+\begin{lstlisting}[language=bash, caption={Creating compressed image using xfs\_metadump}][frame=single]
+  $ xfs_metadump -o $DEVICE -|bzip2 > $NAME
 \end{lstlisting}
 
 Such images, when uncompressed can be replayed back on device by tool xfs\_mdrestore. File system can be then mouned and inspected as needed:
 
-\begin{lstlisting}[language=bash]
-  xfs_mdrestore $NAME $DEVICE
+\begin{lstlisting}[language=bash, caption={Reloading image using xfs\_mdrestore}][frame=single]
+  $ xfs_mdrestore $NAME $DEVICE
 \end{lstlisting}
 
 %\section{filesystem\_ager}
