@@ -104,13 +104,15 @@ The standard workflow of performance testing of file systems is to run benchmark
 
 File systems, as well as other complex software is subjected to progressive degradation, referred to as software aging~\cite{Cotroneo:2010:SAA:1913797.1914413}. Causes of file system aging are many, but mostly fragmentation of free space, unclustered blocks of data and unreleased memory. This degradation cause problems in performance and functionality over time. Understanding of performance changes of aged file system can help developers in implementing prevention . Such testing fundamentally consists of two steps. First is to bring fresh file system to an aged state and second is the actual performance test of the aged instance.
 
-Foremost, this thesis describe implementation of flexible tests which represent the aforementioned steps. The first test is able to age fresh file system and store the result as an image for later use. The performance statistics collected in the process, as well as resulting layout can be used to evaluate ability of file system to respond to aging. Second test can evaluate resulting image even further by releasing some space and conducting performance test on resulting layout.
+To achieve consistency of results and to shorten testing time, file system images are used in this thesis. Once the image of an aged file system is created, it can be stored for later use and reloaded back on device. To save space, only metadata of created file system is used, since content of created files is random and therefore irrelevant. Replayed metadata point at various blocks on device, recreating fragmentation while seldom taking significantly less space.
+
+Foremost, this thesis describe implementation of flexible tests which represent the two aforementioned steps. The first test is able to age fresh file system and store the result as an image for later use. The performance statistics collected in the process, as well as resulting layout can be used to evaluate ability of file system to respond to aging. Second test can evaluate resulting image even further by releasing some space and conducting performance test on resulting layout. 
 
 Furthermore, using developed tests to test different configurations of file systems and storage is demonstrated. The subject of research are differences between popular Linux file systems (XFS, Ext4) and storage technology (HDD, SSD) in context of aging. Because of nature of collected data, a processing tool was implemented to parse large amount of information into human readable reports. All the generated reports are part of this thesis in form of Appendix A.
 
 The aging tests implemented in this thesis are established as part of testing cycle in Red Hat Kernel Performance team.
 
-In the second chapter, the text present already conducted research of this topic. Third chapter introduce tools used in implementation of tests, while describing their relevant features.
+In the second chapter, the text present already conducted research of effects of age on file system performance. Third chapter describes used file systems and theirs main features. Chapter 4 introduce tools used in implementation of tests while describing their relevant features. Chapters 5 and 6 describe actual implementation of mentioned tests and remaining chapters present the results obtained by using created tests. In the conclusion chapter, I discuss the effects of age on file system performance as well as further options for file system aging performance testing.
 \chapter{Previous research}
 
 
@@ -181,7 +183,7 @@ Similarly to XFS, Ext4 use delayed allocation to increase performance and reduce
 In this chapter, I presnet tools which were used to implement automated tests for creating and storing aged file systems and measuring their performance. I will describe the main features and means of their usage. All the presented tools are open source projects.
 
 \section{Beaker}
-Beaker is a project aimed at automating testing workflow. The software can reserve machine from a pool of labs, install OS and packages, configure environment and perform tasks. The whole process is guided by sequence of instructions in an XML format. Further, I will show few examples of beaker usage.
+Beaker is a project aimed at automating testing workflow. The software can reserve machine from a pool of labs, install OS and packages, configure environment and perform tasks. The whole process is guided by sequence of instructions in an XML format. Examples of usage below.
 
 
 \lstset{language=XML, 
@@ -241,6 +243,14 @@ caption={},
     yum
 ]]>
 </kickstart>
+\end{lstlisting}
+
+\begin{lstlisting}[language=xml, caption={Executing task and passing arguments}][frame=single]
+      <task name="/kernel_fsperf/storage_generator" role="STANDALONE">
+        <params>
+          <param name="TEST_PARAM_STORAGE_GENERATOR" value="-s create -f ext4 -t single -m /RHTSspareLUN1 -d /dev/sdc -T 1SASHDD_ext4"/>
+        </params>
+      </task>
 \end{lstlisting}
 
 
@@ -304,7 +314,7 @@ Storage generator is a beaker task developed by Jozef Mikovič. It is capable of
 \chapter{Creating aged file system}
 In this chapter, I describe possibilities of aging new file system, creating file system images and usage of implemented testing task.
 
-To achieve consistency of results and to shorten testing time, file system images are used. Once the image is created, it can be stored for later use and reloaded back on device. To save space, only metadata of created file system is used, since content of created files is random and therefore irrelevant. Replayed metadata point at various blocks on device, recreating fragmentation while seldom taking significantly less space.
+
 
 \section{Aging process}
 
@@ -320,7 +330,7 @@ There is an option to specifiy user-defined file to use as a workload table, whi
 Duration of the test is set to 5 hours so the test is usable for testing campaign without oversaturating of the servers.
 
 \section{File system images}
- These images can be created by using tools developed to inspect file systems in case of emergency. For ext based file systems, there is e2image tool and for xfs, there is xfs\_metadump. Both tools create images as sparse files, so compression is needed.
+File system images can be created by using tools developed to inspect file systems in case of emergency. For ext based file systems, there is e2image tool and for xfs, there is xfs\_metadump. Both tools create images as sparse files, so compression is needed.
 
 E2image tool can save whole ext based file system or just its metadata and offers compresion of image as well. Created images can be further compressed by tools such bzip2 or tar.
 
