@@ -1,0 +1,302 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 2.8 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\sortlist[entry]{none/global/}
+  \entry{Traeger:2008:NYS:1367829.1367831}{article}{}
+    \name{author}{4}{}{%
+      {{hash=TA}{%
+         family={Traeger},
+         familyi={T\bibinitperiod},
+         given={Avishay},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=ZE}{%
+         family={Zadok},
+         familyi={Z\bibinitperiod},
+         given={Erez},
+         giveni={E\bibinitperiod},
+      }}%
+      {{hash=JN}{%
+         family={Joukov},
+         familyi={J\bibinitperiod},
+         given={Nikolai},
+         giveni={N\bibinitperiod},
+      }}%
+      {{hash=WCP}{%
+         family={Wright},
+         familyi={W\bibinitperiod},
+         given={Charles\bibnamedelima P.},
+         giveni={C\bibinitperiod\bibinitdelim P\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {ACM}%
+    }
+    \keyw{Benchmarks, file systems, storage systems}
+    \strng{namehash}{TA+1}
+    \strng{fullhash}{TAZEJNWCP1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \verb{doi}
+    \verb 10.1145/1367829.1367831
+    \endverb
+    \field{issn}{1553-3077}
+    \field{number}{2}
+    \field{pages}{5:1\bibrangedash 5:56}
+    \field{title}{A Nine Year Study of File System and Storage Benchmarking}
+    \verb{url}
+    \verb http://doi.acm.org/10.1145/1367829.1367831
+    \endverb
+    \field{volume}{4}
+    \list{location}{1}{%
+      {New York, NY, USA}%
+    }
+    \field{journaltitle}{Trans. Storage}
+    \field{month}{05}
+    \field{year}{2008}
+  \endentry
+
+  \entry{Cotroneo:2014:SSA:2543749.2539117}{article}{}
+    \name{author}{4}{}{%
+      {{hash=CD}{%
+         family={Cotroneo},
+         familyi={C\bibinitperiod},
+         given={Domenico},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=NR}{%
+         family={Natella},
+         familyi={N\bibinitperiod},
+         given={Roberto},
+         giveni={R\bibinitperiod},
+      }}%
+      {{hash=PR}{%
+         family={Pietrantuono},
+         familyi={P\bibinitperiod},
+         given={Roberto},
+         giveni={R\bibinitperiod},
+      }}%
+      {{hash=RS}{%
+         family={Russo},
+         familyi={R\bibinitperiod},
+         given={Stefano},
+         giveni={S\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {ACM}%
+    }
+    \keyw{Software aging, aging-related bugs, performance degradation, software
+  aging literature, software rejuvenation}
+    \strng{namehash}{CD+1}
+    \strng{fullhash}{CDNRPRRS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \verb{doi}
+    \verb 10.1145/2539117
+    \endverb
+    \field{issn}{1550-4832}
+    \field{number}{1}
+    \field{pages}{8:1\bibrangedash 8:34}
+    \field{title}{A Survey of Software Aging and Rejuvenation Studies}
+    \verb{url}
+    \verb http://doi.acm.org/10.1145/2539117
+    \endverb
+    \field{volume}{10}
+    \list{location}{1}{%
+      {New York, NY, USA}%
+    }
+    \field{journaltitle}{J. Emerg. Technol. Comput. Syst.}
+    \field{month}{01}
+    \field{year}{2014}
+  \endentry
+
+  \entry{Smith:1997:FSA:258623.258689}{article}{}
+    \name{author}{2}{}{%
+      {{hash=SKA}{%
+         family={Smith},
+         familyi={S\bibinitperiod},
+         given={Keith\bibnamedelima A.},
+         giveni={K\bibinitperiod\bibinitdelim A\bibinitperiod},
+      }}%
+      {{hash=SMI}{%
+         family={Seltzer},
+         familyi={S\bibinitperiod},
+         given={Margo\bibnamedelima I.},
+         giveni={M\bibinitperiod\bibinitdelim I\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {ACM}%
+    }
+    \strng{namehash}{SKASMI1}
+    \strng{fullhash}{SKASMI1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \verb{doi}
+    \verb 10.1145/258623.258689
+    \endverb
+    \field{issn}{0163-5999}
+    \field{number}{1}
+    \field{pages}{203\bibrangedash 213}
+    \field{title}{File System Aging\&Mdash;Increasing the Relevance of File
+  System Benchmarks}
+    \verb{url}
+    \verb http://doi.acm.org/10.1145/258623.258689
+    \endverb
+    \field{volume}{25}
+    \list{location}{1}{%
+      {New York, NY, USA}%
+    }
+    \field{journaltitle}{SIGMETRICS Perform. Eval. Rev.}
+    \field{month}{06}
+    \field{year}{1997}
+  \endentry
+
+  \entry{Ousterhout:1985:TAU:323647.323631}{inproceedings}{}
+    \name{author}{6}{}{%
+      {{hash=OJK}{%
+         family={Ousterhout},
+         familyi={O\bibinitperiod},
+         given={John\bibnamedelima K.},
+         giveni={J\bibinitperiod\bibinitdelim K\bibinitperiod},
+      }}%
+      {{hash=DCH}{%
+         family={Da\bibnamedelima Costa},
+         familyi={D\bibinitperiod\bibinitdelim C\bibinitperiod},
+         given={Herv{\'e}},
+         giveni={H\bibinitperiod},
+      }}%
+      {{hash=HD}{%
+         family={Harrison},
+         familyi={H\bibinitperiod},
+         given={David},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=KJA}{%
+         family={Kunze},
+         familyi={K\bibinitperiod},
+         given={John\bibnamedelima A.},
+         giveni={J\bibinitperiod\bibinitdelim A\bibinitperiod},
+      }}%
+      {{hash=KM}{%
+         family={Kupfer},
+         familyi={K\bibinitperiod},
+         given={Mike},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=TJG}{%
+         family={Thompson},
+         familyi={T\bibinitperiod},
+         given={James\bibnamedelima G.},
+         giveni={J\bibinitperiod\bibinitdelim G\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {ACM}%
+    }
+    \strng{namehash}{OJK+1}
+    \strng{fullhash}{OJKDCHHDKJAKMTJG1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{booktitle}{Proceedings of the Tenth ACM Symposium on Operating
+  Systems Principles}
+    \verb{doi}
+    \verb 10.1145/323647.323631
+    \endverb
+    \field{isbn}{0-89791-174-1}
+    \field{pages}{15\bibrangedash 24}
+    \field{series}{SOSP '85}
+    \field{title}{A Trace-driven Analysis of the UNIX 4.2 BSD File System}
+    \verb{url}
+    \verb http://doi.acm.org/10.1145/323647.323631
+    \endverb
+    \list{location}{1}{%
+      {Orcas Island, Washington, USA}%
+    }
+    \field{year}{1985}
+    \warn{\item Can't use 'location' + 'address'}
+  \endentry
+
+  \entry{Zhu:2005:TSA:1251028.1251052}{inproceedings}{}
+    \name{author}{3}{}{%
+      {{hash=ZN}{%
+         family={Zhu},
+         familyi={Z\bibinitperiod},
+         given={Ningning},
+         giveni={N\bibinitperiod},
+      }}%
+      {{hash=CJ}{%
+         family={Chen},
+         familyi={C\bibinitperiod},
+         given={Jiawu},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=CTC}{%
+         family={Chiueh},
+         familyi={C\bibinitperiod},
+         given={Tzi-Cker},
+         giveni={T\bibinitperiod-C\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {USENIX Association}%
+    }
+    \strng{namehash}{ZNCJCTC1}
+    \strng{fullhash}{ZNCJCTC1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{booktitle}{Proceedings of the 4th Conference on USENIX Conference on
+  File and Storage Technologies - Volume 4}
+    \field{pages}{24\bibrangedash 24}
+    \field{series}{FAST'05}
+    \field{title}{TBBT: Scalable and Accurate Trace Replay for File Server
+  Evaluation}
+    \verb{url}
+    \verb http://dl.acm.org/citation.cfm?id=1251028.1251052
+    \endverb
+    \list{location}{1}{%
+      {San Francisco, CA}%
+    }
+    \field{year}{2005}
+    \warn{\item Can't use 'location' + 'address'}
+  \endentry
+
+  \entry{fs-drift:github}{misc}{}
+    \name{author}{1}{}{%
+      {{hash=EB}{%
+         family={England},
+         familyi={E\bibinitperiod},
+         given={B.},
+         giveni={B\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {GitHub}%
+    }
+    \strng{namehash}{EB1}
+    \strng{fullhash}{EB1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{howpublished}{\url{https://github.com/parallel-fs-utils/fs-drift}}
+    \field{title}{fs-drift}
+    \field{journaltitle}{GitHub repository}
+    \field{year}{2017}
+  \endentry
+\endsortlist
+\endinput

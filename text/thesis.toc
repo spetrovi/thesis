@@ -4,7 +4,11 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {1}\bfseries Introduction}{1}{chapter.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {2}\bfseries Previous research}{3}{chapter.2}
+\contentsline {chapter}{\numberline {2}\bfseries Related work}{3}{chapter.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {2.1}\slshape Aging file system using real-life data}{3}{section.2.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {2.2}\slshape Synthetic aging simulation}{4}{section.2.2}
 \defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {3}\bfseries File systems}{5}{chapter.3}
 \defcounter {refsection}{0}\relax 
