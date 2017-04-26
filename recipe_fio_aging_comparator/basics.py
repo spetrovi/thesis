@@ -6,6 +6,12 @@ from html import HTML
 from free_space_frag import Free_space_fragmentation
 from extent_distribution import Extent_distribution
 from image import d_image
+import csv
+import matplotlib.pyplot as plt
+from scipy.optimize import curve_fit
+from scipy.interpolate import interp1d
+from scipy.signal import savgol_filter
+
 def untar(source):
 	if source[-2:] == 'xz':
 		subprocess.call('tar -Jxf '+source+' -C ./',shell=True)
@@ -74,23 +80,74 @@ class Tar:
     self.recipe = self.make_recipe()
     self.operation = get_value('\n'.join(self.recipe.split(' ')),'rw')
     self.fsystem = get_value(self.properties,'filesystem')
-    self.free_space_histograms = []
+    self.free_space_pretest = []
+    self.free_space_posttest = []
     self.extent_distribution = []
     self.image = get_value(self.properties,'image')
     self.host = get_value(self.properties,'hostname').split('.')[0]
     self.image_ID = ''
 
-  def generate_3d_image(self):
+  def process_image(self):
 	untar(self.host+'_images/'+self.image.split('.')[0]+'.tar.xz')
 	self.image_ID = d_image(self.fsystem, self.destination)
+	self.image_rsp_plot = self.generate_rsp_plot(glob.glob('./out/*rspt.csv')[0])
+	self.image_usage_plot = self.generate_usage_plot(glob.glob('./out/log.out')[0])
+
+
+	self.image_log = read_file('./out/log.out','r')
+	self.image_recipe = read_file('./out/recipe','r')
+	subprocess.call('rm -rf out',shell=True)
+
+  def generate_usage_plot(self, filename):
+	contents = read_file(filename,'r').split('\n')[8:-3]
+        percents = map(lambda x: int(x.split('%')[0].split(' ')[-1:][0]),contents)
+	x = [300*i for i in range(len(percents))]
+	fig, ax = plt.subplots()
+	ax.plot(x,percents)
+	ax.set_ylabel('Used space[%]')
+	ax.set_xlabel('Time[s]')
+	#ax.set_ylim([0,0.1])
+	ax.grid()
+#	fig.set_size_inches(4, 3)
+	plt.savefig(self.destination+'usage_'+self.image_ID+'.png')#,bbox_inches='tight')
+	return 'usage_'+self.image_ID+'.png'
+
+  def generate_rsp_plot(self, filename):
+	x = []
+	y = []
+	with open(filename, "rb") as csvfile:
+        	datareader = csv.reader(csvfile)
+        	count = 0
+        	for row in datareader:
+#			if count % 10 == 0:
+				x.append(float(row[0]))
+				y.append(float(row[1]))	
+				count +=1
 	
+	xx = np.linspace(min(x),max(x), 1000)
+
+	# interpolate + smooth
+	itp = interp1d(x,y, kind='linear')
+	window_size, poly_order = 101, 3
+	yy_sg = savgol_filter(itp(xx), window_size, poly_order)
+	
+	fig, ax = plt.subplots()
+	ax.plot(xx,yy_sg)
+	ax.set_ylabel('Response time[s]')
+	ax.set_xlabel('Time[s]')
+	#ax.set_ylim([0,0.1])
+	ax.grid()
+#	fig.set_size_inches(4, 3)
+	plt.savefig(self.destination+'/'+self.image_ID+'.png')#,bbox_inches='tight')
+	return self.image_ID+'.png'
 
   def process(self):
     untar(self.tar)
     self.boxplots = Boxplots(self.depth)
     for i in range(1, self.depth+1):
-	self.free_space_histograms.append(Free_space_fragmentation(read_file('./out/'+str(i*10)+'/free_space.frag','r'),self.fsystem))
-        self.extent_distribution.append(Extent_distribution(read_file('./out/'+str(i*10)+'/extents.frag','r')))
+	self.free_space_pretest.append(Free_space_fragmentation(read_file('./out/'+str(i*10)+'/pretest_free_space.frag','r'),self.fsystem))
+	self.free_space_posttest.append(Free_space_fragmentation(read_file('./out/'+str(i*10)+'/posttest_free_space.frag','r'),self.fsystem))
+#        self.extent_distribution.append(Extent_distribution(read_file('./out/'+str(i*10)+'/extents.frag','r')))
     #self.threads_data = Threads(int(self.number_of_threads), self.options.storage_string)
     subprocess.call('mkdir '+self.destination+'/'+self.tar_name+'/',shell=True)
 #    subprocess.call('rm -rf ./out/*/*.log',shell=True)
@@ -306,10 +363,35 @@ class Report:
 	#r += self.create_toc()
 	r.dt.strong('Image')
 	if self.tar1.image == self.tar2.image:
-		self.tar1.generate_3d_image()
+		self.tar1.process_image()
 		image_ID = self.tar1.image_ID
 		r.script('', type='text/javascript', src=image_ID+'.js')
 		r.li.div(id=image_ID, align='left')
+	else:
+		self.tar1.process_image()
+		self.tar2.process_image()
+		image_ID1 = self.tar1.image_ID
+		image_ID2 = self.tar2.image_ID
+		r.script('', type='text/javascript', src=image_ID1+'.js')
+		r.script('', type='text/javascript', src=image_ID2+'.js')
+		table = r.table
+		tr = table.tr
+		tr.td.div(id=image_ID1, align='left')
+		tr.td.div(id=image_ID2, align='left')
+		tr = table.tr
+		tr.td.img(src=self.tar1.image_rsp_plot)
+		tr.td.img(src=self.tar2.image_rsp_plot)
+
+		tr = table.tr
+		tr.td.img(src=self.tar1.image_usage_plot)
+		tr.td.img(src=self.tar2.image_usage_plot)
+		tr = table.tr
+		tr.td(self.tar1.image_recipe)
+		tr.td(self.tar2.image_recipe)
+
+		#r.li.div(id=image_ID1, align='left')
+		#r.li.div(id=image_ID2, align='left')
+		
 
         for chart in self.charts:
 		r.a('',name=chart.ID)
@@ -347,8 +429,8 @@ class Report:
 
     
 
-path1 = '1794838_draven/2017-Apr-05_05h35m11s-recipe_fio_aging-1SASHDD-MOVDIST.tar.xz'
-path2 = '1796493_draven/2017-Apr-06_08h18m38s-recipe_fio_aging-1SASHDD-MOVDIST.tar.xz'
+path1 = '1818565_joker/2017-Apr-21_20h33m34s-recipe_fio_aging-1SATASSD-MOVDIST.tar.xz'
+path2 = '1818565_joker/2017-Apr-21_21h27m35s-recipe_fio_aging-1SATASSD-MOVDIST.tar.xz'
 r = Report(path1,path2,'./res/')
 r.save()
 
