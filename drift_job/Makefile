@@ -29,7 +29,7 @@ export TESTVERSION=1.0
 BUILT_FILES=
 
 #All configs must be stated here
-FILES=$(METADATA) runtest.sh Makefile PURPOSE fs-drift.tar.gz run_drift.py wtable.csv func.py wtable.csv
+FILES=$(METADATA) runtest.sh Makefile PURPOSE fs-drift.tar.xz run_drift.py wtable.csv func.py wtable.csv
 
 .PHONY: all install download clean
 

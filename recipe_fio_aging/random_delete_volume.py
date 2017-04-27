@@ -1,22 +1,21 @@
-import subprocess, func
+import subprocess, func, os
 from random import randint
 
 def filter_empty_elements(list):
   return filter(lambda x: x == '', list)
 
-#returns total volume used by file
+#returns total volume used by file (in bytes)
 def get_item_space(item):
-  subprocess.call('du ' +item+ ' > du_tmp/item.du',shell=True)
-  return int(func.read_file('du_tmp/item.du','r').split('\t')[0])
+   return os.path.getsize(item)
 
-#returns total volume used by top_directory
+#returns total volume used by top_directory (du returns size in KB, so *1000)
 def get_used_space(top_directory):
+  subprocess.call('rm -rf du_tmp; mkdir du_tmp',shell=True)
   subprocess.call('du -c ' +top_directory+ '| grep total > du_tmp/used.du',shell=True)
-  return int(func.read_file('du_tmp/used.du','r').split('\t')[0])
+  return int(func.read_file('du_tmp/used.du','r').split('\t')[0])*1000
 
 def delete_volume(mountpoint, delete):
-	subprocess.call('rm -rf du_tmp; mkdir du_tmp',shell=True)
-	files = func.recursive_glob(mountpoint, '*')
+	files = filter(lambda x: os.path.getsize(x) != 0, func.recursive_glob(mountpoint, '*'))
 
 	used_space = get_used_space(mountpoint)
 
@@ -29,7 +28,7 @@ def delete_volume(mountpoint, delete):
   
   		item = files[randint(0,len(files)-1)]
   		space = get_item_space(item)
-  		subprocess.call('rm -rf '+item,shell=True)
+		os.remove(item)
   
   		deleted_space += space
   		files.remove(item)

@@ -11,15 +11,19 @@ def load_and_mount(fsystem, image, device, mountpoint):
 	subprocess.call('umount '+mountpoint, shell=True)
 	subprocess.call('wipefs -a '+device,shell = True)
 	if fsystem == 'ext4':
-		subprocess.call('e2image -r '+image[:-4]+' '+device+'>>./out/log.out', shell=True)
+		subprocess.call('e2image -r '+image+' '+device+'>>./out/log.out', shell=True)
 	if fsystem == 'xfs':
-		subprocess.call('xfs.mdrestore '+image+' '+device+'>>./out/log.out', shell=True)
+		subprocess.call('xfs_mdrestore '+image+' '+device+'>>./out/log.out', shell=True)
 	subprocess.call('mount '+device+' '+mountpoint, shell=True)
 
-def log_fragmentation(fsystem, device, mountpoint, j):
+def log_fragmentation(fsystem, device, mountpoint, j, prefix):
 	if fsystem == 'ext4':
-		subprocess.call('e2freefrag '+device+' > ./out/'+str(j*10)+'/free_space.frag',shell=True)
-	func.used_space_frag(mountpoint, j)
+		subprocess.call('e2freefrag '+device+' > ./out/'+str(j*10)+'/'+prefix+'free_space.frag',shell=True)
+	if fsystem == 'xfs':
+		subprocess.call('xfs_info '+device+' > ./out/'+str(j*10)+'/xfs_info',shell=True)
+		agcount = int(func.read_file('./out/'+str(j*10)+'/xfs_info','r').split('\n')[0].split('agcount=')[1].split(', agsize')[0])
+		subprocess.call('for AGNO in seq 0 '+str(agcount-1)+';do /usr/sbin/xfs_db -r -c "freesp -s -a $AGNO" '+device+' 1>>./out/'+str(j*10)+'/'+prefix+'free_space.frag;done',shell=True)
+	subprocess.call('du -c '+mountpoint+' > ./out/'+str(j*10)+'/du.frag',shell=True)
 	subprocess.call('df '+device+' > ./out/'+str(j*10)+'/df.frag',shell=True)
 
 parser = optparse.OptionParser('usage: python run_test.py [options]')
@@ -33,7 +37,7 @@ parser.add_option('-d', '--depth',dest='depth', default='1', type='string', help
 
 
 fsystem = options.fsystem
-image = options.image
+image = options.image[:-4]
 device = options.device
 mountpoint = '/RHTSspareLUN1'
 subprocess.call('mkdir '+mountpoint, shell=True)
@@ -54,9 +58,12 @@ for j in range(1,int(options.depth)+1):
 		logging.info('loading '+image+' on device '+device)
 	 	load_and_mount(fsystem, image, device, mountpoint)
 	 	deleted_volume = delete_volume(mountpoint, j*10)
-		logging.info('deleted_volume: '+str(deleted_volume))
-		log_fragmentation(fsystem, device, mountpoint, j)
-	 	test = 'fio' + recipeString +' --write_bw_log='+result_directory+'job_' + str(i) + ' --write_lat_log='+result_directory+'lat_' + str(i) + ' --write_hist_log='+result_directory+'hist_' + str(i) + ' --write_iops_log='+result_directory+'iops_' + str(i) + ' --output='+result_directory+'job_'+str(i)+'.out'
+		print str(deleted_volume/1000000)+'MB'
+		logging.info('deleted_volume: '+str(deleted_volume/1000000)+'MB')
+		subprocess.call('umount '+mountpoint,shell=True)
+		subprocess.call('mount '+device+' '+mountpoint,shell=True)
+		log_fragmentation(fsystem, device, mountpoint, j, 'pretest_')
+	 	test = 'fio' + recipeString +' --write_bw_log='+result_directory+'job_' + str(i) + ' --write_lat_log='+result_directory+'lat_' + str(i) +' --write_iops_log='+result_directory+'iops_' + str(i) + ' --output='+result_directory+'job_'+str(i)+'.out'
 	   
 	 	logging.info('initializing')
 		process = subprocess.Popen(("sync").split(), stdout=subprocess.PIPE)
@@ -69,10 +76,12 @@ for j in range(1,int(options.depth)+1):
 	 	logging.info('clean_cache')
 	 	logging.info(out)
 		logging.info(test)
-	 
+	 	
 	 	subprocess.call(test,shell=True)	
 	 	logging.info('test over')
 
+		log_fragmentation(fsystem, device, mountpoint, j, 'posttest_')
+		func.test_space_frag(mountpoint, j)
 
 	 
 logging.info('All jobs iterated, script ends') 

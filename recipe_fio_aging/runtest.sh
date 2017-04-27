@@ -38,7 +38,7 @@ if [[ -n "${TEST_PARAM_RECIPE_FIO:+x}" ||  "$#" -gt 0 ]]; then  ## Fails if TEST
 	FIOCMD="$TEST_PARAM_RECIPE_FIO"
     fi
     
-    ARGLIST=`getopt -o 's:n:f:t:D:r:d:' --long 'sync:,numjob:,fsystem:,tag:,device:,recipe:,depth:' -n $0 -- $FIOCMD`
+    ARGLIST=`getopt -o 's:n:f:t:D:r:d:q:' --long 'sync:,numjob:,fsystem:,tag:,device:,recipe:,depth,:drifttype' -n $0 -- $FIOCMD`
     if [ $? -ne 0 ]; then
 	usage_msg;
 	exit 1;
@@ -56,6 +56,7 @@ if [[ -n "${TEST_PARAM_RECIPE_FIO:+x}" ||  "$#" -gt 0 ]]; then  ## Fails if TEST
             -r|--recipe)      shift;    RECIPE="$1";;
             -t|--tag)         shift;    TAG="$1";;
             -d|--depth)       shift;    DEPTH="$1";;
+	    -q|--drifttype)   shift;    DRIFTTYPE="$1";;
 	    -h|--help)		usage_msg;
     				exit 1;;
 	    --)			break;;
@@ -77,13 +78,13 @@ if [[ -e /root/storagePASS ]]
 
 	RSYNC_SERVER="saturnv.tpb.lab.eng.brq.redhat.com::perf"
 	RSYNC_OPTIONS="-avz --no-owner --no-group --chmod=Da+r,a+w,a+X,Fa+r,a+w"
-	IMAGE="/fsage_thesis/${KERNELVERSION}_${DISTRO}/images/*${FSYSTEM}-${TAG}*.bz2"
+	IMAGE="/fsage_thesis/${KERNELVERSION}_${DISTRO}/${HOST}_images/*${FSYSTEM}-${TAG}*-${DRIFTTYPE}*.bz2"
 	
 	rsync $RSYNC_OPTIONS ${RSYNC_SERVER}${IMAGE} ./
 
 	IMAGE=$(ls *bz2)
 
-	RESULT="./$(date '+%Y-%b-%d_%Hh%Mm%Ss')-recipe_fio_aging-$TAG"
+	RESULT="./$(date '+%Y-%b-%d_%Hh%Mm%Ss')-recipe_fio_aging-${TAG}-${DRIFTTYPE}"
 	RESULT=${RESULT//[[:space:]]/}
 
 	JOBID=$(python -c "execfile('func.py'); get_jobid()")
@@ -97,7 +98,7 @@ if [[ -e /root/storagePASS ]]
 	python run_tests.py -R $RECIPE -I $IMAGE -F $FSYSTEM -D $DEVICE -d $DEPTH
 
 	XZ_OPT=-T0 tar -Jcvhf $RESULT.tar.xz ./out
-	rhts_submit_log -S $RESULT_SERVER -T $TESTID -l $RESULT
+	rhts_submit_log -S $RESULT_SERVER -T $TESTID -l $RESULT.tar.xz
 
 	echo -e "storage_info=`cat /root/generator_name.txt`\nbenchmark=recipe_fio_aging\nrecipe=${RECIPE}\nbuild=${DISTRO}\nkernel=${KERNELVERSION}\nhostname=${HOSTNAME}\nresult_time=${DATE}_${TIME}\nfilesystem=${FSYSTEM}\nmountpoint=/RHTSspareLUN1\ndevice=${DEVICE}\nimage=${IMAGE}\ndepth=${DEPTH}\nwhiteboard={$BEAKER_JOB_WHITEBOARD}\n`rpm -q -i kernel-$(uname -r) | grep Source`\n" >> ${RESULT}.properties
 	sestatus | grep "SELinux status" | echo "SELinux status="`awk '{print $3}'` >> ${RESULT}.properties
@@ -105,7 +106,7 @@ if [[ -e /root/storagePASS ]]
 
 	cd out
 	echo "Sending output on server" >> log.out
-	logs = ${logs:-`ls *.out`}
+	logs=${logs:-`ls *.out`}
 	for log in $logs;do
 		rhts_submit_log -S $RESULT_SERVER -T $TESTID -l $log
 	done
@@ -128,10 +129,10 @@ if [[ -e /root/storagePASS ]]
 	       rsync ${RSYNC_OPTIONS} $RESULT.tar.xz ${RSYNC_DEST}
 	       rsync ${RSYNC_OPTIONS} $RESULT.properties ${RSYNC_DEST}
 	       
-       	       rhts-report-result $RESULT PASS "./out/log.out"
+       	       rhts-report-result $RESULT.tar.xz PASS "./out/log.out"
 	       rm -rf out
 	  else 
-	      rhts-report-result $RESULT FAIL "./out/log.out"
+	      rhts-report-result $RESULT.tar.xz FAIL "./out/log.out"
 	      rm -rf out
 	 fi  
 fi

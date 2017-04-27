@@ -29,7 +29,7 @@ export TESTVERSION=1.0
 BUILT_FILES=
 
 #All configs must be stated here
-FILES=$(METADATA) runtest.sh Makefile PURPOSE run_tests.py installFio.sh fio-2.13.tar.gz func.py random_delete_volume.py
+FILES=$(METADATA) runtest.sh Makefile PURPOSE run_tests.py installFio.sh fio.tar.xz func.py random_delete_volume.py
 
 .PHONY: all install download clean
 

@@ -1,3 +1,0 @@
-PURPOSE of /performance/simple_fio
-Description: Test generates IO workloads with multiple threads using fio(flexible input/output tool)
-Author: Samuel Petrovic <spetrovi@redhat.com>

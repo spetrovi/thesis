@@ -16,6 +16,12 @@ def gather_info():
   subprocess.call('sysctl -a > ./out/sysctl_info',shell=True)
   subprocess.call('tuned-adm active > ./out/tuned_info',shell=True)
 
+def test_space_frag(mountpoint, index):
+	test_files = glob.glob(mountpoint+'/job*')
+	for tfile in test_files:
+		print 'xfs_io -c fiemap '+tfile+'> ./out/'+str(index*10)+'/'+str(tfile.split('/')[-1:])+'.frag'
+		subprocess.call('xfs_io -c fiemap '+tfile+'> ./out/'+str(index*10)+'/'+tfile.split('/')[-1:][0]+'.frag',shell=True)
+
 
 def used_space_frag(mountpoint, index):
 	data = get_data(mountpoint)

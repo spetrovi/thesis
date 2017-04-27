@@ -7,8 +7,8 @@ yum install -y libaio-devel btrfs-progs
 
 #Install fio from archive
 echo "Installing fio">>./out/log.out
-tar -zxf fio-2.13.tar.gz
-cd fio-master
+tar -Jxf ./fio.tar.xz
+cd fio
 ./configure
 make
 make install

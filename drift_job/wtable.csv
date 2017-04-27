@@ -1,6 +1,6 @@
-# example of user-specified mixed workload for fsstress
-read,0
-create,33
-append,33
-delete,33
-rename,0
+# quick fs aging workload
+create,30
+append,40
+delete,10
+random_write,30
+truncate,40
