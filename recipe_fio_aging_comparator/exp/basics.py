@@ -40,5 +40,5 @@ def generate_rsp_plot(filename):
 #	fig.set_size_inches(4, 3)
 	plt.savefig('fig.png')#,bbox_inches='tight')
 
-generate_rsp_plot(glob.glob('./out_xfs/*rspt.csv')[0])
+generate_rsp_plot(glob.glob('./*rspt.csv')[0])
 

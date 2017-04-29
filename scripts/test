@@ -16,3 +16,5 @@
 16777216 18249408       1 18213748 100.00
       1       1       4       4   0.00
 16777216 18249408       1 18070660 100.00
+(11:44:30 AM) osabart: echo -e "Prace ma:  `detex $(CO)-[01]*.tex | wc -m`\t znaků"
+(11:44:46 AM) osabart: echo "scale=2; `detex -n $(CO)-[01]*.tex | wc -c`/1800;" | bc

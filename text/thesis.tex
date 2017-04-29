@@ -213,7 +213,7 @@ Similarly to XFS, Ext4 use delayed allocation to increase performance and reduce
 In this chapter, I presnet tools which were used to implement automated tests for creating and storing aged file systems and measuring their performance. I will describe the main features and means of their usage. All the presented tools are open source projects.
 
 \section{Beaker}
-Beaker is a project aimed at automating testing workflow. The software can reserve machine from a pool of labs, install OS and packages, configure environment and perform tasks. The whole process is guided by sequence of instructions in an XML format. Examples of usage below.
+Beaker is an open source project aimed at automating testing workflow. The software can provision system from a pool of labs, install OS and packages, configure environment and perform tasks. The whole process is guided by sequence of instructions in an XML format. Examples of usage below.
 
 
 \lstset{language=XML, 
@@ -287,9 +287,9 @@ caption={},
 
 
 \section{FIO}
-Flexible Input/Output tool is a IO workload generator written by Jens Axboe. It is a tool well known for it's flexibility as well as large group of users and contributors. The flexibility is integral for conductuing less artifical and more natural performance tests. However, approaching more natural test behavior, stability of results drop, so ideal equilibrium between these two parameters has to be found.
+Flexible Input/Output tool is a IO workload generator written by Jens Axboe. It is a tool well known for it's flexibility as well as large group of users and contributors. The flexibility is integral for conductuing less artifical and more natural performance tests. However, approaching more natural test behavior, stability of results drop, so ideal equilibrium between these two requirement has to be found.
 
-FIO accept
+FIO accept the workload specification as either a configuration file or a single line. Multiple different jobs can be specified as well as global options for every job. 
 
 %%priklad logu
 
@@ -298,11 +298,17 @@ FIO accept
 \section{Fs-drift}
 fs-drift is a very flexible aging test, that can be used to simulate lots of different workloads. The test is based on random file access and randomly generated mix of requests. These requests can be writes, reads, creates, appends, truncates or deletes.
 
-At the beginning of run time, the top directory is empty, and therefore \textit{create} requests success the most, other requests, such as \textit{read} or \textit{delete}, will fail because not many files has yet been created. Over time, as the file system grows, \textit{create} requests began to fail and other requests will more likely succeede. File system will eventually reach a state of equilibrium, when requests are equaly likely to execute. From this point, the file system would not grow anymore, and the test runs unless one of the \textit{STOP} conditions are met (specified with parameters).
+At the beginning of run time, the top directory is empty, and therefore \textit{create} requests success the most, other requests, such as \textit{read} or \textit{delete}, will fail because not many files has yet been created. Over time, as the file system grows, \textit{create} requests began to fail and other requests will more likely succeede. File system will eventually reach a state of equilibrium, when requests are equaly likely to execute. From this point, the file system would not grow anymore, and the test runs unless one of the \textit{STOP} conditions are met..
+
+The mix of operation probabilities can be specified in separate csv file. Fs-drift will try to issue more \textit{create} operations at the beggining of testing, so other operations execute with higher likeliness.
 
 The file to perform a request on is randomly chosen from the list of indexes. If the type of random distribution is set to \textit{uniform}, all indexes have the same probability to be chosen, see \ref{fig:rand1}. However, if the type of random distribution is set to \textit{gaussian}, the probability will behave according to normal distribution with the center at index 0 and width controled by parameter \textit{gaussian-stddev}. This is usefull for performing cache-tiering tests. Please note, that file index is computed as modulo maximal number of files, therefore instead of accessing negative index values, the test access indexes from the other side of spectrum, see Figure \ref{fig:rand2}
 
 Furthermore, fs-drift offers one more option to influence random distribution. After setting parameter \textit{mean-velocity}, fs-drift will choose files by means of moving random distribution. The principle relies on a simulated time, which runs inside the test. For every tick of the simulated time, the center of bell curve will move on the file index array by the value specified using \textit{mean-velocity} parameter. By enabling this feature, the process of testing moves closer to reality by simulating more natural patterns of file system access (the user won't access file system randomly, but rather works with some set of data at a time). On figure Figure \ref{fig:rand3}, you can see bell curve moving by 5 units two times.
+
+For purpose of this thesis, several changes to the original code had to be made. Besides small errors like invalid Readme information, a bug in code had to be repaired, otherwise the fs-drift would not delete files when issuing \textit{delete} operation, marginally affecting aging process. Without this fix, the volume would just saturate and remain in more or less consistent state for the rest of the runtime.
+
+Furthermore, to be able to inspect and work with the file system while aging process is still running, I added an option to specify \textit{pause file}. If the pause file is present, the fs-drift would not issue any requests and waits until file is removed.
 
 \begin{figure}[!htb]
     \centering
@@ -347,6 +353,7 @@ In this chapter, I describe possibilities of aging new file system, creating fil
 
 
 \section{Aging process}
+Fs-drift was used as the main way to age the file system. 
 
 As the creator states in README, to fill up a file system, maximum number of files and mean size of file should be defined such that the product is greater than the available space. So if the workload is supposed to fill 500GB of space, while having maximum file size of 1GB (therefore mean size is 500MB), maximum number of files should be much higher than 1000. Optimal approach is to define seemingly no upper limit to let the fs-drift fill the volume, therefore numbers as high as $10^8$.
 
@@ -360,9 +367,9 @@ There is an option to specifiy user-defined file to use as a workload table, whi
 Duration of the test is set to 5 hours so the test is usable for testing campaign without oversaturating of the servers.
 
 \section{File system images}
-File system images can be created by using tools developed to inspect file systems in case of emergency. For ext based file systems, there is e2image tool and for xfs, there is xfs\_metadump. Both tools create images as sparse files, so compression is needed.
+File system images can be created by using tools developed to inspect file systems in case of emergency. For Ext* file systems, there is a tool called e2image and for XFS, xfs\_metadump and xfs\_mdrestore. Both tools create images as sparse files, so compression is needed.
 
-E2image tool can save whole ext based file system or just its metadata and offers compresion of image as well. Created images can be further compressed by tools such bzip2 or tar.
+E2image tool can save whole contents of a file system or just its metadata and offers compresion of image as well. Created images can be further compressed by tools such bzip2 or tar. Such images can be later replayed back on a device. From that point, file system can be mounted and revised.
 
 \lstset{language=bash, 
 numbers=none, 
@@ -380,25 +387,19 @@ tabsize=3,
 caption={sdad},
 }
 
-%%\noindent Creating compressed image using e2image:
 \begin{lstlisting}[language=bash, caption={Creating compressed image using e2image}][frame=single]
   $ e2image -Q $DEVICE $NAME.qcow2
 \end{lstlisting}
 
-\noindent Such images can be later replayed back on a device. From that point, file system can be mounted and revised.
-
-%%noindent :
 \begin{lstlisting}[language=bash, caption={Reloading compressed image}][frame=single]
   $ e2image -r $NAME.qcow2 $DEVICE
 \end{lstlisting}
 
-Xfs\_metadump saves XFS file system metadata to a file. Due to privacy reasons file names are obsfucated (can be disabled by -o parameter). As well as e2image tool, the image file is sparse, but xfs\_metadump doesn't offer a way to compress the output. However, output can be redirected to stdout from where it can be passed to a compression tool.
+Xfs\_metadump saves XFS file system metadata to a file. Due to privacy reasons file names are obsfucated (can be disabled by -o parameter). As well as e2image tool, the image file is sparse, but xfs\_metadump doesn't offer a way to compress the output. However, output can be redirected to stdout and compressed further on. Generated images, when uncompressed, can be replayed back on device by tool xfs\_mdrestore. File system can be then mouned and inspected as needed:
 
 \begin{lstlisting}[language=bash, caption={Creating compressed image using xfs\_metadump}][frame=single]
   $ xfs_metadump -o $DEVICE -|bzip2 > $NAME
 \end{lstlisting}
-
-Such images, when uncompressed can be replayed back on device by tool xfs\_mdrestore. File system can be then mouned and inspected as needed:
 
 \begin{lstlisting}[language=bash, caption={Reloading image using xfs\_mdrestore}][frame=single]
   $ xfs_mdrestore $NAME $DEVICE
@@ -500,32 +501,39 @@ Parameters available for recipe\_fio\_aging:
 \chapter{Testing environment}
 In this chapter, I describe testing environment and storage used for testing with created tests.
 
-\section{Used machines}
-The aging process took place on these Machines:
-\begin{compactenum}
-  \item Model: LENOVO System x3250 M6
-  \item CPU: Intel(R) Xeon(R) CPU E3-1230 v5 @ 3.40GHz (4 cores), arch i386 x86\_64 
-  \item Memory: 16384 MB
-  \item Storage: 
-  \begin{compactenum}
-	\item EG0600FBVFP HP Proliant HardDrive
-	\item Interface: Serial Attached SCSI
-	\item Capacity: 600 GB
-	\end{compactenum}
-\end{compactenum}  
+\begin{tabular}{|l|l|}
+\hline
+   \multicolumn{2}{|l|}{Machine} \\ \hline
+    Model & Lenovo System x3250 M6 \\
+    \hline
+    CPU & Intel(R) Xeon(R) E3-1230 v5 \\
+    \hline
+    Clock speed & 3.40GHz (4 cores) \\
+    \hline
+    Memory & 16284MB \\
+    \hline
+    \multicolumn{2}{|l|}{Storage} \\ \hline
+    Device & EG0600FBVFP HP Proliant HardDrive \\ \hline
+    Interface & Serial Attached SCSI\\ \hline
+    Capacity & 600GB\\ \hline
+\end{tabular}
 
-
-\begin{compactenum}
-  \item Model: IBM x3650 M4
-  \item CPU: Intel(R) Xeon(R) CPU E5-2620 v2 @ 2.10GHz 
-  \item Memory: 65536 MB
-  \item Storage:
-  \begin{compactenum}
-	\item 2xSSDSC2BB480G4i IBM Solid State Drive
-	\item Interface: Serial ATA
-	\item Capacity: 480 GB
-	\end{compactenum}
-\end{compactenum}
+\begin{tabular}{|l|l|}
+\hline
+   \multicolumn{2}{|l|}{Machine} \\ \hline
+    Model & IBM x3650 M4 \\
+    \hline
+    CPU & Intel(R) Xeon(R) CPU E5-2620 v2 \\
+    \hline
+    Clock speed & 2.10GHz  (4 cores) \\
+    \hline
+    Memory &  65536MB\\
+    \hline
+    \multicolumn{2}{|l|}{Storage} \\ \hline
+    Device 2x & SSDSC2BB480G4i IBM Solid State Drive \\ \hline
+    Interface &  Serial ATA\\ \hline
+    Capacity & 480GB\\ \hline
+\end{tabular}
 
 The system installed on machines is RHEL-7.2 with kernel 3.10.0-514.el7.x86\_64 
 
