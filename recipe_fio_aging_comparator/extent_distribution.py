@@ -1,36 +1,29 @@
-import numpy as np
-import sys, json, os,  fnmatch, subprocess
 from random import randint
 
-class Extent_distribution:
-  def __init__(self, _file):
-    ffh = map(lambda x: int(x),filter(lambda x: x!= '', _file.split('\n')))
-    #self.bins = bins
-    #self.extents = extents
-    #self.blocks = blocks
-    self.ID = 'ext_dist_'+str(randint(0,10000)) #hash
+def remove_space(line):
+    return filter(lambda x: x!='', line.split(' '))
 
-    self.bins = list(set(ffh))
-    if len(self.bins)>1:
-  	self.bins.sort()
-    self.bins = map(lambda x: str(x), self.bins)
-    self.extents = []
-    for item in self.bins:
-	self.extents.append(str(ffh.count(int(item))))
+class Used_space_fragmentation:
+  def __init__(self, bins, frag, opt, destination):
+		self.bins = bins
+		self.frag = frag
+		self.opt = opt
+		self.destination = destination
+		self.ID = 'used_'+str(randint(0,10000)) #hash
+		self.save()
 
-  
   def generate_histogram_script(self):
     js = 'var '
     js += self.ID+'''_histogram;\n$(document).ready(function () {'''+self.ID+'''_histogram= new Highcharts.Chart({
       chart: {zoomType: 'xy',
       width: 900,
       height: 600,
-      backgroundColor: '#F2F2F2',\n renderTo: \''''+self.ID+'''_histogram\'},\ntitle: {text: \'Histogram of extent distribution\'},'''
+      backgroundColor: '#F2F2F2',\n renderTo: \''''+self.ID+'''_histogram\'},\ntitle: {text: \'Histogram of used space\'},'''
     js += '''xAxis: [{categories: ['''
     for _bin in self.bins:
       js += '''\''''+_bin+'''\', '''
     js += '''],'''
-    js += '''title: {text: 'Throughput [MB/s]'}}],
+    js += '''title: {text: 'Extent size'}}],
     plotOptions: {
         column: {
             groupPadding: 0,
@@ -46,10 +39,16 @@ class Extent_distribution:
       series: [
       {
       name: \''''      
-    js += 'extents of file' + '''\',\ncolor: 'rgba(0, 0, 255, 0.50)',\n	type: 'column',\n	data: [\n'''
-    for value in self.extents:
+    js += 'fragments' + '''\',\ncolor: 'rgba(0, 0, 255, 0.50)',\n	type: 'column',\n	data: [\n'''
+    for value in self.opt:
       js += str(value)+',\n'
-    js += '''],visible: true,\n	tooltip: {headerFormat: '<em>Extent size {point.key}</em><br/>'}\n},\n ]});})\n'''
+    js += '''],visible: true,\n	tooltip: {headerFormat: '<em>Extent size {point.key}</em><br/>'}\n},\n {\n	name: \''''
+    
+    js += 'optimal files' + '''\',\ncolor:'rgba(0, 255, 0, 0.50)',\n	type: 'column',\n	data: [\n'''
+    for value in self.frag:
+      js += str(value)+',\n'
+    js += '''],visible: true,\n	tooltip: {headerFormat: '<em>Extent size {point.key}</em><br/>'}\n},\n'''
+    js += '''\n]});})\n'''
     return js[:-3]+self.button_histogram()
 
   def button_histogram(self):
@@ -68,7 +67,7 @@ class Extent_distribution:
 	<html>
 	<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
-	<title>recipe_fio results</title>
+	<title>free space fragmentation</title>
 	<script type='text/javascript' src='http://code.jquery.com/jquery-1.9.1.js'></script>
         </head>
         <body>
@@ -102,7 +101,7 @@ class Extent_distribution:
 	    }
 	    </style>
 	    </head>
-	<DT><CENTER><STRONG>recipe_fio results on ''' + self.dev
+	<DT><CENTER><STRONG>free space fragmentation on device'''
     report += '''</CENTER> </STRONG>\n  <br>              \n  <br>'''
 
     report += '''<script type='text/javascript' src=\''''+self.ID+'''_histogram.js\'></script>\n'''
@@ -116,11 +115,9 @@ class Extent_distribution:
     return report
 
   def save(self):
-      f = open(self.ID+'_histogram.js','w+')
+      f = open(self.destination+'/'+self.ID+'_histogram.js','w+')
       f.write(self.generate_histogram_script())
       f.close()
-      #f = open('index.html','w+')
-      #f.write(self.make_report())
-      #f.close()
-
-
+#      f = open('index.html','w+')
+#      f.write(self.make_report())
+#      f.close()

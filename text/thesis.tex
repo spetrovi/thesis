@@ -42,13 +42,14 @@
 \usepackage{xcolor} 
 \newcommand{\todo}[1]{\textcolor{red}{\textbf{#1}}}
 \usepackage{listings}
+\usepackage[binary-units=true]{siunitx}
 %%
 %% The following section sets up the metadata of the thesis.
 \thesissetup{
     university    = mu,
     faculty       = fi,
     type          = bc,
-    author        = Samuel Petrovic,
+    author        = Samuel Petrovič,
     gender        = m,
     advisor       = Adam Rambousek,
     title         = {The effects of age on file system performance},
@@ -126,13 +127,13 @@ Such data can be in form of snapshots (e.g. images) of file systems, as was thor
 
 The snapshots were collected nightly over a long period of time (one to three years) on more then fifty file systems. By comparing pairs of snapshots in the sequence, performed operations were estimated, resulting in a very realistic aging workload. However, as some studies suggest, most of files have life span shorter than 24 hours~\cite{Ousterhout:1985:TAU:323647.323631}. Therefore, as Smith and Seltzer admit, by snapshoting every night, this process does not account for most of the created files, resulting in loss of important part of data.
 
-Furthermore, to age a file system sized 1024 megabytes, 87.3 gigabytes of data had to be written, taking 39 hours to complete, rendering the workflow impractical for in-production testing needs.
+Furthermore, to age a file system sized $\SI{1024}{\mega\byte}$, $\SI{87.3}{\giga\byte}$ of data had to be written, taking 39 hours to complete, rendering the workflow impractical for in-production testing needs.
 
 Smith and Seltzer also defined a layout score as a method to evaluate fragmentation of a file system. Layout score is defined as a fraction of blocks of file, which are contiguously allocated. Files of one block size are ignored, since they can't be fragmented, and for every file, first block is ignored too. Evaluation of the whole file system is then computed as an aggregated layout score of all files.
 
 The problem resulting from not tracking shortly lived files can be solved by another approach called collecting traces. Traces are sequences of I/O operations performed by OS, captured at various levels (system call, drivers, network, etc.). The sequence of operations can be replayed back to the file system, aging it in a realistic manner.
 
-Overall, using real-life data to age file systems brings realistic results, but at a cost of higher expenses, such as storing the collected data (meta data snapshot of 500GB Ext4 file system can have up to 500MB). Additionally, to cover cases of different types of file system usage, data from several such file systems have to be collected, expanding the amount of needed data even further. Such data is not always available, rendering this type of approach useful only in cases the researcher is already in possession of said data.
+Overall, using real-life data to age file systems brings realistic results, but at a cost of higher expenses, such as storing the collected data (meta data snapshot of $\SI{500}{\giga\byte}$ Ext4 file system can have up to $\SI{500}{\mega\byte}$). Additionally, to cover cases of different types of file system usage, data from several such file systems have to be collected, expanding the amount of needed data even further. Such data is not always available, rendering this type of approach useful only in cases the researcher is already in possession of said data.
 \section{Synthetic aging simulation}
 Synthetic aging is a type of aging that does not require real-life data for its running. It relies on purely artificial workload performed on a file system, invoking aging factors, such as fragmentation.
 
@@ -348,23 +349,27 @@ Storage generator is a beaker task developed by Jozef Mikovič. It is capable of
 \end{lstlisting}
 
 \chapter{Creating aged file system}
-In this chapter, I describe possibilities of aging new file system, creating file system images and usage of implemented testing task.
+In this chapter, I describe process of developement of file system aging workflow and its implementation as a form of automated test.
 
 
 
 \section{Aging process}
-Fs-drift was used as the main way to age the file system. 
+As mentioned, fs-drift was used as a mean of aging the fresh file system, bringing it to the aged, fragmented state. Fs-drift is quite flexible, therefore a lot of parameters and their impact on the final block layout had to be considered.
 
-As the creator states in README, to fill up a file system, maximum number of files and mean size of file should be defined such that the product is greater than the available space. So if the workload is supposed to fill 500GB of space, while having maximum file size of 1GB (therefore mean size is 500MB), maximum number of files should be much higher than 1000. Optimal approach is to define seemingly no upper limit to let the fs-drift fill the volume, therefore numbers as high as $10^8$.
+Firstly, the amount of fullness had to be taken into account. Heavily used file systems tend to be full at amounts ranging from 75 to 100 percent. However, fs-drift does not offer an option to control the fullness of the file system. As the creator states in README, to fill a file system, maximum number of files and mean size of file should be defined such that the product is greater than the available space. Parameters to overload the volume with are not difficult to come up with. The problem is, the random nature of the test doesn't allow for meaningfull reporoducibility of the reached equilibrium.
 
-%Parameter -t specifies the top directory, which will be used in test, in this workflow it is set to \$MOUNTPOINT.
+This drawback was overridden by a small change in fs-drift code. The possibility to specify a \textit{pause file} was added. After this modification, fs-drift will check if the file exists, and if it does, fs-drift stops to generate additional IO requests until the file is removed. This allows other programs to pause and unpause fs-drift and work with file system in the mean time.
 
-\todo{toto prepisat podla 9year old bench study}
-There is an option to specifiy user-defined file to use as a workload table, which is a desired percentual representation of operations in a workload. Since the goal of this workload is to create fragmented file system in a short time, read and rename operations are irrelevant. Therefore only create, append and delete have representation in this workload. The optimal results were reached when every operation had equal representation, e.g. 33\%
+When running the test automatically (e.g. via Beaker interface), the script will trigger separate thread, which will log free space fragmentation at specified interval. The thread will also check the amount of used space. If this amount is larger than a specified value, fs-drift is stopped and specified amount of volume is freed. This functionality allows for direct control of the amount of used space during the aging process\footnotemark[1].
+\footnotetext[1]{For all the changes made to master branch of fs-drift, see Appendix B}
+
+In fs-drift, there is an option to define a workload table, describing probability of used operations. Since the goal of this workload is to create fragmented file system in a short time, operations which do not alter file system block layout are not included. Therefore only create, delete, append, trucate and random write have representation in this workload. 
+
+%The optimal results were reached when every operation had equal representation, e.g. 33\%
 
 %The fs-drift allows directories up to defined level to create. The directory in which a file is directly affect its chance to be selected for a chosen operation, so by using only one directory, the equilibrium happens too fast, long before the file system is filled completely. Therefore we allow up to three levels of directories to be created.
 
-Duration of the test is set to 5 hours so the test is usable for testing campaign without oversaturating of the servers.
+%Duration of the test is set to 5 hours for the pilot testing and 10 hours 
 
 \section{File system images}
 File system images can be created by using tools developed to inspect file systems in case of emergency. For Ext* file systems, there is a tool called e2image and for XFS, xfs\_metadump and xfs\_mdrestore. Both tools create images as sparse files, so compression is needed.
@@ -445,17 +450,21 @@ Xfs\_metadump saves XFS file system metadata to a file. Due to privacy reasons f
 
 %However, after few runs, I decided not to use this approach for actual aging, because the time needed to fill and appropriately age the filesystem simply took very long. Instead, I was looking for other, already created tools I could use.
 
-\section{Implementation}
-Workflow of image creating is contained in the beaker task drift\_job. After extracting fs-drift, the main script starts python script, which handles the process of running fs-drift. Settings of fs-drift are passed as a parameter and are parsed inside the script. Before running the fs-drift, python daemon thread is triggered to log free space fragmentation periodically while fs-drift is running. After the aging process is done, overall fragmentation is logged.
+\section{Implementation details}
+Workflow of image creating is contained in the Beaker task drift\_job. After extracting fs-drift, the main script starts python script, which handles the process of running fs-drift. Settings of fs-drift are passed as a parameter and are parsed inside the script. Before running the fs-drift, python daemon thread is triggered to log free space fragmentation periodically while fs-drift is running. The thread also checks amount of used space and if needed, free some volume. After the aging process is done, used space fragmentation is logged. 
+
+After this process, the image is archived using \textit{bzip2}. All the generated data and information about environment is archived as well and text file describing the test is generated. These three files are then sent (via \textit{rsync}) to the specified destination.
 
 After the aging process, the script use presented system tools to create and compress the image. Information about system is gathered as well and all the logs are archived and sent to data collecting server.
 Parameters available for drift\_job:
 \begin{compactenum}
-  \item -s|--sync, flag to signalise wheather or not to send data to server (usefull for developing purposes)
-  \item -m|--mountpoint
-  \item -d|--device
-  \item -r|--recipe, parameters to pass to fs-drift
-  \item -t|--tag, string to distinguish different tests
+  \item -s, --sync, flag to signalise weather or not to send data to server (usefull for developing purposes)
+  \item -M, --mountpoint
+  \item -d, --disk, device usded during test
+  \item -r, --recipe, parameters to pass to fs-drift
+  \item -t, --tag, string to distinguish different storage configurations
+  \item -q, --drifttype, string to distinguish different aging configurations
+  \item -m, --maintain, parameter to specify maximum volume usage and amount to be freed
   \end{compactenum}
 
 \chapter{Performance testing of aged file system}

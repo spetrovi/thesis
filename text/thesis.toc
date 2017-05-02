@@ -1,59 +1,31 @@
 \boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
 \defcounter {refsection}{0}\relax 
 \select@language {english}
-\defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {1}\bfseries Introduction}{1}{chapter.1}
-\defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {2}\bfseries Related work}{3}{chapter.2}
-\defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {2.1}\slshape Aging file system using real-life data}{3}{section.2.1}
-\defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {2.2}\slshape Synthetic aging simulation}{4}{section.2.2}
-\defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {3}\bfseries File systems}{5}{chapter.3}
-\defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {3.1}\slshape XFS}{6}{section.3.1}
-\defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {3.2}\slshape Ext4}{6}{section.3.2}
-\defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {4}\bfseries Used tools}{9}{chapter.4}
-\defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {4.1}\slshape Beaker}{9}{section.4.1}
-\defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {4.2}\slshape FIO}{10}{section.4.2}
-\defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {4.3}\slshape Fs-drift}{10}{section.4.3}
-\defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {4.4}\slshape Storage generator}{13}{section.4.4}
-\defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {5}\bfseries Creating aged file system}{15}{chapter.5}
-\defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {5.1}\slshape Aging process}{15}{section.5.1}
-\defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5.2}\slshape File system images}{15}{section.5.2}
-\defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5.3}\slshape Implementation}{16}{section.5.3}
-\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {5.2}\slshape File system images}{16}{section.5.2}
+\contentsline {section}{\numberline {5.3}\slshape Implementation details}{17}{section.5.3}
 \contentsline {chapter}{\numberline {6}\bfseries Performance testing of aged file system}{19}{chapter.6}
-\defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {6.1}\slshape Benchmark settings}{19}{section.6.1}
-\defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {6.2}\slshape Test structure}{19}{section.6.2}
-\defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {7}\bfseries Testing environment}{21}{chapter.7}
-\defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {7.1}\slshape Storage}{21}{section.7.1}
-\defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {7.1.1}\rmfamily HDD}{22}{subsection.7.1.1}
-\defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {7.1.2}\rmfamily SSD}{22}{subsection.7.1.2}
-\defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {8}\bfseries Results}{23}{chapter.8}
-\defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {8.1}\slshape Performance of aged file system}{23}{section.8.1}
-\defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {8.2}\slshape Differences betweem XFS and EXT4}{23}{section.8.2}
-\defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {8.3}\slshape Differences accross different storage}{23}{section.8.3}
-\defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {9}\bfseries Conclusion}{25}{chapter.9}
