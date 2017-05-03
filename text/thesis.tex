@@ -191,12 +191,12 @@ Files which are non-continous are stored in form of extents, which is one or mor
 
 Information about how many blocks does a file occupy, as well as other information like date of creation, date of last access or access permissions is known as metadata, e.g. data about stored data. This information is stored separately from the content of files. On modern file systems, metadata are stored in objects called index nodes (e.g. inodes). Each file a file system manages is associated with an inode and every inode has its number in an inode table. On top of that the file system stores metadata about itself (unrelated to any specific file), such as information about bad sectors, free space or block availability in a structure called superblock.
 
-In this thesis, targeted file systems are two most popular Linux file systems, XFS and Ext4~\cite{Lu:2014:SLF:2578042.2560012}, which are also main Red Hat supported file systems. These file systems belong to the group of file systems called journaling file systems.
+In this thesis, targeted file systems are two most popular Linux file systems~\cite{Lu:2013:SLF:2591272.2591276}, XFS~\cite{xfs:qhe} and Ext4~\cite{ext4:qhe}, which are also main Red Hat supported file systems. These file systems belong to the group of file systems called journaling file systems.
 
 Journaling file system keeps a structure called journal, which is a buffer of changes not yet commited to the file system. After system failure, these planned changes can be easily read from the journal, thus making the file system easily fully operational, and in correct and consistent state again.
 
 \section{XFS}
-XFS~\cite{xfs:page} is a 64-bit journaling file system known for its high scalability (up to 9 exabytes) and great performance. Such performance is reached by architecture based on allocation groups.
+XFS is a 64-bit journaling file system known for its high scalability (up to 9 exabytes) and great performance. Such performance is reached by architecture based on allocation groups.
 
 Allocation groups are euqally sized linear regions within file system. Each allocation group manages its own inodes and free space, therefore increasing parallelism. Architecture of this design enables for significant scalability of bandwidth, threads, and size of file system, as well as files, simply because multiple processes and threads can access the file system simultaneously.
 
@@ -212,7 +212,7 @@ Ext4, also called fourth extended filesystem is a 48-bit journaling file system 
 Similarly to XFS, Ext4 use delayed allocation to increase performance and reduce fragmentation. For cases of fragmentation that still occur, Ext4 provide support for online defragmentation and e4defrag tool to defragment either single file, or whole file system.
 
 \chapter{Used tools}
-In this chapter, I presnet tools which were used to implement automated tests for creating and storing aged file systems and measuring their performance. I will describe the main features and means of their usage. All the presented tools are open source projects.
+In this chapter, I presnet tools which were used to implement automated tests for creating and storing aged file systems and measuring their performance. Furthermore, I describe the main features and means of their usage. All the presented tools are open source projects.
 
 \section{Beaker}
 Beaker is an open source project aimed at automating testing workflow. The software can provision system from a pool of labs, install OS and packages, configure environment and perform tasks. The whole process is guided by sequence of instructions in an XML format. Examples of usage below.
@@ -300,17 +300,13 @@ FIO accept the workload specification as either a configuration file or a single
 \section{Fs-drift}
 fs-drift is a very flexible aging test, that can be used to simulate lots of different workloads. The test is based on random file access and randomly generated mix of requests. These requests can be writes, reads, creates, appends, truncates or deletes.
 
-At the beginning of run time, the top directory is empty, and therefore \textit{create} requests success the most, other requests, such as \textit{read} or \textit{delete}, will fail because not many files has yet been created. Over time, as the file system grows, \textit{create} requests began to fail and other requests will more likely succeede. File system will eventually reach a state of equilibrium, when requests are equaly likely to execute. From this point, the file system would not grow anymore, and the test runs unless one of the \textit{STOP} conditions are met..
+At the beginning of run time, the top directory is empty, therefore \textit{create} requests success the most, other requests, such as \textit{read} or \textit{delete}, will fail because not many files has yet been created. Over time, as the file system grows, \textit{create} requests began to fail and other requests will more likely succeede. File system will eventually reach a state of equilibrium, when requests are equaly likely to execute. From this point, the file system would not grow anymore, and the test runs unless one of the stop conditions are met.
 
 The mix of operation probabilities can be specified in separate csv file. Fs-drift will try to issue more \textit{create} operations at the beggining of testing, so other operations execute with higher likeliness.
 
 The file to perform a request on is randomly chosen from the list of indexes. If the type of random distribution is set to \textit{uniform}, all indexes have the same probability to be chosen, see \ref{fig:rand1}. However, if the type of random distribution is set to \textit{gaussian}, the probability will behave according to normal distribution with the center at index 0 and width controled by parameter \textit{gaussian-stddev}. This is usefull for performing cache-tiering tests. Please note, that file index is computed as modulo maximal number of files, therefore instead of accessing negative index values, the test access indexes from the other side of spectrum, see Figure \ref{fig:rand2}
 
-Furthermore, fs-drift offers one more option to influence random distribution. After setting parameter \textit{mean-velocity}, fs-drift will choose files by means of moving random distribution. The principle relies on a simulated time, which runs inside the test. For every tick of the simulated time, the center of bell curve will move on the file index array by the value specified using \textit{mean-velocity} parameter. By enabling this feature, the process of testing moves closer to reality by simulating more natural patterns of file system access (the user won't access file system randomly, but rather works with some set of data at a time). On figure Figure \ref{fig:rand3}, you can see bell curve moving by 5 units two times.
-
-For purpose of this thesis, several changes to the original code had to be made. Besides small errors like invalid Readme information, a bug in code had to be repaired, otherwise the fs-drift would not delete files when issuing \textit{delete} operation, marginally affecting aging process. Without this fix, the volume would just saturate and remain in more or less consistent state for the rest of the runtime.
-
-Furthermore, to be able to inspect and work with the file system while aging process is still running, I added an option to specify \textit{pause file}. If the pause file is present, the fs-drift would not issue any requests and waits until file is removed.
+Furthermore, fs-drift offers one more option to influence random distribution. After setting parameter \textit{mean-velocity}, fs-drift will choose files by means of moving random distribution. The principle relies on a simulated time, which runs inside the test. For every tick of the simulated time, the center of bell curve will move on the file index array by the value specified using \textit{mean-velocity} parameter. By enabling this feature, the process of testing moves closer to reality by simulating more natural patterns of file system access (the user won't access file system randomly, but rather works with some set of data at a time). On Figure \ref{fig:rand3}, you can see bell curve moving by 5 units two times.
 
 \begin{figure}[!htb]
     \centering
@@ -337,6 +333,19 @@ Furthermore, to be able to inspect and work with the file system while aging pro
 \label{fig:rand3}
     \end{minipage}
 \end{figure}
+
+For purpose of this thesis, several changes had to be made to the original code. Besides small errors like invalid Readme information, a bug in code had to be repaired, otherwise the fs-drift would not delete files while issuing \textit{delete} operation, marginally affecting aging process. Without this fix, the volume would just saturate and remain in more or less consistent state for the rest of the runtime.
+
+Furthermore, to be able to inspect and work with the file system while aging process is still running, I added an option to specify \textit{pause file}. If the pause file is present, the fs-drift would not issue any requests and waits until the file is removed\footnotemark[1].
+\footnotetext[1]{For all the changes made to master branch of fs-drift, see Appendix B}
+
+Fs-drift additionally offers more parameters to control the test run such as number of directories, levels of directories, or enabling \textit{fsync}/\textit{fdatasync} to be called. To stop the fs-drift, one of the stop conditions have to be met. The stop condition can be either reached maximal number of performed operations, running out of time, or apparance of stop file.
+
+For evaulation of the aging process, fs-drift can log latency of the performed opperations. However, the log doesn't differentiate between the operations, which could be usefull for further research.
+
+Used configuration of fs-drift for purposes of aging testing is further described in chapter 4.
+
+
 
 \section{Storage generator}
 Storage generator is a beaker task developed by Jozef Mikovič. It is capable of automated configuration of storage on a machine. In a single-device mode, storage generator simply creates new partition on a given device and creates and mounts file system. In a recipe mode, storage generator follows set of bash instruction to create more advanced configurations such as merging multiple devices using LVM, creating LVM cache or encrypted volume.

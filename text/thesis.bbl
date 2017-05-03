@@ -298,5 +298,170 @@
     \field{journaltitle}{GitHub repository}
     \field{year}{2017}
   \endentry
+
+  \entry{Lu:2013:SLF:2591272.2591276}{inproceedings}{}
+    \name{author}{4}{}{%
+      {{hash=LL}{%
+         family={Lu},
+         familyi={L\bibinitperiod},
+         given={Lanyue},
+         giveni={L\bibinitperiod},
+      }}%
+      {{hash=ADAC}{%
+         family={Arpaci-Dusseau},
+         familyi={A\bibinitperiod-D\bibinitperiod},
+         given={Andrea\bibnamedelima C.},
+         giveni={A\bibinitperiod\bibinitdelim C\bibinitperiod},
+      }}%
+      {{hash=ADRH}{%
+         family={Arpaci-Dusseau},
+         familyi={A\bibinitperiod-D\bibinitperiod},
+         given={Remzi\bibnamedelima H.},
+         giveni={R\bibinitperiod\bibinitdelim H\bibinitperiod},
+      }}%
+      {{hash=LS}{%
+         family={Lu},
+         familyi={L\bibinitperiod},
+         given={Shan},
+         giveni={S\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {USENIX Association}%
+    }
+    \strng{namehash}{LL+1}
+    \strng{fullhash}{LLADACADRHLS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{booktitle}{Proceedings of the 11th USENIX Conference on File and
+  Storage Technologies}
+    \field{pages}{31\bibrangedash 44}
+    \field{series}{FAST'13}
+    \field{title}{A Study of Linux File System Evolution}
+    \verb{url}
+    \verb http://dl.acm.org/citation.cfm?id=2591272.2591276
+    \endverb
+    \list{location}{1}{%
+      {San Jose, CA}%
+    }
+    \field{year}{2013}
+    \warn{\item Can't use 'location' + 'address'}
+  \endentry
+
+  \entry{xfs:qhe}{inproceedings}{}
+    \name{author}{6}{}{%
+      {{hash=SA}{%
+         family={Sweeney},
+         familyi={S\bibinitperiod},
+         given={Adam},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=DD}{%
+         family={Doucette},
+         familyi={D\bibinitperiod},
+         given={Doug},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=HW}{%
+         family={Hu},
+         familyi={H\bibinitperiod},
+         given={Wei},
+         giveni={W\bibinitperiod},
+      }}%
+      {{hash=AC}{%
+         family={Anderson},
+         familyi={A\bibinitperiod},
+         given={Curtis},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=NM}{%
+         family={Nishimoto},
+         familyi={N\bibinitperiod},
+         given={Mike},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=PG}{%
+         family={Peck},
+         familyi={P\bibinitperiod},
+         given={Geoff},
+         giveni={G\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {USENIX Association}%
+    }
+    \strng{namehash}{SA+1}
+    \strng{fullhash}{SADDHWACNMPG1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{booktitle}{Proceedings of the 1996 Annual Conference on USENIX
+  Annual Technical Conference}
+    \field{pages}{1\bibrangedash 1}
+    \field{series}{ATEC '96}
+    \field{title}{Scalability in the XFS File System}
+    \verb{url}
+    \verb http://dl.acm.org/citation.cfm?id=1268299.1268300
+    \endverb
+    \list{location}{1}{%
+      {San Diego, CA}%
+    }
+    \field{year}{1996}
+    \warn{\item Can't use 'location' + 'address'}
+  \endentry
+
+  \entry{ext4:qhe}{inproceedings}{}
+    \name{author}{6}{}{%
+      {{hash=MA}{%
+         family={Mathur},
+         familyi={M\bibinitperiod},
+         given={Avantika},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=CM}{%
+         family={Cao},
+         familyi={C\bibinitperiod},
+         given={Mingming},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=BS}{%
+         family={Bhattacharya},
+         familyi={B\bibinitperiod},
+         given={Suparna},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=DA}{%
+         family={Dilger},
+         familyi={D\bibinitperiod},
+         given={Andreas},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=TA}{%
+         family={Tomas},
+         familyi={T\bibinitperiod},
+         given={Alex},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=VL}{%
+         family={Vivier},
+         familyi={V\bibinitperiod},
+         given={Laurent},
+         giveni={L\bibinitperiod},
+      }}%
+    }
+    \keyw{imported}
+    \strng{namehash}{MA+1}
+    \strng{fullhash}{MACMBSDATAVL1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{booktitle}{Proceedings of the Linux Symposium}
+    \field{pages}{21\bibrangedash 33}
+    \field{title}{The new ext4 filesystem: current status and future plans}
+    \field{volume}{2}
+    \verb{file}
+    \verb :/home/felix/Copy/Diplom/Docear/projects/Diplom/literature_repository
+    \verb /The new ext4 filesystem - current status and future plans.pdf:PDF
+    \endverb
+    \field{year}{2007}
+  \endentry
 \endsortlist
 \endinput
