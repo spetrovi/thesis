@@ -4,10 +4,11 @@ def remove_space(line):
     return filter(lambda x: x!='', line.split(' '))
 
 class Used_space_fragmentation:
-  def __init__(self, bins, frag, opt, destination):
+  def __init__(self, bins, frag, opt, destination, filenum):
 		self.bins = bins
 		self.frag = frag
 		self.opt = opt
+		self.filenum = filenum
 		self.destination = destination
 		self.ID = 'used_'+str(randint(0,10000)) #hash
 		self.save()
@@ -18,7 +19,7 @@ class Used_space_fragmentation:
       chart: {zoomType: 'xy',
       width: 900,
       height: 600,
-      backgroundColor: '#F2F2F2',\n renderTo: \''''+self.ID+'''_histogram\'},\ntitle: {text: \'Histogram of used space\'},'''
+      backgroundColor: '#F2F2F2',\n renderTo: \''''+self.ID+'''_histogram\'},\ntitle: {text: \'Histogram of used space, frag='''+str(sum(self.frag))+', opt='+str(sum(self.opt))+'/'+str(self.filenum)+'''\'},'''
     js += '''xAxis: [{categories: ['''
     for _bin in self.bins:
       js += '''\''''+_bin+'''\', '''
@@ -40,12 +41,12 @@ class Used_space_fragmentation:
       {
       name: \''''      
     js += 'fragments' + '''\',\ncolor: 'rgba(0, 0, 255, 0.50)',\n	type: 'column',\n	data: [\n'''
-    for value in self.opt:
+    for value in self.frag:
       js += str(value)+',\n'
     js += '''],visible: true,\n	tooltip: {headerFormat: '<em>Extent size {point.key}</em><br/>'}\n},\n {\n	name: \''''
     
     js += 'optimal files' + '''\',\ncolor:'rgba(0, 255, 0, 0.50)',\n	type: 'column',\n	data: [\n'''
-    for value in self.frag:
+    for value in self.opt:
       js += str(value)+',\n'
     js += '''],visible: true,\n	tooltip: {headerFormat: '<em>Extent size {point.key}</em><br/>'}\n},\n'''
     js += '''\n]});})\n'''
