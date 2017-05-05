@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.3.12)  4 MAY 2017 22:23
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.3.12)  5 MAY 2017 09:27
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -2634,9 +2634,6 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 ]
-
-LaTeX Warning: Citation 'ext4:defrag' on page 6 undefined on input line 214.
-
 [6] [7] [8
 
 
@@ -2672,21 +2669,21 @@ Package Listings Warning: Text dropped after begin of listing on input line 250
 Package Listings Warning: Text dropped after begin of listing on input line 281
 .
 
-[10] [11] <../scripts/fig1.png, id=383, 294.1389pt x 229.0959pt>
+[10] [11] <../scripts/fig1.png, id=385, 294.1389pt x 229.0959pt>
 File: ../scripts/fig1.png Graphic file (type png)
 
 <use ../scripts/fig1.png>
 Package pdftex.def Info: ../scripts/fig1.png used on input line 318.
 (pdftex.def)             Requested size: 252.94388pt x 197.01863pt.
 
-<../scripts/fig2.png, id=385, 286.9119pt x 229.0959pt>
+<../scripts/fig2.png, id=387, 286.9119pt x 229.0959pt>
 File: ../scripts/fig2.png Graphic file (type png)
 
 <use ../scripts/fig2.png>
 Package pdftex.def Info: ../scripts/fig2.png used on input line 324.
 (pdftex.def)             Requested size: 252.94388pt x 201.97556pt.
 
-<../scripts/fig3.png, id=386, 286.9119pt x 229.0959pt>
+<../scripts/fig3.png, id=388, 286.9119pt x 229.0959pt>
 File: ../scripts/fig3.png Graphic file (type png)
 
 <use ../scripts/fig3.png>
@@ -2766,7 +2763,7 @@ Chapter 9.
 
 
 ]
-Overfull \hbox (47.2971pt too wide) in paragraph at lines 591--591
+Overfull \hbox (53.2971pt too wide) in paragraph at lines 591--591
 []\T1/qpl/m/n/12 (-20) Keith A. Smith and Margo I. Seltzer. ^^P  File Sys-tem A
 g-ing&Mdash;Increasing
  []
@@ -2789,24 +2786,16 @@ Package rerunfilecheck Info: File `thesis.out' has not changed.
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-
-LaTeX Warning: There were undefined references.
-
-
-Package biblatex Warning: Please (re)run BibTeX on the file(s):
-(biblatex)                thesis
-(biblatex)                and rerun LaTeX afterwards.
-
 Package logreq Info: Writing requests to 'thesis.run.xml'.
 \openout1 = `thesis.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
  46910 strings out of 493013
- 864899 string characters out of 6133328
+ 864966 string characters out of 6133328
  1612342 words of memory out of 5000000
- 49358 multiletter control sequences out of 15000+600000
- 91494 words of font info for 131 fonts, out of 8000000 for 9000
+ 49361 multiletter control sequences out of 15000+600000
+ 91254 words of font info for 129 fonts, out of 8000000 for 9000
  1143 hyphenation exceptions out of 8191
  62i,17n,93p,10370b,3252s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/
@@ -2819,10 +2808,10 @@ pe1/public/lm/lmtt12.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public
 plb.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/tex-gyre/qplr.pf
 b></usr/local/texlive/2016/texmf-dist/fonts/type1/public/tex-gyre/qplri.pfb></u
 sr/local/texlive/2016/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb>
-Output written on thesis.pdf (46 pages, 297423 bytes).
+Output written on thesis.pdf (46 pages, 297494 bytes).
 PDF statistics:
- 588 PDF objects out of 1000 (max. 8388607)
- 498 compressed objects within 5 object streams
- 164 named destinations out of 1000 (max. 500000)
+ 589 PDF objects out of 1000 (max. 8388607)
+ 499 compressed objects within 5 object streams
+ 165 named destinations out of 1000 (max. 500000)
  31109 words of extra memory for PDF output out of 35830 (max. 10000000)
 

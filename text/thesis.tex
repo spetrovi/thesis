@@ -211,7 +211,7 @@ Delayed allocation, also called allocate-on-flush is a feature that, when a file
 \section{Ext4}
 Ext4, also called fourth extended filesystem is a 48-bit journaling file system developed as successor of Ext3 for Linux kernel, improving reliability and performance features. Ext4 is scalable up to 1 exbibyte (approx. 1.15 exabyte). Traditional Ext2 and Ext3 block mapping scheme was replaced by extent based approach similar to XFS, which positively affects performance.
 
-Similarly to XFS, Ext4 use delayed allocation to increase performance and reduce fragmentation. For cases of fragmentation that still occur, Ext4 provide support for online defragmentation~\cite{ext4:defrag} and e4defrag tool to defragment either single file, or whole file system.
+Similarly to XFS, Ext4 use delayed allocation to increase performance and reduce fragmentation. For cases of fragmentation that still occur, Ext4 provide support for online defragmentation~\cite{sato2007:ext4} and e4defrag tool to defragment either single file, or whole file system.
 
 \chapter{Used tools}
 In this chapter, I presnet tools which were used to implement automated tests for creating and storing aged file systems and measuring their performance. Furthermore, I describe the main features and means of their usage. All the presented tools are open source projects.
@@ -296,9 +296,9 @@ FIO accept the workload specification as either a configuration file or a single
 
 The benchmark creates requests on system level, allowing for great power over the generated workflow.
 
-There is a possibility to choose from 4 I/O operations to be performed (or their mix). These operations are sequential write, sequential read, random write and random read. Verification of the issued data is offered as well. Size of generated file and block size can be controlled too and it can be either stable or chosen from given range. For cache-tiering workloads, different random distributions (f.e. Zipf) can be specified. Fio also supports process forking and threading.
+There is a possibility to choose from 4 I/O operations to be performed (or their mix). These operations are sequential write, sequential read, random write and random read. Verification of the issued data is offered as well. Size of generated file and block size can be controlled too and it can be either stable or chosen from given range. For cache-tiering workloads, different random distributions (f.e. Zipf) can be specified. FIO also supports process forking and threading.
 
-After the test, fio will compute overall report of measured performance. However, logging of multiple ---hodnoty--- can be enabled, giving researchers even more --prehlad-- about the nature of file system performance.
+After the test, FIO will compute overall report of measured performance. However, logging of multiple properties can be enabled, giving researchers even more oversight about the nature of file system performance.
 
 \section{Fs-drift}
 Fs-drift is a very flexible aging test, which can be used to simulate lots of different workloads. The test is based on random file access and randomly generated mix of requests. These requests can be writes, reads, creates, appends, truncates or deletes.

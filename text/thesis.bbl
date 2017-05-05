@@ -463,5 +463,28 @@
     \endverb
     \field{year}{2007}
   \endentry
+
+  \entry{sato2007:ext4}{inproceedings}{}
+    \name{author}{1}{}{%
+      {{hash=ST}{%
+         family={Sato},
+         familyi={S\bibinitperiod},
+         given={Takashi},
+         giveni={T\bibinitperiod},
+      }}%
+    }
+    \list{organization}{1}{%
+      {Citeseer}%
+    }
+    \strng{namehash}{ST1}
+    \strng{fullhash}{ST1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{booktitle}{Proceedings of the Linux Symposium}
+    \field{pages}{179\bibrangedash 86}
+    \field{title}{ext4 online defragmentation}
+    \field{volume}{2}
+    \field{year}{2007}
+  \endentry
 \endsortlist
 \endinput
