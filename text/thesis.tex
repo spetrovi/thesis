@@ -217,74 +217,8 @@ Similarly to XFS, Ext4 use delayed allocation to increase performance and reduce
 In this chapter, I presnet tools which were used to implement automated tests for creating and storing aged file systems and measuring their performance. Furthermore, I describe the main features and means of their usage. All the presented tools are open source projects.
 
 \section{Beaker}
-Beaker is an open source project aimed at automating testing workflow. The software can provision system from a pool of labs, install OS and packages, configure environment and perform tasks. The whole process is guided by sequence of instructions in an XML format. Examples of usage below.
+Beaker is an open source project aimed at automating testing workflow. The software can provision system from a pool of labs, install OS and packages, configure environment and perform tasks. The whole process is guided by sequence of instructions in an XML format. Examples can be found in Apendix A.
 
-\lstset{language=XML, 
-numbers=left, 
-frame=single, 
-commentstyle=\color{dkgreen}, 
-basicstyle={\scriptsize\ttfamily}, 
-keywordstyle=\color{blue}, 
-%identifierstyle=\color{blue}, 
-stringstyle=\color{red},
-captionpos=t,
-showstringspaces=false,
-breaklines=true,
-breakatwhitespace=false,
-tabsize=3,
-caption={},
-}
-
-
-\begin{lstlisting}[language=xml, caption={Specifying OS to be installed}][frame=single]
-<distroRequires>
-  <and>
-    <distro_family op="=" value="RedHatEnterpriseLinux7"/>
-    <distro_variant op="=" value="Server"/>
-    <distro_name op="=" value="RHEL-7.3"/>
-    <distro_arch op="=" value="x86_64"/>
-  </and>
-</distroRequires>
-\end{lstlisting}
-
-\begin{lstlisting}[language=xml, caption={Configuring environment using kickstart}][frame=single]
-<kickstart>
-  <![CDATA[
-    install
-    lang en_US.UTF-8
-    skipx
-    keyboard us
-    rootpw redhat
-    firewall --disabled
-    authconfig --enableshadow --enablemd5
-    selinux --enforcing
-    timezone --utc Europe/Prague
-
-    bootloader --location=mbr --driveorder=sda
-    zerombr
-    clearpart --all --initlabel --drives=sda
-    part /boot --fstype=ext2 --size=200 --asprimary --label=BOOT --ondisk=sda
-    part /mnt/tests --fstype=ext4 --size=40960 --asprimary --label=MNT --ondisk=sda
-    part / --fstype=ext4 --size=1 --grow --asprimary --label=ROOT  --ondisk=sda
-    reboot
-    %packages --excludedocs --ignoremissing --nobase
-    @core
-    wget
-    python
-    dhcpv6-client
-    dhclient
-    yum
-]]>
-</kickstart>
-\end{lstlisting}
-
-\begin{lstlisting}[language=xml, caption={Executing task and passing arguments}][frame=single]
-      <task name="/kernel_fsperf/storage_generator" role="STANDALONE">
-        <params>
-          <param name="TEST_PARAM_STORAGE_GENERATOR" value="-s create -f ext4 -t single -m /RHTSspareLUN1 -d /dev/sdc -T 1SASHDD_ext4"/>
-        </params>
-      </task>
-\end{lstlisting}
 
 
 
@@ -366,13 +300,7 @@ Storage generator is a beaker task developed by Jozef Mikovič. It is capable of
 
 The creation of XFS file system is standard, but Ext4 file system is created with additional option, disabling \textit{lazy init}. \textit{Lazy init} is a feature which allows for fast creation of file system by not allocating all the available space at once. The space is allocated later, as the file system grows. Such additional allocation, however would skew data collected in the first hours of the test, therefore it is disabled in these tests.
 
-\begin{lstlisting}[language=xml, caption={Configuring storage using storage generator in beaker environment}][frame=single]
-      <task name="/kernel_fsperf/storage_generator" role="STANDALONE">
-        <params>
-          <param name="TEST_PARAM_STORAGE_GENERATOR" value="-s create -f xfs -t lvm -m /RHTSspareLUN1 -r jokerlvm -T 2SATASSDLVM_xfs"/>
-        </params>
-      </task>
-\end{lstlisting}
+
 
 \chapter{Creating aged file system}
 In this chapter, I describe process of developement of file system aging workflow and its implementation as a form of automated test.
@@ -380,20 +308,19 @@ In this chapter, I describe process of developement of file system aging workflo
 \section{Aging process}
 As mentioned, fs-drift was used as a mean of aging the fresh file system, bringing it to the aged, fragmented state. Fs-drift is quite flexible, therefore a lot of parameters and their impact on the final block layout had to be considered.
 
-Firstly, the amount of fullness had to be taken into account. Heavily used file systems tend to be full at amounts ranging from 75 to 100 percent. However, fs-drift does not offer an option to control the fullness of the file system. As the creator states in README, to fill a file system, maximum number of files and mean size of file should be defined such that the product is greater than the available space. Parameters to overload the volume are not difficult to come up with. The problem is, the random nature of the test doesn't allow for meaningfull reporoducibility of the reached equilibrium. In most cases, fs-drift plainly saturates given volume, ca
+First, the amount of fullness had to be taken into account. Heavily used file systems tend to be full at amounts ranging from 75 to 100 percent~\cite{agrawal2007five}. However, fs-drift does not offer an option to directly control the fullness of the file system. As the creator states in README, to fill a file system, maximum number of files and mean size of file should be defined such that the product is greater than the available space. Parameters to overload the volume are not difficult to come up with. The problem is, the random nature of the test doesn't allow for meaningfull reporoducibility of the reached equilibrium. In most cases, fs-drift plainly saturates given volume and the used space remains at 100\% through the rest of the testing time. This drawback was overridden by a small change in fs-drift code\footnotemark[1]. By adding the possibility to specify a \textit{pause file}, other processes can stop fs-drift to generate IO requests for some time. This allows asynchronous thread triggered before fs-drift to pause it, when the file system usage reaches a specified amount and free some space.
 
-This drawback was overridden by a small change in fs-drift code. The possibility to specify a \textit{pause file} was added. After this modification, fs-drift will check if the file exists, and if it does, fs-drift stops to generate additional IO requests until the file is removed. This allows other programs to pause and unpause fs-drift and work with file system in the mean time.
+\footnotetext[1]{For all the changes made to master branch of fs-drift, see Chapter 3}
 
-When running the test automatically (e.g. via Beaker interface), the script will trigger separate thread, which will log free space fragmentation at specified interval. The thread will also check the amount of used space. If this amount is larger than a specified value, fs-drift is stopped and specified amount of volume is freed. This functionality allows for direct control of the amount of used space during the aging process\footnotemark[1].
-\footnotetext[1]{For all the changes made to master branch of fs-drift, see Appendix B}
-
-In fs-drift, there is an option to define a workload table, describing probability of used operations. Since the goal of this workload is to create fragmented file system in a short time, operations which do not alter file system block layout are not included. Therefore only create, delete, append, trucate and random write have representation in this workload. 
+In fs-drift, there is an option to define a workload table, describing probability of used operations. Since the goal of this workload is to create fragmented file system in a short time, operations which do not alter file system block layout are not included. Only create, delete, append, trucate and random write have representation in this workload. 
 
 %The optimal results were reached when every operation had equal representation, e.g. 33\%
 
-%The fs-drift allows directories up to defined level to create. The directory in which a file is directly affect its chance to be selected for a chosen operation, so by using only one directory, the equilibrium happens too fast, long before the file system is filled completely. Therefore we allow up to three levels of directories to be created.
+The fs-drift allows directories up to defined level to create.
 
-%Duration of the test is set to 5 hours for the pilot testing and 10 hours 
+%The directory in which a file is directly affect its chance to be selected for a chosen operation, so by using only one directory, the equilibrium happens too fast, long before the file system is filled completely. Therefore we allow up to three levels of directories to be created.
+
+Duration of the test is set to 5 hours for the pilot testing and 10 hours 
 
 \section{File system images}
 File system images can be created by using tools developed to inspect file systems in case of emergency. For Ext* file systems, there is a tool called \textit{e2image} and for XFS, \textit{xfs\_metadump} and \textit{xfs\_mdrestore}. Both tools create images as sparse files, so compression is needed.
@@ -475,11 +402,12 @@ caption={sdad},
 %However, after few runs, I decided not to use this approach for actual aging, because the time needed to fill and appropriately age the filesystem simply took very long. Instead, I was looking for other, already created tools I could use.
 
 \section{Implementation details}
-Workflow of image creating is contained in the Beaker task drift\_job. After extracting fs-drift, the main script starts python script, which handles the process of running fs-drift. Settings of fs-drift are passed as a parameter and are parsed inside the script. Before running the fs-drift, python daemon thread is triggered to log free space fragmentation periodically while fs-drift is running. The thread also checks amount of used space and if needed, free some volume. After the aging process is done, used space fragmentation is logged. 
+Workflow of image creating is contained in the Beaker task drift\_job. After extracting fs-drift, the main script starts python script, which handles the process of running fs-drift. Settings of fs-drift are passed as a parameter and then parsed inside the script. Before running the fs-drift, asynchronous thread is triggered to periodically log free space fragmentation and file system usage while fs-drift is running. If the usage reaches --hranica-- specified amount of space si freed from file system\footnotemark[2].
 
-After this process, the image is archived using \textit{bzip2}. All the generated data and information about environment is archived as well and text file describing the test is generated. These three files are then sent (via \textit{rsync}) to the specified destination.
+\footnotetext[2]{The mechanism of freeing space from file sytem is described in next chapter}
 
-After the aging process, the script use presented system tools to create and compress the image. Information about system is gathered as well and all the logs are archived and sent to data collecting server.
+After the fs-drift ends, image of file system is created using presented tools, and archived using \textit{bzip2}. All the generated data and information about environment is archived as well and text file describing the test is generated. These three files are then sent (via \textit{rsync}) to the specified destination.
+
 Parameters available for drift\_job:
 \begin{compactenum}
   \item -s, --sync, flag to signalise weather or not to send data to server (usefull for developing purposes)
@@ -588,5 +516,86 @@ When aging the filesystems, I expect for those grown on HDD to perform significa
 Here I will admit, that these results were not really surprising and ABSOLUTELY no breakthrough, however, as noone really research this branch of QE, the results are definitely a step further in this field.
 
 \printbibliography
+
+\appendix %% Start the appendices.
+\chapter{Reports}
+\chapter{Examples}
+Here you can insert the appendices of your thesis.
+
+\lstset{language=XML, 
+numbers=left, 
+frame=single, 
+commentstyle=\color{dkgreen}, 
+basicstyle={\scriptsize\ttfamily}, 
+keywordstyle=\color{blue}, 
+%identifierstyle=\color{blue}, 
+stringstyle=\color{red},
+captionpos=t,
+showstringspaces=false,
+breaklines=true,
+breakatwhitespace=false,
+tabsize=3,
+caption={},
+}
+
+
+\begin{lstlisting}[language=xml, caption={Specifying OS to be installed}][frame=single]
+<distroRequires>
+  <and>
+    <distro_family op="=" value="RedHatEnterpriseLinux7"/>
+    <distro_variant op="=" value="Server"/>
+    <distro_name op="=" value="RHEL-7.3"/>
+    <distro_arch op="=" value="x86_64"/>
+  </and>
+</distroRequires>
+\end{lstlisting}
+
+\begin{lstlisting}[language=xml, caption={Configuring environment using kickstart}][frame=single]
+<kickstart>
+  <![CDATA[
+    install
+    lang en_US.UTF-8
+    skipx
+    keyboard us
+    rootpw redhat
+    firewall --disabled
+    authconfig --enableshadow --enablemd5
+    selinux --enforcing
+    timezone --utc Europe/Prague
+
+    bootloader --location=mbr --driveorder=sda
+    zerombr
+    clearpart --all --initlabel --drives=sda
+    part /boot --fstype=ext2 --size=200 --asprimary --label=BOOT --ondisk=sda
+    part /mnt/tests --fstype=ext4 --size=40960 --asprimary --label=MNT --ondisk=sda
+    part / --fstype=ext4 --size=1 --grow --asprimary --label=ROOT  --ondisk=sda
+    reboot
+    %packages --excludedocs --ignoremissing --nobase
+    @core
+    wget
+    python
+    dhcpv6-client
+    dhclient
+    yum
+]]>
+</kickstart>
+\end{lstlisting}
+
+\begin{lstlisting}[language=xml, caption={Executing task and passing arguments}][frame=single]
+      <task name="/kernel_fsperf/storage_generator" role="STANDALONE">
+        <params>
+          <param name="TEST_PARAM_STORAGE_GENERATOR" value="-s create -f ext4 -t single -m /RHTSspareLUN1 -d /dev/sdc -T 1SASHDD_ext4"/>
+        </params>
+      </task>
+\end{lstlisting}
+
+\begin{lstlisting}[language=xml, caption={Configuring storage using storage generator in beaker environment}][frame=single]
+      <task name="/kernel_fsperf/storage_generator" role="STANDALONE">
+        <params>
+          <param name="TEST_PARAM_STORAGE_GENERATOR" value="-s create -f xfs -t lvm -m /RHTSspareLUN1 -r jokerlvm -T 2SATASSDLVM_xfs"/>
+        </params>
+      </task>
+\end{lstlisting}
+
 \end{document}
 

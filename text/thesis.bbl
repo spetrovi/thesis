@@ -154,8 +154,8 @@
     \field{issn}{0163-5999}
     \field{number}{1}
     \field{pages}{203\bibrangedash 213}
-    \field{title}{File System Aging\&Mdash;Increasing the Relevance of File
-  System Benchmarks}
+    \field{title}{File System Aging; Increasing the Relevance of File System
+  Benchmarks}
     \verb{url}
     \verb http://doi.acm.org/10.1145/258623.258689
     \endverb
@@ -282,7 +282,7 @@
       {{hash=EB}{%
          family={England},
          familyi={E\bibinitperiod},
-         given={B.},
+         given={Ben},
          giveni={B\bibinitperiod},
       }}%
     }
@@ -484,6 +484,48 @@
     \field{pages}{179\bibrangedash 86}
     \field{title}{ext4 online defragmentation}
     \field{volume}{2}
+    \field{year}{2007}
+  \endentry
+
+  \entry{agrawal2007five}{article}{}
+    \name{author}{4}{}{%
+      {{hash=AN}{%
+         family={Agrawal},
+         familyi={A\bibinitperiod},
+         given={Nitin},
+         giveni={N\bibinitperiod},
+      }}%
+      {{hash=BWJ}{%
+         family={Bolosky},
+         familyi={B\bibinitperiod},
+         given={William\bibnamedelima J},
+         giveni={W\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+      {{hash=DJR}{%
+         family={Douceur},
+         familyi={D\bibinitperiod},
+         given={John\bibnamedelima R},
+         giveni={J\bibinitperiod\bibinitdelim R\bibinitperiod},
+      }}%
+      {{hash=LJR}{%
+         family={Lorch},
+         familyi={L\bibinitperiod},
+         given={Jacob\bibnamedelima R},
+         giveni={J\bibinitperiod\bibinitdelim R\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {ACM}%
+    }
+    \strng{namehash}{AN+1}
+    \strng{fullhash}{ANBWJDJRLJR1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{number}{3}
+    \field{pages}{9}
+    \field{title}{A five-year study of file-system metadata}
+    \field{volume}{3}
+    \field{journaltitle}{ACM Transactions on Storage (TOS)}
     \field{year}{2007}
   \endentry
 \endsortlist
