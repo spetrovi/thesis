@@ -10,13 +10,14 @@
 \contentsline {section}{\numberline {3.2}\slshape Ext4}{6}{section.3.2}
 \contentsline {chapter}{\numberline {4}\bfseries Used tools}{9}{chapter.4}
 \contentsline {section}{\numberline {4.1}\slshape Beaker}{9}{section.4.1}
-\contentsline {section}{\numberline {4.2}\slshape FIO}{10}{section.4.2}
+\contentsline {section}{\numberline {4.2}\slshape FIO}{9}{section.4.2}
 \contentsline {section}{\numberline {4.3}\slshape Fs-drift}{10}{section.4.3}
+\contentsline {subsection}{\numberline {4.3.1}\rmfamily Changes to original code}{13}{subsection.4.3.1}
 \contentsline {section}{\numberline {4.4}\slshape Storage generator}{13}{section.4.4}
 \contentsline {chapter}{\numberline {5}\bfseries Creating aged file system}{15}{chapter.5}
 \contentsline {section}{\numberline {5.1}\slshape Aging process}{15}{section.5.1}
 \contentsline {section}{\numberline {5.2}\slshape File system images}{16}{section.5.2}
-\contentsline {section}{\numberline {5.3}\slshape Implementation details}{17}{section.5.3}
+\contentsline {section}{\numberline {5.3}\slshape Implementation details}{16}{section.5.3}
 \contentsline {chapter}{\numberline {6}\bfseries Performance testing of aged file system}{19}{chapter.6}
 \contentsline {section}{\numberline {6.1}\slshape Benchmark settings}{19}{section.6.1}
 \contentsline {section}{\numberline {6.2}\slshape Test structure}{19}{section.6.2}
@@ -29,3 +30,5 @@
 \contentsline {section}{\numberline {8.2}\slshape Differences betweem XFS and EXT4}{23}{section.8.2}
 \contentsline {section}{\numberline {8.3}\slshape Differences accross different storage}{23}{section.8.3}
 \contentsline {chapter}{\numberline {9}\bfseries Conclusion}{25}{chapter.9}
+\contentsline {chapter}{\numberline {A}\bfseries Reports}{29}{appendix.A}
+\contentsline {chapter}{\numberline {B}\bfseries Examples}{31}{appendix.B}

@@ -99,7 +99,9 @@
 \chapter{Introduction}
 File systems remain an important part of modern storage solutions.  Large, growing databases, multi-media and other storage based applications need to be supported by high-performing infrastructure layer of storing and retrieving information. Such infrastructure have to be provided by operating systems (OS) in form of file system.
 
-Originally, file system was a simple tool developed to handle communication between OS and physical device, but today, it is a very complex piece of software with large set of tools and features to go~with. Performance testing is an integral part of development cycle of most of produced software. Because of growing complexity of file systems, performance testing took of as an important part of file system evaluation.
+Originally, file system was a simple tool developed to handle communication between OS and physical device, but today, it is a very complex piece of software with large set of tools and features to go~with.
+
+Performance testing is an integral part of development cycle of most of produced software. Because of growing complexity of file systems, performance testing took of as an important part of file system evaluation.
 
 The standard workflow of performance testing is called out-of-box testing. Its principle is to run benchmark (e.g. testing tool) on a clean instance of OS and on a clean instance of tested file system~\cite{Traeger:2008:NYS:1367829.1367831}. Generally, this workflow present stable and meaningful results, yet, it only gives overall idea of file system behavior in early stage of its life cycle. 
 
@@ -107,7 +109,7 @@ File systems, as well as other complex software is subjected to progressive degr
 
 Testing of file system aging fundamentally consists of two steps. First is to bring fresh file system to an aged state and second is the actual performance test of the aged instance.
 
-To achieve consistency of results and to shorten testing time, file system images are used in this thesis. Once the image of an aged file system is created, it can be stored for later use and reloaded back on device. To save space, only metadata of created file system is used, since content of created files is random and therefore irrelevant. Replayed metadata point at various blocks on device, recreating fragmentation while seldom taking significantly less space.
+To achieve consistency of results and to shorten testing time, file system images are used in this thesis. Once the image of an aged file system is created, it can be stored for later use. By reloading the file system image on the device, it is possible to bring the file system to the original aged state, increasing stability of results. To save space, only metadata of created file system is used, since content of created files is random and therefore irrelevant. Replayed metadata point at various blocks on device, recreating fragmentation while seldom taking significantly less space.
 
 Foremost, this thesis describe implementation of flexible tests which represent the two aforementioned steps. The first test is able to age fresh file system and store the result as an image for later use. The performance statistics collected in the process, as well as resulting layout can be used to evaluate ability of file system to respond to aging. Second test can evaluate resulting image even further by releasing some space and conducting performance test on resulting layout. 
 
@@ -115,10 +117,10 @@ Furthermore, using developed tests to test different configurations of file syst
 
 The aging tests implemented in this thesis are established as part of testing cycle in Red Hat Kernel Performance team.
 
-In the second chapter, the text present already conducted research of effects of age on file system performance. Third chapter describes used file systems and theirs main features. Chapter 4 introduce tools used in implementation of tests while describing their relevant features. Chapters 5 and 6 describe actual implementation of mentioned tests and remaining chapters present the results obtained by using created tests. In the conclusion chapter, I discuss the effects of age on file system performance as well as further options for file system aging performance testing.
+In the second chapter, the text present already conducted research of effects of age and fragmentation on file system performance. Third chapter describes used file systems and theirs main features. Chapter 4 introduce tools used in implementation of tests while describing their relevant features. Chapters 5 and 6 describe actual implementation of mentioned tests and remaining chapters present the results obtained by using created tests. In the conclusion chapter, I discuss the effects of age on file system performance as well as further options for file system aging performance testing.
 
 \chapter{Related work}
-In this chapter I present different approaches of file system aging described and implemented in the past. The first section discuss usage of collected data to create aging workload. The second section discuss possibilities of aging the file system artificially, without pre-collected data.
+In this chapter I present different approaches of file system aging and fragmentation research described and implemented in the past. The first section discuss usage of collected data to create aging workload. The second section discuss possibilities of aging the file system artificially, without pre-collected data.
 
 \section{Aging file system using real-life data}
 This approach is based on modeling the aged file system using data collected from file systems used in real-life environment.
@@ -187,7 +189,7 @@ File system is a set of tools, methods, logic and structure to control how to st
 
 The system stores files either continuously or scattered across device. The basic accessed data unit is called a block, which capacity can be set to various sizes. Blocks are labeled as either free or used.
 
-Files which are non-continous are stored in form of extents, which is one or more blocks associated with the file, but stored elsewhere.  
+Files which are non-contigous are stored in form of extents, which is one or more blocks associated with the file, but stored elsewhere.  
 
 Information about how many blocks does a file occupy, as well as other information like date of creation, date of last access or access permissions is known as metadata, e.g. data about stored data. This information is stored separately from the content of files. On modern file systems, metadata are stored in objects called index nodes (e.g. inodes). Each file a file system manages is associated with an inode and every inode has its number in an inode table. On top of that the file system stores metadata about itself (unrelated to any specific file), such as information about bad sectors, free space or block availability in a structure called superblock.
 
@@ -198,7 +200,7 @@ Journaling file system keeps a structure called journal, which is a buffer of ch
 \section{XFS}
 XFS is a 64-bit journaling file system known for its high scalability (up to 9 exabytes) and great performance. Such performance is reached by architecture based on allocation groups.
 
-Allocation groups are euqally sized linear regions within file system. Each allocation group manages its own inodes and free space, therefore increasing parallelism. Architecture of this design enables for significant scalability of bandwidth, threads, and size of file system, as well as files, simply because multiple processes and threads can access the file system simultaneously.
+Allocation groups are euqally sized linear regions within file system. Each allocation group manages its own inodes and free space, therefore increasing parallelism. Architecture of this design enables for significant scalability of bandwidth, threading, and size of file system, as well as files, simply because multiple processes and threads can access the file system simultaneously.
 
 XFS allocates space as extents stored in pairs of B+ trees, each pair for each allocation group (improving performance especially when handling large files). One of the B+ trees is indexed by the length of the free extents, while the other is indexed by the starting block of the free extents. This dual indexing scheme allows efficient location of free extents for I/O operations.
 
@@ -209,81 +211,14 @@ Delayed allocation, also called allocate-on-flush is a feature that, when a file
 \section{Ext4}
 Ext4, also called fourth extended filesystem is a 48-bit journaling file system developed as successor of Ext3 for Linux kernel, improving reliability and performance features. Ext4 is scalable up to 1 exbibyte (approx. 1.15 exabyte). Traditional Ext2 and Ext3 block mapping scheme was replaced by extent based approach similar to XFS, which positively affects performance.
 
-Similarly to XFS, Ext4 use delayed allocation to increase performance and reduce fragmentation. For cases of fragmentation that still occur, Ext4 provide support for online defragmentation and e4defrag tool to defragment either single file, or whole file system.
+Similarly to XFS, Ext4 use delayed allocation to increase performance and reduce fragmentation. For cases of fragmentation that still occur, Ext4 provide support for online defragmentation~\cite{sato2007:ext4} and e4defrag tool to defragment either single file, or whole file system.
 
 \chapter{Used tools}
 In this chapter, I presnet tools which were used to implement automated tests for creating and storing aged file systems and measuring their performance. Furthermore, I describe the main features and means of their usage. All the presented tools are open source projects.
 
 \section{Beaker}
-Beaker is an open source project aimed at automating testing workflow. The software can provision system from a pool of labs, install OS and packages, configure environment and perform tasks. The whole process is guided by sequence of instructions in an XML format. Examples of usage below.
+Beaker is an open source project aimed at automating testing workflow. The software can provision system from a pool of labs, install OS and packages, configure environment and perform tasks. The whole process is guided by sequence of instructions in an XML format. Examples can be found in Apendix A.
 
-
-\lstset{language=XML, 
-numbers=left, 
-frame=single, 
-commentstyle=\color{dkgreen}, 
-basicstyle={\scriptsize\ttfamily}, 
-keywordstyle=\color{blue}, 
-%identifierstyle=\color{blue}, 
-stringstyle=\color{red},
-captionpos=t,
-showstringspaces=false,
-breaklines=true,
-breakatwhitespace=false,
-tabsize=3,
-caption={},
-}
-
-
-\begin{lstlisting}[language=xml, caption={Specifying OS to be installed}][frame=single]
-<distroRequires>
-  <and>
-    <distro_family op="=" value="RedHatEnterpriseLinux7"/>
-    <distro_variant op="=" value="Server"/>
-    <distro_name op="=" value="RHEL-7.2"/>
-    <distro_arch op="=" value="x86_64"/>
-  </and>
-</distroRequires>
-\end{lstlisting}
-
-\begin{lstlisting}[language=xml, caption={Configuring environment using kickstart}][frame=single]
-<kickstart>
-  <![CDATA[
-    install
-    lang en_US.UTF-8
-    skipx
-    keyboard us
-    rootpw redhat
-    firewall --disabled
-    authconfig --enableshadow --enablemd5
-    selinux --enforcing
-    timezone --utc Europe/Prague
-
-    bootloader --location=mbr --driveorder=sda
-    zerombr
-    clearpart --all --initlabel --drives=sda
-    part /boot --fstype=ext2 --size=200 --asprimary --label=BOOT --ondisk=sda
-    part /mnt/tests --fstype=ext4 --size=40960 --asprimary --label=MNT --ondisk=sda
-    part / --fstype=ext4 --size=1 --grow --asprimary --label=ROOT  --ondisk=sda
-    reboot
-    %packages --excludedocs --ignoremissing --nobase
-    @core
-    wget
-    python
-    dhcpv6-client
-    dhclient
-    yum
-]]>
-</kickstart>
-\end{lstlisting}
-
-\begin{lstlisting}[language=xml, caption={Executing task and passing arguments}][frame=single]
-      <task name="/kernel_fsperf/storage_generator" role="STANDALONE">
-        <params>
-          <param name="TEST_PARAM_STORAGE_GENERATOR" value="-s create -f ext4 -t single -m /RHTSspareLUN1 -d /dev/sdc -T 1SASHDD_ext4"/>
-        </params>
-      </task>
-\end{lstlisting}
 
 
 
@@ -293,12 +228,14 @@ Flexible Input/Output tool is a IO workload generator written by Jens Axboe. It 
 
 FIO accept the workload specification as either a configuration file or a single line. Multiple different jobs can be specified as well as global options for every job. 
 
-%%priklad logu
+The benchmark creates requests on system level, allowing for great power over the generated workflow.
 
- 
+There is a possibility to choose from 4 I/O operations to be performed (or their mix). These operations are sequential write, sequential read, random write and random read. Verification of the issued data is offered as well. Size of generated file and block size can be controlled too and it can be either stable or chosen from given range. For cache-tiering workloads, different random distributions (f.e. Zipf) can be specified. FIO also supports process forking and threading.
+
+After the test, FIO will compute overall report of measured performance. However, logging of multiple properties can be enabled, giving researchers even more oversight about the nature of file system performance.
 
 \section{Fs-drift}
-fs-drift is a very flexible aging test, that can be used to simulate lots of different workloads. The test is based on random file access and randomly generated mix of requests. These requests can be writes, reads, creates, appends, truncates or deletes.
+Fs-drift is a very flexible aging test, which can be used to simulate lots of different workloads. The test is based on random file access and randomly generated mix of requests. These requests can be writes, reads, creates, appends, truncates or deletes.
 
 At the beginning of run time, the top directory is empty, therefore \textit{create} requests success the most, other requests, such as \textit{read} or \textit{delete}, will fail because not many files has yet been created. Over time, as the file system grows, \textit{create} requests began to fail and other requests will more likely succeede. File system will eventually reach a state of equilibrium, when requests are equaly likely to execute. From this point, the file system would not grow anymore, and the test runs unless one of the stop conditions are met.
 
@@ -336,29 +273,34 @@ Furthermore, fs-drift offers one more option to influence random distribution. A
 
 For purpose of this thesis, several changes had to be made to the original code. Besides small errors like invalid Readme information, a bug in code had to be repaired, otherwise the fs-drift would not delete files while issuing \textit{delete} operation, marginally affecting aging process. Without this fix, the volume would just saturate and remain in more or less consistent state for the rest of the runtime.
 
-Furthermore, to be able to inspect and work with the file system while aging process is still running, I added an option to specify \textit{pause file}. If the pause file is present, the fs-drift would not issue any requests and waits until the file is removed\footnotemark[1].
-\footnotetext[1]{For all the changes made to master branch of fs-drift, see Appendix B}
+Additionally, to be able to inspect and work with the file system while aging process is still running, I added an option to specify \textit{pause file}. If the pause file is present, the fs-drift would not issue any requests and waits until the file is removed\footnotemark[1].
+\footnotetext[1]{For all the changes made to master branch of fs-drift, see ...}
 
-Fs-drift additionally offers more parameters to control the test run such as number of directories, levels of directories, or enabling \textit{fsync}/\textit{fdatasync} to be called. To stop the fs-drift, one of the stop conditions have to be met. The stop condition can be either reached maximal number of performed operations, running out of time, or apparance of stop file.
+Fs-drift offers even more parameters to control the test run such as number of directories, levels of directories, or enabling \textit{fsync}/\textit{fdatasync} to be called. To stop the fs-drift, one of the stop conditions have to be met. The stop condition can be either reached maximal number of performed operations, running out of time, or apparance of stop file.
 
 For evaulation of the aging process, fs-drift can log latency of the performed opperations. However, the log doesn't differentiate between the operations, which could be usefull for further research.
 
 Used configuration of fs-drift for purposes of aging testing is further described in chapter 4.
 
+\subsection{Changes to original code}
+Several changes had to be made to the original code prior to testing.
 
+The most obvious problem with the tools was, that it did not conduct \textit{delete} operations. As stated, deleting files is quite crucial to file system aging.
+
+Another problem emerged when gathering statistics of response time evolution through the aging process. Since the tool is generating the I/O requests at random, sometimes, error occurs. Most operations (except \textit{create}) need the file to exist to success, but sometimes, the file is non-existent. The problem with response time logging was, it logged the response time even if the operation didn't carry, causing noise to the data.
+
+Further problem with response time logging was, it didn't differentiate between operations. Such distinction could greatly affect the way researchers can find problems with file system evolution.
+
+As mentioned, possibility of specifying \textit{pause file} was added, making the fs-drift easy to pause for file system contents inspection.
+
+The version used for testing in this thesis have all the mentioned problems repaired.
 
 \section{Storage generator}
 Storage generator is a beaker task developed by Jozef Mikovič. It is capable of automated configuration of storage on a machine. In a single-device mode, storage generator simply creates new partition on a given device and creates and mounts file system. In a recipe mode, storage generator follows set of bash instruction to create more advanced configurations such as merging multiple devices using LVM, creating LVM cache or encrypted volume.
 
 The creation of XFS file system is standard, but Ext4 file system is created with additional option, disabling \textit{lazy init}. \textit{Lazy init} is a feature which allows for fast creation of file system by not allocating all the available space at once. The space is allocated later, as the file system grows. Such additional allocation, however would skew data collected in the first hours of the test, therefore it is disabled in these tests.
 
-\begin{lstlisting}[language=xml, caption={Configuring storage using storage generator in beaker environment}][frame=single]
-      <task name="/kernel_fsperf/storage_generator" role="STANDALONE">
-        <params>
-          <param name="TEST_PARAM_STORAGE_GENERATOR" value="-s create -f xfs -t lvm -m /RHTSspareLUN1 -r jokerlvm -T 2SATASSDLVM_xfs"/>
-        </params>
-      </task>
-\end{lstlisting}
+
 
 \chapter{Creating aged file system}
 In this chapter, I describe process of developement of file system aging workflow and its implementation as a form of automated test.
@@ -366,20 +308,19 @@ In this chapter, I describe process of developement of file system aging workflo
 \section{Aging process}
 As mentioned, fs-drift was used as a mean of aging the fresh file system, bringing it to the aged, fragmented state. Fs-drift is quite flexible, therefore a lot of parameters and their impact on the final block layout had to be considered.
 
-Firstly, the amount of fullness had to be taken into account. Heavily used file systems tend to be full at amounts ranging from 75 to 100 percent. However, fs-drift does not offer an option to control the fullness of the file system. As the creator states in README, to fill a file system, maximum number of files and mean size of file should be defined such that the product is greater than the available space. Parameters to overload the volume are not difficult to come up with. The problem is, the random nature of the test doesn't allow for meaningfull reporoducibility of the reached equilibrium. In most cases, fs-drift plainly saturates given volume, ca
+First, the amount of fullness had to be taken into account. Heavily used file systems tend to be full at amounts ranging from 75 to 100 percent~\cite{agrawal2007five}. However, fs-drift does not offer an option to directly control the fullness of the file system. As the creator states in README, to fill a file system, maximum number of files and mean size of file should be defined such that the product is greater than the available space. Parameters to overload the volume are not difficult to come up with. The problem is, the random nature of the test doesn't allow for meaningfull reporoducibility of the reached equilibrium. In most cases, fs-drift plainly saturates given volume and the used space remains at 100\% through the rest of the testing time. This drawback was overridden by a small change in fs-drift code\footnotemark[1]. By adding the possibility to specify a \textit{pause file}, other processes can stop fs-drift to generate IO requests for some time. This allows asynchronous thread triggered before fs-drift to pause it, when the file system usage reaches a specified amount and free some space.
 
-This drawback was overridden by a small change in fs-drift code. The possibility to specify a \textit{pause file} was added. After this modification, fs-drift will check if the file exists, and if it does, fs-drift stops to generate additional IO requests until the file is removed. This allows other programs to pause and unpause fs-drift and work with file system in the mean time.
+\footnotetext[1]{For all the changes made to master branch of fs-drift, see Chapter 3}
 
-When running the test automatically (e.g. via Beaker interface), the script will trigger separate thread, which will log free space fragmentation at specified interval. The thread will also check the amount of used space. If this amount is larger than a specified value, fs-drift is stopped and specified amount of volume is freed. This functionality allows for direct control of the amount of used space during the aging process\footnotemark[1].
-\footnotetext[1]{For all the changes made to master branch of fs-drift, see Appendix B}
-
-In fs-drift, there is an option to define a workload table, describing probability of used operations. Since the goal of this workload is to create fragmented file system in a short time, operations which do not alter file system block layout are not included. Therefore only create, delete, append, trucate and random write have representation in this workload. 
+In fs-drift, there is an option to define a workload table, describing probability of used operations. Since the goal of this workload is to create fragmented file system in a short time, operations which do not alter file system block layout are not included. Only create, delete, append, trucate and random write have representation in this workload. 
 
 %The optimal results were reached when every operation had equal representation, e.g. 33\%
 
-%The fs-drift allows directories up to defined level to create. The directory in which a file is directly affect its chance to be selected for a chosen operation, so by using only one directory, the equilibrium happens too fast, long before the file system is filled completely. Therefore we allow up to three levels of directories to be created.
+The fs-drift allows directories up to defined level to create.
 
-%Duration of the test is set to 5 hours for the pilot testing and 10 hours 
+%The directory in which a file is directly affect its chance to be selected for a chosen operation, so by using only one directory, the equilibrium happens too fast, long before the file system is filled completely. Therefore we allow up to three levels of directories to be created.
+
+Duration of the test is set to 5 hours for the pilot testing and 10 hours 
 
 \section{File system images}
 File system images can be created by using tools developed to inspect file systems in case of emergency. For Ext* file systems, there is a tool called \textit{e2image} and for XFS, \textit{xfs\_metadump} and \textit{xfs\_mdrestore}. Both tools create images as sparse files, so compression is needed.
@@ -461,11 +402,12 @@ caption={sdad},
 %However, after few runs, I decided not to use this approach for actual aging, because the time needed to fill and appropriately age the filesystem simply took very long. Instead, I was looking for other, already created tools I could use.
 
 \section{Implementation details}
-Workflow of image creating is contained in the Beaker task drift\_job. After extracting fs-drift, the main script starts python script, which handles the process of running fs-drift. Settings of fs-drift are passed as a parameter and are parsed inside the script. Before running the fs-drift, python daemon thread is triggered to log free space fragmentation periodically while fs-drift is running. The thread also checks amount of used space and if needed, free some volume. After the aging process is done, used space fragmentation is logged. 
+Workflow of image creating is contained in the Beaker task drift\_job. After extracting fs-drift, the main script starts python script, which handles the process of running fs-drift. Settings of fs-drift are passed as a parameter and then parsed inside the script. Before running the fs-drift, asynchronous thread is triggered to periodically log free space fragmentation and file system usage while fs-drift is running. If the usage reaches --hranica-- specified amount of space si freed from file system\footnotemark[2].
 
-After this process, the image is archived using \textit{bzip2}. All the generated data and information about environment is archived as well and text file describing the test is generated. These three files are then sent (via \textit{rsync}) to the specified destination.
+\footnotetext[2]{The mechanism of freeing space from file sytem is described in next chapter}
 
-After the aging process, the script use presented system tools to create and compress the image. Information about system is gathered as well and all the logs are archived and sent to data collecting server.
+After the fs-drift ends, image of file system is created using presented tools, and archived using \textit{bzip2}. All the generated data and information about environment is archived as well and text file describing the test is generated. These three files are then sent (via \textit{rsync}) to the specified destination.
+
 Parameters available for drift\_job:
 \begin{compactenum}
   \item -s, --sync, flag to signalise weather or not to send data to server (usefull for developing purposes)
@@ -574,5 +516,86 @@ When aging the filesystems, I expect for those grown on HDD to perform significa
 Here I will admit, that these results were not really surprising and ABSOLUTELY no breakthrough, however, as noone really research this branch of QE, the results are definitely a step further in this field.
 
 \printbibliography
+
+\appendix %% Start the appendices.
+\chapter{Reports}
+\chapter{Examples}
+Here you can insert the appendices of your thesis.
+
+\lstset{language=XML, 
+numbers=left, 
+frame=single, 
+commentstyle=\color{dkgreen}, 
+basicstyle={\scriptsize\ttfamily}, 
+keywordstyle=\color{blue}, 
+%identifierstyle=\color{blue}, 
+stringstyle=\color{red},
+captionpos=t,
+showstringspaces=false,
+breaklines=true,
+breakatwhitespace=false,
+tabsize=3,
+caption={},
+}
+
+
+\begin{lstlisting}[language=xml, caption={Specifying OS to be installed}][frame=single]
+<distroRequires>
+  <and>
+    <distro_family op="=" value="RedHatEnterpriseLinux7"/>
+    <distro_variant op="=" value="Server"/>
+    <distro_name op="=" value="RHEL-7.3"/>
+    <distro_arch op="=" value="x86_64"/>
+  </and>
+</distroRequires>
+\end{lstlisting}
+
+\begin{lstlisting}[language=xml, caption={Configuring environment using kickstart}][frame=single]
+<kickstart>
+  <![CDATA[
+    install
+    lang en_US.UTF-8
+    skipx
+    keyboard us
+    rootpw redhat
+    firewall --disabled
+    authconfig --enableshadow --enablemd5
+    selinux --enforcing
+    timezone --utc Europe/Prague
+
+    bootloader --location=mbr --driveorder=sda
+    zerombr
+    clearpart --all --initlabel --drives=sda
+    part /boot --fstype=ext2 --size=200 --asprimary --label=BOOT --ondisk=sda
+    part /mnt/tests --fstype=ext4 --size=40960 --asprimary --label=MNT --ondisk=sda
+    part / --fstype=ext4 --size=1 --grow --asprimary --label=ROOT  --ondisk=sda
+    reboot
+    %packages --excludedocs --ignoremissing --nobase
+    @core
+    wget
+    python
+    dhcpv6-client
+    dhclient
+    yum
+]]>
+</kickstart>
+\end{lstlisting}
+
+\begin{lstlisting}[language=xml, caption={Executing task and passing arguments}][frame=single]
+      <task name="/kernel_fsperf/storage_generator" role="STANDALONE">
+        <params>
+          <param name="TEST_PARAM_STORAGE_GENERATOR" value="-s create -f ext4 -t single -m /RHTSspareLUN1 -d /dev/sdc -T 1SASHDD_ext4"/>
+        </params>
+      </task>
+\end{lstlisting}
+
+\begin{lstlisting}[language=xml, caption={Configuring storage using storage generator in beaker environment}][frame=single]
+      <task name="/kernel_fsperf/storage_generator" role="STANDALONE">
+        <params>
+          <param name="TEST_PARAM_STORAGE_GENERATOR" value="-s create -f xfs -t lvm -m /RHTSspareLUN1 -r jokerlvm -T 2SATASSDLVM_xfs"/>
+        </params>
+      </task>
+\end{lstlisting}
+
 \end{document}
 
