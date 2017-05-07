@@ -4,7 +4,7 @@ import numpy as np
 def sizeof_fmt(num, suffix='B'):
     for unit in ['','Ki','Mi','Gi','Ti','Pi','Ei','Zi']:
         if abs(num) < 1024.0:
-            return "%3i%s%s" % (num, unit, suffix)
+            return "%3.1f%s%s" % (num, unit, suffix)
         num /= 1024.0
     return "%.1f%s%s" % (num, 'Yi', suffix)
 
@@ -22,49 +22,20 @@ class Fragmented_file:
 	self.optimally_allocated = True
 	self.extents_size = []
 	self.process_extents()
-	self.file_size = sum(self.extents_size)
-	
 
-#fie output is in 512B blocks, we want to make it 1B
+#512-byte blocks->1kb blocks
   def process_extents(self):
 	self.extents = filter(lambda x: x.split(': ')[1:][1] != 'hole', self.extents)
 	self.extents = map(lambda x: (int(x.split(': ')[1:][1].split('..')[0]),int(x.split(': ')[1:][1].split('..')[1])), self.extents)
-
-	self.extents_size.append((self.extents[0][1]-self.extents[0][0])*512)
+	self.extents_size.append(self.extents[0][1]-self.extents[0][0])
 	for i in range(1,len(self.extents)):
 		if self.extents[i][0] == self.extents[i-1][1]+1:
-			self.extents_size[-1] += (self.extents[i][1]-self.extents[i][0])*512
+			self.extents_size[-1] += self.extents[i][1]-self.extents[i][0]
 		else:
-			self.extents_size.append((self.extents[i][1]-self.extents[i][0])*512)
+			self.extents_size.append(self.extents[i][1]-self.extents[i][0])
 			self.optimally_allocated = False
 
-def file_size_histogram(frag_files, destination):
-	files = reduce(lambda x, y: x+[y.file_size], frag_files, [])
-	print 'sum '+str(sizeof_fmt(sum(files)))
-	bins = [(2**i) for i in range(10,31)]
-	fs_histogram, fs_bins = np.histogram(files,bins)
-	fs_histogram = map(lambda x: int(x), fs_histogram)
-	ticks = []
-	for i in range(len(fs_bins)-1):
-		ticks.append(sizeof_fmt(bins[i])+'-'+sizeof_fmt(bins[i+1]))
-	#ticks = map(lambda x: sizeof_fmt(x), fs_bins)
-
-	ID = 'fs_'+str(randint(0,10000)) #hash
-
-	template = read_file('templates/fs_template.js','r')
-	template = ID.join(template.split('XXX_NAME_XXX'))
-	template = str(sum(fs_histogram)).join(template.split('XXX_FSUM_XXX'))
-	template = str(ticks).join(template.split('XXX_BINS_XXX'))
-	template = str(fs_histogram).join(template.split('XXX_FS_XXX'))
-#	template = str(opt_histogram).join(template.split('XXX_OPT_XXX'))
-
-	_file = open(destination+ID+'.js','w')
-	_file.write(template)
-	_file.close()
-	return ID
-
 def used_space_histogram(_file, destination):
-	_file = 'fiemap_exp'
 	contents = read_file(_file,'r').split('\n')[:-1]
 	frag_files = []
 	extents = []
@@ -75,31 +46,23 @@ def used_space_histogram(_file, destination):
 			extents = []
 		else:
 			extents.append(line)
-	
-	ID2 = file_size_histogram(frag_files, destination)
-	
+
 	filenum = len(frag_files)
-
-	bins = [(2**i) for i in range(10,31)]
-
 	opt_files = filter(lambda x: x.optimally_allocated, frag_files)
 	frag_files = filter(lambda x: not x.optimally_allocated, frag_files)
-
+#TODO skontrolovat, ci neni zoznam naopak
 	frag_data = reduce(lambda x, y: x+y.extents_size, frag_files, [])
-	frag_histogram, frag_bins = np.histogram(frag_data,bins)
+	frag_histogram, frag_bins = np.histogram(frag_data,bins=20)
 	frag_histogram = map(lambda x: int(x), frag_histogram)
-	
+
 	opt_data = reduce(lambda x, y: x+y.extents_size, opt_files, [])
-	opt_histogram, opt_bins = np.histogram(opt_data,bins)
+	opt_histogram, opt_bins = np.histogram(opt_data,bins=frag_bins)
 	opt_histogram = map(lambda x: int(x), opt_histogram)	
-	ticks = []
-	for i in range(len(bins)-1):
-		ticks.append(sizeof_fmt(bins[i])+'-'+sizeof_fmt(bins[i+1]))
-#	ticks = map(lambda x: sizeof_fmt(x), frag_bins)
+
+	ticks = map(lambda x: sizeof_fmt(x*512), frag_bins)
 	
 	ID = 'used_'+str(randint(0,10000)) #hash
-
-	template = read_file('templates/used_space_template.js','r')
+	template = read_file('used_space_template.js','r')
 	template = ID.join(template.split('XXX_NAME_XXX'))
 	template = str(sum(frag_histogram)).join(template.split('XXX_FRAGSUM_XXX'))
 	template = str(sum(opt_histogram)).join(template.split('XXX_OPTNUM_XXX'))
@@ -110,5 +73,5 @@ def used_space_histogram(_file, destination):
 	_file = open(destination+ID+'.js','w')
 	_file.write(template)
 	_file.close()
-	return ID, ID2
+	return ID
 

@@ -4,13 +4,8 @@ import glob
 import numpy as np
 from html import HTML
 from free_space_frag import Free_space_fragmentation
-from extent_distribution import Extent_distribution
-from image import d_image
-import csv
-import matplotlib.pyplot as plt
-from scipy.optimize import curve_fit
-from scipy.interpolate import interp1d
-from scipy.signal import savgol_filter
+from extent_distribution import used_space_histogram
+import drift_compare
 
 def untar(source):
 	if source[-2:] == 'xz':
@@ -32,29 +27,17 @@ def get_value(string, parameter):
 	if len(res) > 1: return ' '.join('='.join(res).split('-'))
 	return res[0]
 
-class Boxplots:
-  def __init__(self, depth):
-    self.depth = int(depth)
-    self.free_space_logs = []
-    self.free_space_histograms = []
-    self.extent_histograms = []
-    self.used_space_logs = []
-    self.bw = []
-    #self.iops_boxplots = []
-    self.lat = []
-    self.fio_outputs = []
-    for i in range(1, depth+1):
-	fio_out_files = glob.glob('./out/'+str(i*10)+'/*.out')
-	for out in fio_out_files: self.fio_outputs.append(read_file(out, 'r'))
-	#TODO add df.frag
-	self.bw.append(self.parse_data('bw',i))
-	#self.iops_boxplots.append(self.parse_data('iops',i))
-	self.lat.append(self.parse_data('lat',i))
+class Boxplot:
+  def __init__(self, _dir):
+    self._dir = _dir
+    self.bw = self.parse_data('bw')
+   #self.iops_boxplots.append(self.parse_data('iops',i))
+    self.lat = self.parse_data('lat')
 
-  def parse_data(self, _type, i):
+  def parse_data(self, _type):
     data=[]
     times=[]
-    logs=glob.glob('./out/'+str(i*10)+'/*_'+_type+'*.log')
+    logs=glob.glob('./out/'+self._dir+'/*_'+_type+'*.log')
     for log in logs:
 	with open(log) as openfileobject:
 	    for i, line in enumerate(openfileobject):
@@ -68,6 +51,18 @@ class Boxplots:
     stdev = str(round(np.std(data)/1000,2))#.split('.')[0]
     return {'low':low, 'q1':q1, 'median':median, 'q3':q3, 'high':high, 'stdev':stdev}
 
+class Run:
+	def __init__(self, _dir, fsystem, destination):
+		self.size = _dir
+		test = './out/'+_dir+'/pretest_free_space_'
+		self.free_space_pretest = [Free_space_fragmentation(read_file(test+str(i)+'.frag', 'r'), fsystem) for i in range(len(glob.glob(test+'*')))] 
+		test = 	'./out/'+_dir+'/posttest_free_space_'
+		self.free_space_posttest = [Free_space_fragmentation(read_file(test+str(i)+'.frag', 'r'), fsystem) for i in range(len(glob.glob(test+'*')))]
+#		test = 	'./out/'+_dir+'/pretest_fie_data_'
+# 		self.used_space_pretest, self.file_size_pretest = [used_space_histogram(test+str(i),destination) for i in range(len(glob.glob(test+'*')))]
+#		test = 	'./out/'+_dir+'/posttest_fie_data_'
+#		self.used_space_posttest = [used_space_histogram(test+str(i),destination) for i in range(len(glob.glob(test+'*')))]
+		self.boxplot = Boxplot(_dir)		
 
 class Tar:
   def __init__(self, tar, destination):
@@ -80,78 +75,20 @@ class Tar:
     self.recipe = self.make_recipe()
     self.operation = get_value('\n'.join(self.recipe.split(' ')),'rw')
     self.fsystem = get_value(self.properties,'filesystem')
-    self.free_space_pretest = []
-    self.free_space_posttest = []
-    self.extent_distribution = []
-    self.image = get_value(self.properties,'image')
+
     self.host = get_value(self.properties,'hostname').split('.')[0]
-    self.image_ID = ''
+    self.image_name = get_value(self.properties,'image')
+    self.image_tar = drift_compare.Tar(self.host+'_images/'+self.image_name.split('.')[0]+'.tar.xz', destination)
 
-  def process_image(self):
-	untar(self.host+'_images/'+self.image.split('.')[0]+'.tar.xz')
-	self.image_ID = d_image(self.fsystem, self.destination)
-	self.image_rsp_plot = self.generate_rsp_plot(glob.glob('./out/*rspt.csv')[0])
-	self.image_usage_plot = self.generate_usage_plot(glob.glob('./out/log.out')[0])
-
-
-	self.image_log = read_file('./out/log.out','r')
-	self.image_recipe = read_file('./out/recipe','r')
-	subprocess.call('rm -rf out',shell=True)
-
-  def generate_usage_plot(self, filename):
-	contents = read_file(filename,'r').split('\n')[8:-3]
-        percents = map(lambda x: int(x.split('%')[0].split(' ')[-1:][0]),contents)
-	x = [300*i for i in range(len(percents))]
-	fig, ax = plt.subplots()
-	ax.plot(x,percents)
-	ax.set_ylabel('Used space[%]')
-	ax.set_xlabel('Time[s]')
-	#ax.set_ylim([0,0.1])
-	ax.grid()
-#	fig.set_size_inches(4, 3)
-	plt.savefig(self.destination+'usage_'+self.image_ID+'.png')#,bbox_inches='tight')
-	return 'usage_'+self.image_ID+'.png'
-
-  def generate_rsp_plot(self, filename):
-	x = []
-	y = []
-	with open(filename, "rb") as csvfile:
-        	datareader = csv.reader(csvfile)
-        	count = 0
-        	for row in datareader:
-#			if count % 10 == 0:
-				x.append(float(row[0]))
-				y.append(float(row[1]))	
-				count +=1
-	
-	xx = np.linspace(min(x),max(x), 1000)
-
-	# interpolate + smooth
-	itp = interp1d(x,y, kind='linear')
-	window_size, poly_order = 101, 3
-	yy_sg = savgol_filter(itp(xx), window_size, poly_order)
-	
-	fig, ax = plt.subplots()
-	ax.plot(xx,yy_sg)
-	ax.set_ylabel('Response time[s]')
-	ax.set_xlabel('Time[s]')
-	#ax.set_ylim([0,0.1])
-	ax.grid()
-#	fig.set_size_inches(4, 3)
-	plt.savefig(self.destination+'/'+self.image_ID+'.png')#,bbox_inches='tight')
-	return self.image_ID+'.png'
-
+    self.runs = []
   def process(self):
+    self.image_tar.process_image()
     untar(self.tar)
-    self.boxplots = Boxplots(self.depth)
     for i in range(1, self.depth+1):
-	self.free_space_pretest.append(Free_space_fragmentation(read_file('./out/'+str(i*10)+'/pretest_free_space.frag','r'),self.fsystem))
-	self.free_space_posttest.append(Free_space_fragmentation(read_file('./out/'+str(i*10)+'/posttest_free_space.frag','r'),self.fsystem))
-#        self.extent_distribution.append(Extent_distribution(read_file('./out/'+str(i*10)+'/extents.frag','r')))
-    #self.threads_data = Threads(int(self.number_of_threads), self.options.storage_string)
-    subprocess.call('mkdir '+self.destination+'/'+self.tar_name+'/',shell=True)
+	self.runs.append(Run(str(i*10), self.fsystem, self.destination))
+    self.runs.append(Run('fresh', self.fsystem,self.destination))
 #    subprocess.call('rm -rf ./out/*/*.log',shell=True)
-    subprocess.call('mv out/* '+self.destination+'/'+self.tar_name,shell=True)
+#    subprocess.call('mv out/* '+self.destination+'/'+self.tar_name,shell=True)
     subprocess.call('rm -rf out',shell=True)
     
   def make_recipe(self):
@@ -202,26 +139,26 @@ class Charts:
 	for i in range(0,7):
 		tr.th('set1')
 		tr.th('set2')
-	for i in range(0, int(self.tar1.depth)):		
+	for i in range(len(self.tar1.runs)):		
 			tr = table.tr
-			tr.td(str((i+1)*10))
-			tr.td(tar1.boxplots.bw[i]['median']+'MB/s')
-			tr.td(tar2.boxplots.bw[i]['median']+'MB/s')
+			tr.td(str(100-(i+1)*10))
+			tr.td(tar1.runs[i].boxplot.bw['median']+'MB/s')
+			tr.td(tar2.runs[i].boxplot.bw['median']+'MB/s')
 
-			tr.td(tar1.boxplots.bw[i]['q1']+'MB/s')
-			tr.td(tar2.boxplots.bw[i]['q1']+'MB/s')
+			tr.td(tar1.runs[i].boxplot.bw['q1']+'MB/s')
+			tr.td(tar2.runs[i].boxplot.bw['q1']+'MB/s')
 
-			tr.td(tar1.boxplots.bw[i]['q3']+'MB/s')
-			tr.td(tar2.boxplots.bw[i]['q3']+'MB/s')
+			tr.td(tar1.runs[i].boxplot.bw['q3']+'MB/s')
+			tr.td(tar2.runs[i].boxplot.bw['q3']+'MB/s')
 
-			tr.td(tar1.boxplots.bw[i]['high']+'MB/s')
-			tr.td(tar2.boxplots.bw[i]['high']+'MB/s')
+			tr.td(tar1.runs[i].boxplot.bw['high']+'MB/s')
+			tr.td(tar2.runs[i].boxplot.bw['high']+'MB/s')
 
-			tr.td(tar1.boxplots.bw[i]['low']+'MB/s')
-			tr.td(tar2.boxplots.bw[i]['low']+'MB/s')
+			tr.td(tar1.runs[i].boxplot.bw['low']+'MB/s')
+			tr.td(tar2.runs[i].boxplot.bw['low']+'MB/s')
 
-			tr.td(tar1.boxplots.bw[i]['stdev']+'MB/s')
-			tr.td(tar2.boxplots.bw[i]['stdev']+'MB/s')
+			tr.td(tar1.runs[i].boxplot.bw['stdev']+'MB/s')
+			tr.td(tar2.runs[i].boxplot.bw['stdev']+'MB/s')
 	
 
 #TODO
@@ -231,8 +168,8 @@ class Charts:
 
 
   def median_diffs(self):
-    for i, item in enumerate(self.tar1.boxplots.bw):
-      diff = round(((float(self.tar2.boxplots.bw[i]['median'])-float(item['median']))/float(item['median']))*100,2)
+    for i, item in enumerate(self.tar1.runs):
+      diff = round(((float(self.tar2.runs[i].boxplot.bw['median'])-float(item.boxplot.bw['median']))/float(item.boxplot.bw['median']))*100,2)
       if diff < 0:
 	self.regressions.append(diff)
       if diff > 0:
@@ -242,17 +179,20 @@ class Charts:
   def generate_box_highchart(self, _type):
 	if _type == 'bw':
 		ylabel = 'Throughput [MB/s]'
-		data1 = self.tar1.boxplots.bw
-		data2 =	self.tar2.boxplots.bw
+		data1 = reduce(lambda x, y: x+[y.boxplot.bw], self.tar1.runs, [])
+		data2 = reduce(lambda x, y: x+[y.boxplot.bw], self.tar2.runs, [])
 	if _type == 'lat':
 		ylabel = 'Latency [ms]'
-		data1 = self.tar1.boxplots.lat
-		data2 =	self.tar2.boxplots.lat
-	template = read_file('boxplot.js','r')
+		data1 = reduce(lambda x, y: x+[y.boxplot.lat], self.tar1.runs, [])
+		data2 = reduce(lambda x, y: x+[y.boxplot.lat], self.tar2.runs, [])
+
+	template = read_file('templates/boxplot.js','r')
 	count = (len(self.chart_description.split('<br>'))-2)*20
 	template = self.ID.join(template.split('XXX_NAME_XXX'))
 	template = self.chart_description.join(template.split('XXX_RENDER_LABEL_XXX'))
 	ticks = ''
+	for run in self.tar1.runs:
+		ticks += '''\''''+run.size+'''\', '''
 	for tick in range(1,int(self.tar1.depth)+1):
       		ticks += '''\''''+str(tick*10)+'''\', '''
 	template = ticks.join(template.split('XXX_TICKS_XXX'))
@@ -269,9 +209,10 @@ class Charts:
 
 class Report:
   def __init__(self,path1, path2, destination):
-	self.destination = destination
-	self.tar1 = Tar(path1, destination)
-	self.tar2 = Tar(path2, destination)
+	self.destination = destination+path1.split('/')[-1:][0][:-7]+'_vs_'+path2.split('/')[-1:][0][:-7]+'/'
+        subprocess.call('mkdir '+self.destination,shell=True)  
+	self.tar1 = Tar(path1, self.destination)
+	self.tar2 = Tar(path2, self.destination)
 	self.tar1.process()
 	self.tar2.process()
         self.charts = [Charts(self.tar1, self.tar2)]
@@ -362,37 +303,53 @@ class Report:
 
 	#r += self.create_toc()
 	r.dt.strong('Image')
-	if self.tar1.image == self.tar2.image:
-		self.tar1.process_image()
-		image_ID = self.tar1.image_ID
+	if self.tar1.image_name == self.tar2.image_name:
+		self.tar1.image_tar.process_image()
+		image_ID = self.tar1.image_tar.image_ID
 		r.script('', type='text/javascript', src=image_ID+'.js')
 		r.li.div(id=image_ID, align='left')
 	else:
-		self.tar1.process_image()
-		self.tar2.process_image()
-		image_ID1 = self.tar1.image_ID
-		image_ID2 = self.tar2.image_ID
+		self.tar1.image_tar.process_image()
+		self.tar2.image_tar.process_image()
+		image_ID1 = self.tar1.image_tar.image_ID
+		image_ID2 = self.tar2.image_tar.image_ID
+		image_extents1 = self.tar1.image_tar.extents_ID
+		image_extents2 = self.tar2.image_tar.extents_ID
+		image_fsizes1 = self.tar1.image_tar.fsize_ID
+		image_fsizes2 = self.tar2.image_tar.fsize_ID
 		r.script('', type='text/javascript', src=image_ID1+'.js')
 		r.script('', type='text/javascript', src=image_ID2+'.js')
+		r.script('', type='text/javascript', src=image_extents1+'.js')
+		r.script('', type='text/javascript', src=image_extents2+'.js')
+		r.script('', type='text/javascript', src=image_fsizes1+'.js')
+		r.script('', type='text/javascript', src=image_fsizes2+'.js')
 		table = r.table
 		tr = table.tr
 		tr.td.div(id=image_ID1, align='left')
 		tr.td.div(id=image_ID2, align='left')
 		tr = table.tr
-		tr.td.img(src=self.tar1.image_rsp_plot)
-		tr.td.img(src=self.tar2.image_rsp_plot)
+		tr.td.img(src=self.tar1.image_tar.image_rsp_plot)
+		tr.td.img(src=self.tar2.image_tar.image_rsp_plot)
 
 		tr = table.tr
-		tr.td.img(src=self.tar1.image_usage_plot)
-		tr.td.img(src=self.tar2.image_usage_plot)
+		tr.td.img(src=self.tar1.image_tar.image_usage_plot)
+		tr.td.img(src=self.tar2.image_tar.image_usage_plot)
 		tr = table.tr
-		tr.td(self.tar1.image_recipe)
-		tr.td(self.tar2.image_recipe)
+		tr.td.div(id=image_extents1, align='left')
+		tr.td.div(id=image_extents2, align='left')
+		tr = table.tr
+		tr.td.div(id=image_fsizes1, align='left')
+		tr.td.div(id=image_fsizes2, align='left')
+		tr = table.tr
+		td = tr.td
+		for line in self.tar1.image_tar.properties.split('\n'):
+			td.li(line)
+		td = tr.td
+		for line in self.tar2.image_tar.properties.split('\n'):
+			td.li(line)
 
-		#r.li.div(id=image_ID1, align='left')
-		#r.li.div(id=image_ID2, align='left')
 		
-
+	
         for chart in self.charts:
 		r.a('',name=chart.ID)
 		h = r.h3(id='summary top')
@@ -407,8 +364,9 @@ class Report:
 		
 		r += str(chart.table)
 		
-		r.a('Go back to TOC', href='#TOC')
+	#	r.a('Go back to TOC', href='#TOC')
 	return r
+	
 
       
   def create_toc(self):
@@ -428,9 +386,15 @@ class Report:
     return toc
 
     
+tars = glob.glob('1844043_joker/*.tar.xz')
+path1 = tars[0]
+path2 = tars[1]
+r = Report(path1,path2,'./res/')
+r.save()
 
-path1 = '1818565_joker/2017-Apr-21_20h33m34s-recipe_fio_aging-1SATASSD-MOVDIST.tar.xz'
-path2 = '1818565_joker/2017-Apr-21_21h27m35s-recipe_fio_aging-1SATASSD-MOVDIST.tar.xz'
+tars = glob.glob('1843966_draven/*.tar.xz')
+path1 = tars[0]
+path2 = tars[1]
 r = Report(path1,path2,'./res/')
 r.save()
 

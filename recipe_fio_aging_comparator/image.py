@@ -31,7 +31,7 @@ def d_image(fsystem, destination):
 
 
 	bins = sorted(list(set(bins)),key=tr)
-	template = read_file('image.js','r')
+	template = read_file('templates/image.js','r')
 
 	template = str(bins).join(template.split('XXX_BINS_XXX'))
 	template = str(range(0,len(histograms))).join(template.split('XXX_TIMES_XXX'))
@@ -47,6 +47,7 @@ def d_image(fsystem, destination):
 	template = data.join(template.split('XXX_DATA_XXX'))
 
 	template = ID.join(template.split('XXX_NAME_XXX'))
+
 	_file = open(destination+ID+'.js','w')
 	_file.write(template)
 	_file.close()
