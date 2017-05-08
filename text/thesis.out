@@ -20,8 +20,8 @@
 \BOOKMARK [1][-]{section.6.2}{\040Test\040structure}{chapter.6}% 20
 \BOOKMARK [0][-]{chapter.7}{Testing\040environment}{}% 21
 \BOOKMARK [1][-]{section.7.1}{\040Storage}{chapter.7}% 22
-\BOOKMARK [2][-]{subsection.7.1.1}{\040HDD}{section.7.1}% 23
-\BOOKMARK [2][-]{subsection.7.1.2}{\040SSD}{section.7.1}% 24
+\BOOKMARK [2][-]{subsection.7.1.1}{\040Hard\040disk\040drive}{section.7.1}% 23
+\BOOKMARK [2][-]{subsection.7.1.2}{\040Solid\040state\040drive}{section.7.1}% 24
 \BOOKMARK [0][-]{chapter.8}{Results}{}% 25
 \BOOKMARK [1][-]{section.8.1}{\040Performance\040of\040aged\040file\040system}{chapter.8}% 26
 \BOOKMARK [1][-]{section.8.2}{\040Differences\040betweem\040XFS\040and\040EXT4}{chapter.8}% 27

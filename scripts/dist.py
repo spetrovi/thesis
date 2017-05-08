@@ -15,7 +15,8 @@ def dist():
 	file_sizes = [(2**i) for i in range(10,36)]
 	ticks = []
 	for i in range(len(file_sizes)-1):
-		ticks.append(sizeof_fmt(file_sizes[i])+'-'+sizeof_fmt(file_sizes[i+1]))
+		if i % 2 == 1:
+			ticks.append(sizeof_fmt(file_sizes[i]))
 
 	mu = 12.5
 	sigma = 2.5
@@ -36,8 +37,8 @@ def dist():
 
 	probs3 = list(mlab.normpdf(x, mu, sigma))
 	
-	probs = map(lambda x, y, z: x+y+z, probs1, probs2, probs3)	
-	#probs  = map(lambda x, y: x+y, probs1, probs2)	
+#	probs = map(lambda x, y, z: x+y+z, probs1, probs2, probs3)	
+	probs  = map(lambda x, y: x+y, probs1, probs2)	
 	normed = [i/sum(probs) for i in probs]
 	print normed
 #	y = np.random.choice(file_sizes, 100000, p=normed)
@@ -58,12 +59,12 @@ def dist():
 
 	fig, ax = plt.subplots()
 
-	ax.plot([i for i in range(len(histogram))], histogram)
+	ax.plot([i for i in range(len(normed))], normed)
 
 #	ticks = []
 #	for i in range(len(bins)-1):
 #		ticks.append(sizeof_fmt(bins[i])+'-'+sizeof_fmt(bins[i+1]))
-	ax.xaxis.set_ticks([i for i in range(len(histogram))])
+	ax.xaxis.set_ticks([i+i for i in range(len(ticks))])
 	ax.xaxis.set_ticklabels(ticks)
 	for label in ax.xaxis.get_ticklabels():
     		label.set_rotation(90)
@@ -71,9 +72,9 @@ def dist():
 	ax.set_xlabel('File size')
 #	ax.set_ylim([0,0.1])
 	ax.grid()
-#	fig.set_size_inches(4, 3)
+	fig.set_size_inches(4, 3)
 #	plt.show()
-	plt.savefig('dist')#,bbox_inches='tight')
+	plt.savefig('dist',bbox_inches='tight')
 
 
 dist()
