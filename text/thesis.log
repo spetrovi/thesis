@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.3.12)  8 MAY 2017 21:58
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.3.12)  8 MAY 2017 22:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -2769,20 +2769,20 @@ File: lstlang1.sty 2015/06/04 1.6 listings language file
 File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
 )
 
-Package Listings Warning: Text dropped after begin of listing on input line 575
+Package Listings Warning: Text dropped after begin of listing on input line 577
 .
 
 
-Package Listings Warning: Text dropped after begin of listing on input line 586
+Package Listings Warning: Text dropped after begin of listing on input line 588
 .
 
 
-Package Listings Warning: Text dropped after begin of listing on input line 617
+Package Listings Warning: Text dropped after begin of listing on input line 619
 .
 
 [33]
 
-Package Listings Warning: Text dropped after begin of listing on input line 625
+Package Listings Warning: Text dropped after begin of listing on input line 627
 .
 
 [34]
@@ -2792,11 +2792,11 @@ Package catoptions Warning: Undefined options
 (catoptions)                fontenc.sty,T1,. 
 (catoptions)                Default action already taken in each case .
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 633.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 633.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 635.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 635.
 (./thesis.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 633.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 633.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 635.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 635.
 Package rerunfilecheck Info: File `thesis.out' has not changed.
 (rerunfilecheck)             Checksum: 7828B5ABFA097D7EB6A11231535FD3D1;2076.
 
@@ -2825,7 +2825,7 @@ pe1/public/lm/lmtt12.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public
 plb.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/tex-gyre/qplr.pf
 b></usr/local/texlive/2016/texmf-dist/fonts/type1/public/tex-gyre/qplri.pfb></u
 sr/local/texlive/2016/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb>
-Output written on thesis.pdf (50 pages, 331014 bytes).
+Output written on thesis.pdf (50 pages, 331226 bytes).
 PDF statistics:
  626 PDF objects out of 1000 (max. 8388607)
  529 compressed objects within 6 object streams
