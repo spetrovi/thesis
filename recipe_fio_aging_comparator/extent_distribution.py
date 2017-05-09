@@ -41,7 +41,7 @@ class Fragmented_file:
 def file_size_histogram(frag_files, destination):
 	files = reduce(lambda x, y: x+[y.file_size], frag_files, [])
 	print 'sum '+str(sizeof_fmt(sum(files)))
-	bins = [(2**i) for i in range(10,31)]
+	bins = [(2**i) for i in range(10,35)]
 	fs_histogram, fs_bins = np.histogram(files,bins)
 	fs_histogram = map(lambda x: int(x), fs_histogram)
 	ticks = []
@@ -64,7 +64,7 @@ def file_size_histogram(frag_files, destination):
 	return ID
 
 def used_space_histogram(_file, destination):
-	_file = 'fiemap_exp'
+#	_file = 'fiemap_exp'
 	contents = read_file(_file,'r').split('\n')[:-1]
 	frag_files = []
 	extents = []
@@ -80,7 +80,7 @@ def used_space_histogram(_file, destination):
 	
 	filenum = len(frag_files)
 
-	bins = [(2**i) for i in range(10,31)]
+	bins = [(2**i) for i in range(10,35)]
 
 	opt_files = filter(lambda x: x.optimally_allocated, frag_files)
 	frag_files = filter(lambda x: not x.optimally_allocated, frag_files)

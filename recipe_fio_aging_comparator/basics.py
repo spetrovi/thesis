@@ -317,19 +317,26 @@ class Report:
 		image_extents2 = self.tar2.image_tar.extents_ID
 		image_fsizes1 = self.tar1.image_tar.fsize_ID
 		image_fsizes2 = self.tar2.image_tar.fsize_ID
+		image_rsp1 = self.tar1.image_tar.image_rsp_plot
+		image_rsp2 = self.tar2.image_tar.image_rsp_plot
 		r.script('', type='text/javascript', src=image_ID1+'.js')
 		r.script('', type='text/javascript', src=image_ID2+'.js')
 		r.script('', type='text/javascript', src=image_extents1+'.js')
 		r.script('', type='text/javascript', src=image_extents2+'.js')
 		r.script('', type='text/javascript', src=image_fsizes1+'.js')
 		r.script('', type='text/javascript', src=image_fsizes2+'.js')
+		r.script('', type='text/javascript', src=image_rsp1+'.js')
+		r.script('', type='text/javascript', src=image_rsp2+'.js')
 		table = r.table
 		tr = table.tr
 		tr.td.div(id=image_ID1, align='left')
 		tr.td.div(id=image_ID2, align='left')
 		tr = table.tr
-		tr.td.img(src=self.tar1.image_tar.image_rsp_plot)
-		tr.td.img(src=self.tar2.image_tar.image_rsp_plot)
+#		tr.td.img(src=self.tar1.image_tar.image_rsp_plot)
+#		tr.td.img(src=self.tar2.image_tar.image_rsp_plot)
+
+		tr.td.div(id=image_rsp1, align='left')
+		tr.td.div(id=image_rsp2, align='left')
 
 		tr = table.tr
 		tr.td.img(src=self.tar1.image_tar.image_usage_plot)
@@ -385,7 +392,7 @@ class Report:
 	tr.td('{'+','.join(chart.gains)+'}')
     return toc
 
-    
+"""   
 tars = glob.glob('1844043_joker/*.tar.xz')
 path1 = tars[0]
 path2 = tars[1]
@@ -397,8 +404,19 @@ path1 = tars[0]
 path2 = tars[1]
 r = Report(path1,path2,'./res/')
 r.save()
+"""
 
+tars = glob.glob('1848*_blade/*1SASHDD*.tar.xz')
+path1 = tars[0]
+path2 = tars[1]
+r = Report(path1,path2,'./res/')
+r.save()
 
+tars = glob.glob('1848*_blade/*1SATASSD*.tar.xz')
+path1 = tars[0]
+#path2 = tars[1]
+r = Report(path1,path2,'./res/')
+r.save()
 
 
 

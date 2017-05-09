@@ -76,6 +76,8 @@ class Tar:
 	return 'usage_'+self.image_ID+'.png'
 
   def generate_rsp_plot(self, filename):
+	template = read_file('templates/rsp_template.js','r')
+	line_template = read_file('templates/rsp_line_template.js','r')
 	rsptimes = {}
 	fig, ax = plt.subplots()
 	with open(filename, "rb") as csvfile:
@@ -95,24 +97,41 @@ class Tar:
 
 			# interpolate + smooth
 			itp = interp1d(x,y, kind='linear')
-			window_size, poly_order = 501, 5
+			window_size, poly_order = 101, 2
 			yy_sg = savgol_filter(itp(xx), window_size, poly_order)
-	
-			ax.plot(xx,yy_sg,label=key)
 
+			line = line_template
+			line = key.join(line.split('XXX_NAME_XXX'))	
+			y = map(lambda x: int(x*1000), list(yy_sg))
+			line = str(y).join(line.split('XXX_DATA_XXX'))
+			template = (line+'XXX_LINE_XXX').join(template.split('XXX_LINE_XXX'))
+
+	ID = self.image_ID+'_rsp'
+
+	template = ''.join(template.split('XXX_LINE_XXX'))
+	
+	template = ID.join(template.split('XXX_NAME_XXX'))
+	bins = map(lambda x: int(x), list(xx))
+	template = str(bins).join(template.split('XXX_BINS_XXX'))
+			
+	#		ax.plot(xx,yy_sg,label=key)
+	f = open(self.destination+'/'+ID+'.js','w')
+	f.write(template)
+	f.close()
+	return ID
 	#ax.plot(xx,y)
-	ax.set_ylabel('Response time[s]')
-	ax.set_xlabel('Time[s]')
+	#ax.set_ylabel('Response time[s]')
+	#ax.set_xlabel('Time[s]')
 	#ax.set_ylim([0,0.1])
-	ax.grid()
-	box = ax.get_position()
-	ax.set_position([box.x0, box.y0 + box.height * 0.1,
-                 box.width, box.height * 0.9])
-	legend = ax.legend(loc='upper left')#), bbox_to_anchor=(0.5, -0.05), shadow=True, ncol=5)
-#	ax.set_yscale("log")#, nonposy='clip')
+	#ax.grid()
+	#box = ax.get_position()
+	#ax.set_position([box.x0, box.y0 + box.height * 0.1,
+        #         box.width, box.height * 0.9])
+	#legend = ax.legend(loc='upper left')#), bbox_to_anchor=(0.5, -0.05), shadow=True, ncol=5)
+#	x.set_yscale("log")#, nonposy='clip')
 #	fig.set_size_inches(6,5)
-	plt.savefig(self.destination+'/'+self.image_ID+'.png')#,bbox_inches='tight')
-	return self.image_ID+'.png'
+	#plt.savefig(self.destination+'/'+self.image_ID+'.png')#,bbox_inches='tight')
+#	return self.image_ID+'.png'
 
 class Report:
   def __init__(self,path1, path2, destination):
@@ -224,19 +243,25 @@ class Report:
 		image_extents2 = self.tar2.extents_ID
 		image_fsizes1 = self.tar1.fsize_ID
 		image_fsizes2 = self.tar2.fsize_ID
+		image_rsp_plot1 = self.tar1.image_rsp_plot
+		image_rsp_plot2 = self.tar2.image_rsp_plot
 		r.script('', type='text/javascript', src=image_ID1+'.js')
 		r.script('', type='text/javascript', src=image_ID2+'.js')
 		r.script('', type='text/javascript', src=image_extents1+'.js')
 		r.script('', type='text/javascript', src=image_extents2+'.js')
 		r.script('', type='text/javascript', src=image_fsizes1+'.js')
 		r.script('', type='text/javascript', src=image_fsizes2+'.js')
+		r.script('', type='text/javascript', src=image_rsp_plot1+'.js')
+		r.script('', type='text/javascript', src=image_rsp_plot2+'.js')
 		table = r.table
 		tr = table.tr
 		tr.td.div(id=image_ID1, align='left')
 		tr.td.div(id=image_ID2, align='left')
 		tr = table.tr
-		tr.td.img(src=self.tar1.image_rsp_plot)
-		tr.td.img(src=self.tar2.image_rsp_plot)
+#		tr.td.img(src=self.tar1.image_rsp_plot)
+#		tr.td.img(src=self.tar2.image_rsp_plot)
+		tr.td.div(id=image_rsp_plot1, align='left')
+		tr.td.div(id=image_rsp_plot2, align='left')
 
 		tr = table.tr
 		tr.td.img(src=self.tar1.image_usage_plot)
@@ -295,16 +320,21 @@ path2 = glob.glob('./draven_images/*-drift_job-ext4-1SASHDD-DIVRSP.tar.xz')[0]
 r = Report(path1,path2,'./res/')
 r.save()
 """
-path1 = glob.glob('./blade_images/*-drift_job-xfs-1SASHDD-EXP.tar.xz')[0]
-path2 = glob.glob('./blade_images/*-drift_job-xfs-1SATASSD-EXP.tar.xz')[0]
+path1 = glob.glob('./blade_images/*-drift_job-xfs-1SASHDD-BIMODAL.tar.xz')[0]
+path2 = glob.glob('./blade_images/*-drift_job-xfs-1SATASSD-BIMODAL.tar.xz')[0]
+r = Report(path1,path2,'./res/')
+r.save()
+
+path1 = glob.glob('./blade_images/*-drift_job-xfs-1SASHDD-BIMODAL.tar.xz')[0]
+path2 = glob.glob('./blade_images/*-drift_job-ext4-1SASHDD-BIMODAL.tar.xz')[0]
 r = Report(path1,path2,'./res/')
 r.save()
  
 
-path1 = glob.glob('./blade_images/*-drift_job-ext4-1SASHDD-EXP.tar.xz')[0]
-path2 = glob.glob('./blade_images/*-drift_job-ext4-1SATASSD-EXP.tar.xz')[0]
-r = Report(path1,path2,'./res/')
-r.save()
+#path1 = glob.glob('./blade_images/*-drift_job-ext4-1SASHDD-EXP.tar.xz')[0]
+#path2 = glob.glob('./blade_images/*-drift_job-ext4-1SATASSD-EXP.tar.xz')[0]
+#r = Report(path1,path2,'./res/')
+#r.save()
 
 #path1 = glob.glob('/home/spetrovi/Documents/test_results/joker_images/*-drift_job-ext4-1SATASSD-MAINTAIN.tar.xz')[0]
 #path2 = glob.glob('/home/spetrovi/Documents/test_results/joker_images/*-drift_job-ext4-2SATASSDLVM-MAINTAIN.tar.xz')[0]
