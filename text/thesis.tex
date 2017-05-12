@@ -113,7 +113,7 @@ To achieve consistency of results and to shorten testing time, file system image
 
 Foremost, this thesis describe implementation of flexible tests which represent the two aforementioned steps. The first test is able to age fresh file system and store the result as an image for later use. The performance statistics collected in the process, as well as resulting layout can be used to evaluate ability of file system to respond to aging. Second test can evaluate resulting image even further by releasing some space and conducting performance test on resulting layout. 
 
-Furthermore, using developed tests to test different configurations of file systems and storage is demonstrated. The subject of research are differences between popular Linux file systems (XFS, Ext4) and storage technology (HDD, SSD) in context of aging. Because of nature of collected data, a processing tool was implemented to parse large amount of information into human readable reports. All the generated reports are part of this thesis in form of Appendix A.
+Furthermore, using developed tests to test different configurations of file systems and storage is demonstrated. The subject of research are differences between popular Linux file systems (XFS, Ext4) and storage technology (solid state and hard disk drives) in context of aging. Because of nature of collected data, a processing tool was implemented to parse large amount of information into human readable reports. All the generated reports are part of this thesis in form of Appendix A.
 
 The aging tests implemented in this thesis are established as part of testing cycle in Red Hat Kernel Performance team.
 
@@ -125,7 +125,7 @@ In this chapter I present different approaches of file system aging and fragment
 \section{Aging file system using real-life data}
 This approach is based on modeling the aged file system using data collected from file systems used in real-life environment.
 
-Such data can be in form of snapshots (e.g. images) of file systems, as was thoroughly described by Smith and Seltzer~\cite{Smith:1997:FSA:258623.258689}.
+Such data can be in form of snapshots (i.e. images) of file systems, as was thoroughly described by Smith and Seltzer~\cite{Smith:1997:FSA:258623.258689}.
 
 The snapshots were collected nightly over a long period of time (one to three years) on more then fifty file systems. By comparing pairs of snapshots in the sequence, performed operations were estimated, resulting in a very realistic aging workload. However, as some studies suggest, most of files have life span shorter than 24 hours~\cite{Ousterhout:1985:TAU:323647.323631}. Therefore, as Smith and Seltzer admit, by snapshoting every night, this process does not account for most of the created files, resulting in loss of important part of data.
 
@@ -316,27 +316,22 @@ First, the amount of fullness had to be taken into account. Heavily used file sy
 
 In fs-drift, there is an option to define a workload table, describing probability of used operations. Since the goal of this workload is to create fragmented file system in a short time, operations which do not alter file system block layout are not included. Only create, delete, append, trucate and random write have representation in this workload. 
 
-File size is another important factor of succesfull simulation. To consider the simulation succesfull, resulting layout should have similar file size distribution as real-life file systems. File size is distributed non-uniformly in real-life file systems, so to achieve realistic file system layout, file size distribution has to be non-uniform during the test.
+File size is another important factor of succesfull simulation. To consider a simulation succesfull, resulting layout should have similar file size distribution as real-life file systems. In real-life file systems, file size is distributed non-uniformly, therefore to achieve realistic file system layout, file size distribution has to be non-uniform during the test.
 
-As a reference for file size distribution, five year old study of file system metadata was used~\cite{agrawal2007five}. Figure 3 shows measured file size distribution of used file systems. To mimic this layout, I modeled logarhitmic normal random distribution. The shape of resulting distribution in shown in figure~\ref{fig:lognormal}.
+As a reference for file size distribution, five year old study of file system metadata was used~\cite{agrawal2007five}. Figure 3 shows measured file size distribution of used file systems. To mimic this layout, I modeled logarhitmic normal random distribution. The shape of resulting distribution is shown in figure~\ref{fig:lognormal}.
 
 \begin{figure}[!htb]
     \begin{minipage}{\textwidth}
         \centering
         \includegraphics[width=0.7\textwidth]{../scripts/dist3.png}
-        \caption{Bimodal distribution of file size}
+        \caption{Logarhitmic normal distribution of file size}
 \label{fig:lognormal}
     \end{minipage}
 \end{figure}
 
-Duration of the test is an important factor as well. In general, the testing time should be long enough to stabilise. When considering file system aging, the test should spend most of the run time after the saturation phase (e.g. the phase of filling the file system to a desired fullness).  After developing a test, it is necessary to conduct few pilot runs to confirm if any stabilisation occur and set the duration accordingly, to maximilise effectiveness.
+Duration of the test is an important factor as well. In general, the testing time should be long enough for the environment to stabilise. When considering file system aging, the test should spend most of the run time after the saturation phase (e.g. the phase of filling the file system to a desired fullness). After developing a test, it is necessary to conduct few pilot runs to confirm if any stabilisation occur and set the duration accordingly. On the other hand, for the test to be usefull in professional environment, testing time should not be too long. The goal is to maximize testing correctness while minimising the time for the test to complete.
 
-%However, letting the aging process to take too much time can result in file system fragmented unrealistically.
-%The optimal results were reached when every operation had equal representation, e.g. 33\%
-
-%The fs-drift allows directories up to defined level to create.
-
-%The directory in which a file is directly affect its chance to be selected for a chosen operation, so by using only one directory, the equilibrium happens too fast, long before the file system is filled completely. Therefore we allow up to three levels of directories to be created.
+During the test, all available file operations are used, with more weight placed on layout alterning operations (create, delete, truncate, append, random write). The non-alterning operations are there to verify, if any performance drop occur during the aging process.
 
 \section{File system images}
 File system images can be created by using tools developed to inspect file systems in case of emergency. For Ext* file systems, there is a tool called \textit{e2image} and for XFS, \textit{xfs\_metadump} and \textit{xfs\_mdrestore}. Both tools create images as sparse files, so compression is needed.
@@ -420,7 +415,7 @@ caption={sdad},
 \section{Implementation details}
 Workflow of image creating is contained in the Beaker task drift\_job. After extracting fs-drift, the main script starts python script, which handles the process of running fs-drift. Settings of fs-drift are passed as a parameter and then parsed inside the script. Before running the fs-drift, asynchronous thread is triggered to periodically log free space fragmentation and file system usage while fs-drift is running. If the usage reaches --hranica-- specified amount of space si freed from file system\footnotemark[2].
 
-\footnotetext[2]{The mechanism of freeing space from file sytem is described in next chapter}
+\footnotetext[2]{The mechanism of space releasing from file sytem is described in next chapter}
 
 After the fs-drift ends, image of file system is created using presented tools, and archived using \textit{bzip2}. All the generated data and information about environment is archived as well and text file describing the test is generated. These three files are then sent (via \textit{rsync}) to the specified destination.
 
@@ -532,16 +527,24 @@ The system installed on machines is RHEL-7.3 with kernel 3.10.0-514.el7.x86\_64
 \section{Storage}
 
 \subsection{Hard disk drive}
-A hard-disk drive (HDD) is a type of storage device which use one or more magnetic plates to store and retreive data. Desired physical address can be reached by rotating the plates and positioning magnetic read-write heads. The plates rotate at stable speed at around 7500rpm (even more for enterprise-level hardware).
+A hard-disk drive (i.e. HDD) is a type of storage device which use one or more magnetic plates to store data. Data can be retreived by rotating the plates and positioning magnetic read-write heads. The plates rotate at stable speed at around 7500\,rpm (and more on enterprise-level hardware).
 
-Since the parts of HDD have to physically move to reach desired address, there is a latency to the data access. The time for magnetic head to find next relevant block of data is called a \textit{seek time}. Because the length of seek time has significant impact on overall I/O performance, OS have to do a lot of optimising, such as pre-fetching.
+Since the parts of HDD have to physically move to reach desired location, there is a latency to the data access. The time for magnetic head to find next relevant block of data is called a \textit{seek time}. Because the length of seek time has significant impact on overall I/O performance, OS have to do a lot of optimising, such as pre-fetching.
 
 Obviously, block layout would have a large impact on performence of this kind of device. The amount of fragmentation (thus aging) affect the number of performed seeks. This cause the pressure on file system to store data more contiguously and also cluster related data.
 
 \subsection{Solid state drive}
-Solid state drive is (SSD) a type of storage device which use integrated cirquit to store and retreive data. SSD has no moving parts, so the data access is purely electronic, which results in lower access time and latency than HDD.
+Solid state drive (i.e. SSD) is  a type of storage device which use integrated cirquit to store and retreive data. SSD has no moving parts, therefore the data access is purely electronic, which results in lower access time and latency than HDD.
 
-As for SSD, this type of device does not have any moving parts, which make perform really well. One of the problems, however, is limited lifecycle of memory cells. SSD manufacturers deal with this problem by adding controler with its own scheduler, which make sure, no parts of the device are used significantly more than other parts.
+However, on solid state drives, data cannot be directly overwritten (as in HDDs). The cell of an SSD can only be directly written to, therefore have to be erased before writing. Moreover, due to physical construction limits, write operation can be conducted to one page (4-$\SI{16}{\kilo\byte}$), but erasure have to be done to a whole block (128 to 512 pages). Therefore, if OS have to rewrite some blocks (e.g. update metadata), the data have to be read, erased from the drive and written back modified. This effect, known as write amplification, can have significant impact on performance of file systems. 
+
+In addition, the memory cell can be rewritten finite amount of times, therefore, a form of wear leveling has to be employed. Wear leveling prevents frequently accessed blocks from exhaustion of cells life-cycle by moving files around the device.
+
+Static wear leveling rotates even unused files around the drive to ensure equal wear. However, deleting file in file system doesn't always ensure its deletion on the device. Typically, the file is only marked as deleted, but this information is not submited to underlying device itself. However, files that are not valid for file system anymore can still circulate on the device, increasing its wear and write amplification, since there are less free block that could have been.
+
+To decrease this effect, trim commands were introduced. Trim command communicate to SSD all the deletions that were realised in the file system, so the drive can erase blocks accordingly. Nevertheless this operation is reducing performance of IO operations while being conducted, it can increase overall performance and life time of an SSD.
+
+%As for SSD, this type of device does not have any moving parts, which make perform really well. One of the problems, however, is limited lifecycle of memory cells. SSD manufacturers deal with this problem by adding controler with its own scheduler, which make sure, no parts of the device are used significantly more than other parts.
 
 %When aging the filesystems, I expect for those grown on HDD to perform significantly slower after aging process, and I expect SSD filesystems not to be affected at all, or maybe significantly less.
 

@@ -16,8 +16,8 @@
 \contentsline {section}{\numberline {4.4}\slshape Storage generator}{13}{section.4.4}
 \contentsline {chapter}{\numberline {5}\bfseries Creating aged file system}{15}{chapter.5}
 \contentsline {section}{\numberline {5.1}\slshape Aging process}{15}{section.5.1}
-\contentsline {section}{\numberline {5.2}\slshape File system images}{16}{section.5.2}
-\contentsline {section}{\numberline {5.3}\slshape Implementation details}{17}{section.5.3}
+\contentsline {section}{\numberline {5.2}\slshape File system images}{17}{section.5.2}
+\contentsline {section}{\numberline {5.3}\slshape Implementation details}{18}{section.5.3}
 \contentsline {chapter}{\numberline {6}\bfseries Performance testing of aged file system}{19}{chapter.6}
 \contentsline {section}{\numberline {6.1}\slshape Benchmark settings}{19}{section.6.1}
 \contentsline {section}{\numberline {6.2}\slshape Test structure}{19}{section.6.2}
