@@ -229,7 +229,7 @@ class Report:
 
 	#r += self.create_toc()
 	r.dt.strong('Image')
-	if self.tar1.image == self.tar2.image:
+	if False: #self.tar1.image == self.tar2.image:
 		self.tar1.process_image()
 		image_ID = self.tar1.image_ID
 		r.script('', type='text/javascript', src=image_ID+'.js')
@@ -320,15 +320,15 @@ path2 = glob.glob('./draven_images/*-drift_job-ext4-1SASHDD-DIVRSP.tar.xz')[0]
 r = Report(path1,path2,'./res/')
 r.save()
 """
-path1 = glob.glob('./blade_images/*-drift_job-xfs-1SASHDD-BIMODAL.tar.xz')[0]
-path2 = glob.glob('./blade_images/*-drift_job-xfs-1SATASSD-BIMODAL.tar.xz')[0]
+path1 = glob.glob('./blade_images/*W480*.tar.xz')[0]
+path2 = glob.glob('./blade_images/*W480*.tar.xz')[1]
 r = Report(path1,path2,'./res/')
 r.save()
 
-path1 = glob.glob('./blade_images/*-drift_job-xfs-1SASHDD-BIMODAL.tar.xz')[0]
-path2 = glob.glob('./blade_images/*-drift_job-ext4-1SASHDD-BIMODAL.tar.xz')[0]
-r = Report(path1,path2,'./res/')
-r.save()
+#path1 = glob.glob('./blade_images/*-drift_job-xfs-1SASHDD-BIMODAL.tar.xz')[0]
+#path2 = glob.glob('./blade_images/*-drift_job-ext4-1SASHDD-BIMODAL.tar.xz')[0]
+#r = Report(path1,path2,'./res/')
+#r.save()
  
 
 #path1 = glob.glob('./blade_images/*-drift_job-ext4-1SASHDD-EXP.tar.xz')[0]
