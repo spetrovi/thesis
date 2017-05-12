@@ -318,24 +318,25 @@ In fs-drift, there is an option to define a workload table, describing probabili
 
 File size is another important factor of succesfull simulation. To consider the simulation succesfull, resulting layout should have similar file size distribution as real-life file systems. File size is distributed non-uniformly in real-life file systems, so to achieve realistic file system layout, file size distribution has to be non-uniform during the test.
 
-As a reference for file size distribution, five year old study of file system metadata was used~\cite{agrawal2007five}. Figure 3 shows measured file size distribution of used file systems. To mimic this layout, I modeled bimodal random distribution with modes at $\SI{8}{\mebi\byte}$ and $\SI{1}{\gibi\byte}$. The shape of resulting distribution in shown in figure~\ref{fig:bimodal}.
+As a reference for file size distribution, five year old study of file system metadata was used~\cite{agrawal2007five}. Figure 3 shows measured file size distribution of used file systems. To mimic this layout, I modeled logarhitmic normal random distribution. The shape of resulting distribution in shown in figure~\ref{fig:lognormal}.
 
 \begin{figure}[!htb]
     \begin{minipage}{\textwidth}
         \centering
-        \includegraphics[width=0.7\textwidth]{../scripts/dist.png}
+        \includegraphics[width=0.7\textwidth]{../scripts/dist3.png}
         \caption{Bimodal distribution of file size}
-\label{fig:bimodal}
+\label{fig:lognormal}
     \end{minipage}
 \end{figure}
 
+Duration of the test is an important factor as well. In general, the testing time should be long enough to stabilise. When considering file system aging, the test should spend most of the run time after the saturation phase (e.g. the phase of filling the file system to a desired fullness).  After developing a test, it is necessary to conduct few pilot runs to confirm if any stabilisation occur and set the duration accordingly, to maximilise effectiveness.
+
+%However, letting the aging process to take too much time can result in file system fragmented unrealistically.
 %The optimal results were reached when every operation had equal representation, e.g. 33\%
 
 %The fs-drift allows directories up to defined level to create.
 
 %The directory in which a file is directly affect its chance to be selected for a chosen operation, so by using only one directory, the equilibrium happens too fast, long before the file system is filled completely. Therefore we allow up to three levels of directories to be created.
-
-Duration of the test is set to 5 hours for the pilot testing and 10 hours 
 
 \section{File system images}
 File system images can be created by using tools developed to inspect file systems in case of emergency. For Ext* file systems, there is a tool called \textit{e2image} and for XFS, \textit{xfs\_metadump} and \textit{xfs\_mdrestore}. Both tools create images as sparse files, so compression is needed.
@@ -531,14 +532,14 @@ The system installed on machines is RHEL-7.3 with kernel 3.10.0-514.el7.x86\_64
 \section{Storage}
 
 \subsection{Hard disk drive}
-A hard-disk drive is a type of storage device which use one or more magnetic plates to store and retreive data. Desired physical address can be reached by rotating the plates and positioning magnetic read-write heads. The plates rotate at stable speed at around 7500rpm (even more for enterprise-level hardware).
+A hard-disk drive (HDD) is a type of storage device which use one or more magnetic plates to store and retreive data. Desired physical address can be reached by rotating the plates and positioning magnetic read-write heads. The plates rotate at stable speed at around 7500rpm (even more for enterprise-level hardware).
 
 Since the parts of HDD have to physically move to reach desired address, there is a latency to the data access. The time for magnetic head to find next relevant block of data is called a \textit{seek time}. Because the length of seek time has significant impact on overall I/O performance, OS have to do a lot of optimising, such as pre-fetching.
 
 Obviously, block layout would have a large impact on performence of this kind of device. The amount of fragmentation (thus aging) affect the number of performed seeks. This cause the pressure on file system to store data more contiguously and also cluster related data.
 
 \subsection{Solid state drive}
-Solid state driveis a type of storage device which use integrated cirquit to store and retreive data. SSD has no moving parts, so the data access is purely electronic, which results in lower access time and latency than HDD.
+Solid state drive is (SSD) a type of storage device which use integrated cirquit to store and retreive data. SSD has no moving parts, so the data access is purely electronic, which results in lower access time and latency than HDD.
 
 As for SSD, this type of device does not have any moving parts, which make perform really well. One of the problems, however, is limited lifecycle of memory cells. SSD manufacturers deal with this problem by adding controler with its own scheduler, which make sure, no parts of the device are used significantly more than other parts.
 
@@ -549,6 +550,7 @@ As for SSD, this type of device does not have any moving parts, which make perfo
 \section{Performance of aged file system}
 \section{Differences betweem XFS and EXT4}
 \section{Differences accross different storage}
+
 \chapter{Conclusion}
 Here I will admit, that these results were not really surprising and ABSOLUTELY no breakthrough, however, as noone really research this branch of QE, the results are definitely a step further in this field.
 
