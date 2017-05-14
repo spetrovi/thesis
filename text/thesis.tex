@@ -224,15 +224,15 @@ Beaker is an open source project aimed at automating testing workflow. The softw
 
 
 \section{FIO}
-Flexible Input/Output tool is a IO workload generator written by Jens Axboe. It is a tool well known for it's flexibility as well as large group of users and contributors. The flexibility is integral for conductuing less artifical and more natural performance tests. However, approaching more natural test behavior, stability of results drop, so ideal equilibrium between these two requirement has to be found.
+Flexible Input/Output tool is a workload generator written by Jens Axboe. It is a tool well known for it's flexibility as well as large group of users and contributors. The flexibility is integral for conductuing less artifical and more natural performance tests. However, approaching more natural test behavior, stability of results drop, so ideal equilibrium between these two requirement has to be found.
 
-FIO accept the workload specification as either a configuration file or a single line. Multiple different jobs can be specified as well as global options for every job. 
+FIO accepts the workload specification as either a configuration file or a single line. Multiple different jobs can be specified as well as global options valid for every job. 
 
-The benchmark creates requests on system level, allowing for great power over the generated workflow.
+%The benchmark creates requests on system level, allowing for great power over the generated workflow.
 
-There is a possibility to choose from 4 I/O operations to be performed (or their mix). These operations are sequential write, sequential read, random write and random read. Verification of the issued data is offered as well. Size of generated file and block size can be controlled too and it can be either stable or chosen from given range. For cache-tiering workloads, different random distributions (f.e. Zipf) can be specified. FIO also supports process forking and threading.
+There is a possibility to choose from 4 IO operations to be performed (or their mix). These operations are sequential write, sequential read, random write and random read. Verification of the issued data is offered as well. Size of generated file and block size can be controlled too and it can be either stable or chosen from given range. For cache-tiering workloads, different random distributions (e.g. Zipf) can be specified. FIO also supports process forking and threading.
 
-After the test, FIO will compute overall report of measured performance. However, logging of multiple properties can be enabled, giving researchers even more oversight about the nature of file system performance.
+After the test, FIO generates overall report of measured performance. However, logging of multiple properties can be enabled, giving researchers even more oversight about the nature of file system performance.
 
 \section{Fs-drift}
 Fs-drift is a very flexible aging test, which can be used to simulate lots of different workloads. The test is based on random file access and randomly generated mix of requests. These requests can be writes, reads, creates, appends, truncates or deletes.
@@ -271,23 +271,23 @@ Furthermore, fs-drift offers one more option to influence random distribution. A
     \end{minipage}
 \end{figure}
 
-For purpose of this thesis, several changes had to be made to the original code. Besides small errors like invalid Readme information, a bug in code had to be repaired, otherwise the fs-drift would not delete files while issuing \textit{delete} operation, marginally affecting aging process. Without this fix, the volume would just saturate and remain in more or less consistent state for the rest of the runtime.
+%For purpose of this thesis, several changes had to be made to the original code. Besides small errors like invalid Readme information, a bug in code had to be repaired, otherwise the fs-drift would not delete files while issuing \textit{delete} operation, marginally affecting aging process. Without this fix, the volume would just saturate and remain in more or less consistent state for the rest of the runtime.
 
-Additionally, to be able to inspect and work with the file system while aging process is still running, I added an option to specify \textit{pause file}. If the pause file is present, the fs-drift would not issue any requests and waits until the file is removed\footnotemark[1].
-\footnotetext[1]{For all the changes made to master branch of fs-drift, see ...}
+%Additionally, to be able to inspect and work with the file system while aging process is still running, I added an option to specify \textit{pause file}. If the pause file is present, the fs-drift would not issue any requests and waits until the file is removed\footnotemark[1].
+%\footnotetext[1]{For all the changes made to master branch of fs-drift, see ...}
 
 Fs-drift offers even more parameters to control the test run such as number of directories, levels of directories, or enabling \textit{fsync}/\textit{fdatasync} to be called. To stop the fs-drift, one of the stop conditions have to be met. The stop condition can be either reached maximal number of performed operations, running out of time, or apparance of stop file.
 
 For evaulation of the aging process, fs-drift can log latency of the performed opperations. However, the log doesn't differentiate between the operations, which could be usefull for further research.
 
-Used configuration of fs-drift for purposes of aging testing is further described in chapter 4.
+Used configuration of fs-drift for purposes of aging testing is further described in Chapter 4.
 
 \subsection{Changes to original code}
 Several changes had to be made to the original code prior to testing.
 
 The most obvious problem with the tools was, that it did not conduct \textit{delete} operations. As stated, deleting files is quite crucial to file system aging.
 
-Another problem emerged when gathering statistics of response time evolution through the aging process. Since the tool is generating the I/O requests at random, sometimes, error occurs. Most operations (except \textit{create}) need the file to exist to success, but sometimes, the file is non-existent. The problem with response time logging was, it logged the response time even if the operation didn't carry, causing noise to the data.
+Another problem emerged when gathering statistics of response time evolution through the aging process. Since the tool is generating the IO requests at random, sometimes error occurs. Most operations need the file to exist to success, but sometimes, the file is non-existent. The problem with response time logging was, it logged the response time even if the operation didn't carry, causing noise to the data.
 
 Further problem with response time logging was, it didn't differentiate between operations. Such distinction could greatly affect the way researchers can find problems with file system evolution.
 
@@ -302,19 +302,17 @@ Storage generator is a beaker task developed by Jozef Mikovič. It is capable of
 
 The creation of XFS file system is standard, but Ext4 file system is created with additional option, disabling \textit{lazy init}. \textit{Lazy init} is a feature which allows for fast creation of file system by not allocating all the available space at once. The space is allocated later, as the file system grows. Such additional allocation, however would skew data collected in the first hours of the test, therefore it is disabled in these tests.
 
-
-
 \chapter{Creating aged file system}
 In this chapter, I describe process of developement of file system aging workflow and its implementation as a form of automated test.
 
 \section{Aging process}
 As mentioned, fs-drift was used as a mean of aging the fresh file system, bringing it to the aged, fragmented state. Fs-drift is quite flexible, therefore a lot of parameters and their impact on the final block layout had to be considered.
 
-First, the amount of fullness had to be taken into account. Heavily used file systems tend to be full at amounts ranging from 75 to 100 percent~\cite{agrawal2007five}. However, fs-drift does not offer an option to directly control the fullness of the file system. As the creator states in README, to fill a file system, maximum number of files and mean size of file should be defined such that the product is greater than the available space. Parameters to overload the volume are not difficult to come up with. The problem is, the random nature of the test doesn't allow for meaningfull reporoducibility of the reached equilibrium. In most cases, fs-drift plainly saturates given volume, so used space remains at 100\% through the rest of the testing time. This drawback was overridden by a small change in fs-drift code\footnotemark[1]. By adding the possibility to specify a \textit{pause file}, other processes can stop fs-drift to generate IO requests for some time. This allows asynchronous thread triggered before fs-drift to pause it, when the file system usage reaches a specified amount and free some space.
+First, the amount of fullness had to be taken into account. Heavily used file systems tend to be full at amounts ranging from 75 to 100 percent~\cite{agrawal2007five}. However, fs-drift does not offer an option to directly control the fullness of the file system. As the creator states in README, to fill a file system, maximum number of files and mean size of file should be defined such that the product is greater than the available space. Parameters to overload the volume are not difficult to come up with. The problem is, the random nature of the test doesn't allow for meaningfull reporoducibility of the reached equilibrium. In most cases, fs-drift plainly saturates given volume, so used space remains at 100\% through the rest of the testing time. This drawback was overridden by a small change in fs-drift code\footnotemark[1]. By adding the possibility to specify a \textit{pause file}, other processes can stop fs-drift to generate IO requests if the file system usage reaches a specified amount and release some space.
 
 \footnotetext[1]{For all the changes made to master branch of fs-drift, see Chapter 3}
 
-In fs-drift, there is an option to define a workload table, describing probability of used operations. Since the goal of this workload is to create fragmented file system in a short time, operations which do not alter file system block layout are not included. Only create, delete, append, trucate and random write have representation in this workload. 
+%In fs-drift, there is an option to define a workload table, describing probability of used operations. Since the goal of this workload is to create fragmented file system in a short time, operations which do not alter file system block layout are not included. Only create, delete, append, trucate and random write have representation in this workload. 
 
 File size is another important factor of succesfull simulation. To consider a simulation succesfull, resulting layout should have similar file size distribution as real-life file systems. In real-life file systems, file size is distributed non-uniformly, therefore to achieve realistic file system layout, file size distribution has to be non-uniform during the test.
 
@@ -413,7 +411,7 @@ caption={sdad},
 %However, after few runs, I decided not to use this approach for actual aging, because the time needed to fill and appropriately age the filesystem simply took very long. Instead, I was looking for other, already created tools I could use.
 
 \section{Implementation details}
-Workflow of image creating is contained in the Beaker task drift\_job. After extracting fs-drift, the main script starts python script, which handles the process of running fs-drift. Settings of fs-drift are passed as a parameter and then parsed inside the script. Before running the fs-drift, asynchronous thread is triggered to periodically log free space fragmentation and file system usage while fs-drift is running. If the usage reaches --hranica-- specified amount of space si freed from file system\footnotemark[2].
+Workflow of image creating is contained in the Beaker task drift\_job. After extracting fs-drift, the main script starts python script, which handles the process of running fs-drift. Settings of fs-drift are passed as a parameter and then parsed inside the script. Before running the fs-drift, asynchronous thread is triggered to periodically log free space fragmentation and file system usage while fs-drift is running. If the usage reaches defined linit specified amount of space is randomly deleted from file system\footnotemark[2].
 
 \footnotetext[2]{The mechanism of space releasing from file sytem is described in next chapter}
 
@@ -536,7 +534,7 @@ Obviously, block layout would have a large impact on performence of this kind of
 \subsection{Solid state drive}
 Solid state drive (i.e. SSD) is  a type of storage device which use integrated cirquit to store and retreive data. SSD has no moving parts, therefore the data access is purely electronic, which results in lower access time and latency than HDD.
 
-However, on solid state drives, data cannot be directly overwritten (as in HDDs). The cell of an SSD can only be directly written to, therefore have to be erased before writing. Moreover, due to physical construction limits, write operation can be conducted to one page (4-$\SI{16}{\kilo\byte}$), but erasure have to be done to a whole block (128 to 512 pages). Therefore, if OS have to rewrite some blocks (e.g. update metadata), the data have to be read, erased from the drive and written back modified. This effect, known as write amplification, can have significant impact on performance of file systems. 
+However, on SSDs, data cannot be directly overwritten (as in HDDs). The cell of an SSD can only be directly written to, therefore have to be erased before writing. Moreover, due to physical construction limits, write operation can be conducted to one page (4-$\SI{16}{\kilo\byte}$), but erasure have to be done to a whole block (128 to 512 pages). Therefore, if OS have to rewrite some blocks (e.g. update metadata), the data have to be read, erased from the drive and written back modified. This effect, known as write amplification, can have significant impact on performance of file systems. 
 
 In addition, the memory cell can be rewritten finite amount of times, therefore, a form of wear leveling has to be employed. Wear leveling prevents frequently accessed blocks from exhaustion of cells life-cycle by moving files around the device.
 
@@ -549,13 +547,30 @@ To decrease this effect, trim commands were introduced. Trim command communicate
 %When aging the filesystems, I expect for those grown on HDD to perform significantly slower after aging process, and I expect SSD filesystems not to be affected at all, or maybe significantly less.
 
 \chapter{Results}
+This chapter is dedicated to obtained results. In the first section, I describe means of data evaluation from implemented tests. In the second section, I show elementary differences between fresh and aged file systems. In the third section, I describe differences between two tested file systems (XFS, Ext4) in terms of aging. In fourth section I demonstrate the effect file system aging have on underlying storage.
 
+\section{Data processing}
+Accounting for great amount of data generated by the test, some kind of automatic processing needs to be implemented to make evaluation easier for humans. Therefore, I developed set of scripts which can compare results of two different runs of implemented test. The output of those script is human-readable html report. The report displays information about testing environment and different charts described bellow. All the reports generated from the tests can be found in Appendix A.
+
+\subsection{Fragmentation}
+During the tests, two types of fragmentation were recorded, namely fragmentation of used space and fragmentation of free space.
+
+To find out fragmentation of used space, xfs\_io fiemap can be used. This tool can display physical mapping of any file, using 512\,B blocks. Therefore, if run on every file in file system, histogram of fragments of used space can be computed.
+
+Generally, fragmentation of free space is easier to obtain, since this information is stored in the metadata of file system. However, the way of reading the information differs in different implementations of file system. In Ext4, the tool \textit{e2freefrag} displays histogram of free space of Ext* file system. When looking for this information in XFS, at first user has to find out number of allocation grups in the file system instance. Then, for every allocation group, histogram of free space can be obtained using \textit{xfs\_db}.
+
+As stated, in the aging test, fragmentation of free space is logged periodically, allowing for an analysis of how this fragmentation evolves in time. For the purpose of visualising this evolution, 3D charts are introduced in the final reports.
+
+\subsection{Fs-drift}
+The main researched output of fs-drift is an evolution of latency of different operations. This property is displayed as a chart with elapsed time on x axis and measured latency on y axis. Since the data are quite noisy, interpolation and filtering had to be used for meaningfull display of latency change in time. In addition, regression can be displayed bla bla.
+
+\subsection{FIO}
 \section{Performance of aged file system}
 \section{Differences betweem XFS and EXT4}
 \section{Differences accross different storage}
 
 \chapter{Conclusion}
-Here I will admit, that these results were not really surprising and ABSOLUTELY no breakthrough, however, as noone really research this branch of QE, the results are definitely a step further in this field.
+
 
 \printbibliography
 

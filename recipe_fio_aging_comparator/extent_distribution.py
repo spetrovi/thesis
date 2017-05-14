@@ -23,7 +23,6 @@ class Fragmented_file:
 	self.extents_size = []
 	self.process_extents()
 	self.file_size = sum(self.extents_size)
-	
 
 #fie output is in 512B blocks, we want to make it 1B
   def process_extents(self):
@@ -38,11 +37,13 @@ class Fragmented_file:
 			self.extents_size.append((self.extents[i][1]-self.extents[i][0])*512)
 			self.optimally_allocated = False
 
-def file_size_histogram(frag_files, destination):
-	files = reduce(lambda x, y: x+[y.file_size], frag_files, [])
+def file_size_histogram(files, destination):
+	#files = reduce(lambda x, y: x+[y.file_size], frag_files, [])
+#	files = [1,2,3]
+#	print len(frag_files)	
 	print 'sum '+str(sizeof_fmt(sum(files)))
-	bins = [(2**i) for i in range(10,35)]
-	fs_histogram, fs_bins = np.histogram(files,bins)
+	bins = [(2**i) for i in range(4,35)]
+	fs_histogram, fs_bins = np.histogram(files, bins)
 	fs_histogram = map(lambda x: int(x), fs_histogram)
 	ticks = []
 	for i in range(len(fs_bins)-1):
@@ -66,37 +67,45 @@ def file_size_histogram(frag_files, destination):
 def used_space_histogram(_file, destination):
 #	_file = 'fiemap_exp'
 	contents = read_file(_file,'r').split('\n')[:-1]
-	frag_files = []
+	#frag_files = []
+	frag_data = []
+	opt_data = []
 	extents = []
+	files = []
 	for line in contents:
 		if line.find('/') >= 0:
-			if extents: frag_files.append(Fragmented_file(name, extents))
+			if extents: 
+				_ff = Fragmented_file(name, extents)
+				if _ff.optimally_allocated: opt_data += _ff.extents_size
+				else: frag_data += _ff.extents_size
+				files.append(_ff.file_size)
 			name = line
 			extents = []
 		else:
 			extents.append(line)
 	
-	ID2 = file_size_histogram(frag_files, destination)
+	ID2 = file_size_histogram(files, destination)
 	
-	filenum = len(frag_files)
+	filenum = len(files)
 
-	bins = [(2**i) for i in range(10,35)]
+	bins = [(2**i) for i in range(4,35)]
 
-	opt_files = filter(lambda x: x.optimally_allocated, frag_files)
-	frag_files = filter(lambda x: not x.optimally_allocated, frag_files)
+#	opt_files = filter(lambda x: x.optimally_allocated, frag_files)
+#	frag_files = filter(lambda x: not x.optimally_allocated, frag_files)
 
-	frag_data = reduce(lambda x, y: x+y.extents_size, frag_files, [])
-	frag_histogram, frag_bins = np.histogram(frag_data,bins)
+#	frag_data = reduce(lambda x, y: x+y.extents_size, frag_files, [])
+
+	frag_histogram, frag_bins = np.histogram(frag_data, bins)
 	frag_histogram = map(lambda x: int(x), frag_histogram)
 	
-	opt_data = reduce(lambda x, y: x+y.extents_size, opt_files, [])
+#	opt_data = reduce(lambda x, y: x+y.extents_size, opt_files, [])
+
 	opt_histogram, opt_bins = np.histogram(opt_data,bins)
 	opt_histogram = map(lambda x: int(x), opt_histogram)	
 	ticks = []
 	for i in range(len(bins)-1):
 		ticks.append(sizeof_fmt(bins[i])+'-'+sizeof_fmt(bins[i+1]))
-#	ticks = map(lambda x: sizeof_fmt(x), frag_bins)
-	
+
 	ID = 'used_'+str(randint(0,10000)) #hash
 
 	template = read_file('templates/used_space_template.js','r')

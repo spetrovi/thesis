@@ -1,5 +1,21 @@
 var XXX_NAME_XXX;
-$(document).ready(function () {XXX_NAME_XXX= new Highcharts.Chart({
+$(document).ready(function () {
+    Highcharts.setOptions({ // Apply to all charts
+        chart: {
+            events: {
+                beforePrint: function () {
+                    this.oldhasUserSize = this.hasUserSize;
+                    this.resetParams = [this.chartWidth, this.chartHeight, false];
+                    this.setSize(600, 400, false);
+                },
+                afterPrint: function () {
+                    this.setSize.apply(this, this.resetParams);
+                    this.hasUserSize = this.oldhasUserSize;
+                }
+            }
+        }
+    });
+XXX_NAME_XXX= new Highcharts.Chart({
       chart: {zoomType: 'xy',
       width: 900,
       height: 600,

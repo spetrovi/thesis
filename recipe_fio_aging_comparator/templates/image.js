@@ -1,21 +1,39 @@
 
+
 // Set up the chart
 var XXX_NAME_XXX_chart;
-$(document).ready(function () {XXX_NAME_XXX_chart= new Highcharts.Chart({
+$(document).ready(function () {
+    Highcharts.setOptions({ // Apply to all charts
+        chart: {
+            events: {
+                beforePrint: function () {
+                    this.oldhasUserSize = this.hasUserSize;
+                    this.resetParams = [this.chartWidth, this.chartHeight, false];
+                    this.setSize(550, 550, false);
+                },
+                afterPrint: function () {
+                    this.setSize.apply(this, this.resetParams);
+                    this.hasUserSize = this.oldhasUserSize;
+                }
+            }
+        }
+    });
+
+XXX_NAME_XXX_chart= new Highcharts.Chart({
 
   chart: {
     renderTo: 'XXX_NAME_XXX',
     margin: 100,
     type: 'column',
-    width: 700,
-    height: 700,
+    width: 900,
+    height: 900,
     options3d: {
       enabled: true,
       alpha: 10,
       beta: 30,
       depth: XXX_DEPTH_XXX,
       viewDistance: 5,
-      fitToPlot: false,
+      fitToPlot: true,
       frame: {
         bottom: {
           size: 1,

@@ -93,17 +93,30 @@ class Tar:
 					rsptimes[name][1].append(float(row[1]))
 	for key, (x,y) in rsptimes.items():
 		if x!=[]:
-			xx = np.linspace(min(x),max(x), 1000)
+			#prepare values
+			xx = np.linspace(min(x),max(x), 600)
+			y = map(lambda x: x*1000, y)
 
 			# interpolate + smooth
-			itp = interp1d(x,y, kind='linear')
-			window_size, poly_order = 101, 2
+			itp = interp1d(x,y)
+			window_size, poly_order = 101, 3
 			yy_sg = savgol_filter(itp(xx), window_size, poly_order)
-
+			
+			#name template
 			line = line_template
 			line = key.join(line.split('XXX_NAME_XXX'))	
-			y = map(lambda x: int(x*1000), list(yy_sg))
+
+			#actual curve			
+			#y = list(yy_sg)
+
+			#regression
+			fit = np.polyfit(x,y,5)
+			fit_fn = np.poly1d(fit)
+			y = map(lambda x: fit_fn(x), xx)
+
+			#push data to template
 			line = str(y).join(line.split('XXX_DATA_XXX'))
+
 			template = (line+'XXX_LINE_XXX').join(template.split('XXX_LINE_XXX'))
 
 	ID = self.image_ID+'_rsp'
@@ -166,6 +179,7 @@ class Report:
 	r.script('', src="http://code.highcharts.com/highcharts.js")
 	r.script('', src="http://code.highcharts.com/highcharts-more.js")
 	r.script('', src="http://code.highcharts.com/modules/exporting.js")
+	r.script('', src="//rawgithub.com/phpepe/highcharts-regression/master/highcharts-regression.js")
 #	r.script('', src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js")
 	r.script('', src="https://code.highcharts.com/highcharts-3d.js")
 
