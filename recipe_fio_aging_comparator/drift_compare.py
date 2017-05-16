@@ -5,12 +5,14 @@ import numpy as np
 from html import HTML
 from free_space_frag import Free_space_fragmentation
 from extent_distribution import used_space_histogram
+from extent_distribution import file_size_histogram
 from image import d_image
 import csv
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 from scipy.interpolate import interp1d
 from scipy.signal import savgol_filter
+from scipy.stats import linregress
 
 def untar(source):
 	if source[-2:] == 'xz':
@@ -53,10 +55,10 @@ class Tar:
 #	untar(self.host+'_images/'+self.image.split('.')[0]+'.tar.xz')
 	untar(self.tar)
 	self.image_ID = d_image(self.fsystem, self.destination)
-	self.image_rsp_plot = self.generate_rsp_plot(glob.glob('./out/*rspt.csv')[0])
+	self.image_rsp_plot, self.image_rsp_reg = self.generate_rsp_plot(glob.glob('./out/*rspt.csv')[0])
 	self.image_usage_plot = self.generate_usage_plot()
-	self.extents_ID, self.fsize_ID= used_space_histogram('./out/fie_data', self.destination)
-
+	self.extents_ID= used_space_histogram('./out/fie_data', self.destination)
+	self.fsize_ID = file_size_histogram('./out/du_data', self.destination)
 	self.image_log = read_file('./out/log.out','r')
 	self.image_recipe = read_file('./out/recipe','r')
 	subprocess.call('rm -rf out',shell=True)
@@ -78,6 +80,16 @@ class Tar:
   def generate_rsp_plot(self, filename):
 	template = read_file('templates/rsp_template.js','r')
 	line_template = read_file('templates/rsp_line_template.js','r')
+
+	ID_cur = self.image_ID+'_rsp'
+	ID_reg = self.image_ID+'_rsp_reg'
+
+	template_cur = ID_cur.join(template.split('XXX_NAME_XXX'))
+	template_reg = ID_reg.join(template.split('XXX_NAME_XXX'))
+
+	template_cur = 'Evolution of latency'.join(template_cur.split('XXX_TITLE_XXX'))
+	template_reg = 'Linear regression of latency'.join(template_reg.split('XXX_TITLE_XXX'))
+
 	rsptimes = {}
 	fig, ax = plt.subplots()
 	with open(filename, "rb") as csvfile:
@@ -96,7 +108,9 @@ class Tar:
 			#prepare values
 			xx = np.linspace(min(x),max(x), 600)
 			y = map(lambda x: x*1000, y)
-
+			print key
+			print linregress(x,y)			
+			
 			# interpolate + smooth
 			itp = interp1d(x,y)
 			window_size, poly_order = 101, 3
@@ -107,31 +121,40 @@ class Tar:
 			line = key.join(line.split('XXX_NAME_XXX'))	
 
 			#actual curve			
-			#y = list(yy_sg)
+			y_curve = list(yy_sg)
 
 			#regression
-			fit = np.polyfit(x,y,5)
+			fit = np.polyfit(x,y,1)
 			fit_fn = np.poly1d(fit)
-			y = map(lambda x: fit_fn(x), xx)
-
+			y_regression = map(lambda x: fit_fn(x), xx)
+		
 			#push data to template
-			line = str(y).join(line.split('XXX_DATA_XXX'))
+			line_cur = str(y_curve).join(line.split('XXX_DATA_XXX'))
+			template_cur = (line_cur+'XXX_LINE_XXX').join(template_cur.split('XXX_LINE_XXX'))
 
-			template = (line+'XXX_LINE_XXX').join(template.split('XXX_LINE_XXX'))
+			line_reg = str(y_regression).join(line.split('XXX_DATA_XXX'))
+			template_reg = (line_reg+'XXX_LINE_XXX').join(template_reg.split('XXX_LINE_XXX'))
 
-	ID = self.image_ID+'_rsp'
 
-	template = ''.join(template.split('XXX_LINE_XXX'))
+
+	template_cur = ''.join(template_cur.split('XXX_LINE_XXX'))
+	template_reg = ''.join(template_reg.split('XXX_LINE_XXX'))
+
+	ticks = map(lambda x: int(x), list(xx))
+	template_cur = str(ticks).join(template_cur.split('XXX_BINS_XXX'))
+	template_reg = str(ticks).join(template_reg.split('XXX_BINS_XXX'))
 	
-	template = ID.join(template.split('XXX_NAME_XXX'))
-	bins = map(lambda x: int(x), list(xx))
-	template = str(bins).join(template.split('XXX_BINS_XXX'))
 			
 	#		ax.plot(xx,yy_sg,label=key)
-	f = open(self.destination+'/'+ID+'.js','w')
-	f.write(template)
+	f = open(self.destination+'/'+ID_cur+'.js','w')
+	f.write(template_cur)
 	f.close()
-	return ID
+
+	f = open(self.destination+'/'+ID_reg+'.js','w')
+	f.write(template_reg)
+	f.close()
+
+	return ID_cur, ID_reg
 	#ax.plot(xx,y)
 	#ax.set_ylabel('Response time[s]')
 	#ax.set_xlabel('Time[s]')
@@ -259,6 +282,8 @@ class Report:
 		image_fsizes2 = self.tar2.fsize_ID
 		image_rsp_plot1 = self.tar1.image_rsp_plot
 		image_rsp_plot2 = self.tar2.image_rsp_plot
+		image_rsp_reg1 = self.tar1.image_rsp_reg
+		image_rsp_reg2 = self.tar2.image_rsp_reg
 		r.script('', type='text/javascript', src=image_ID1+'.js')
 		r.script('', type='text/javascript', src=image_ID2+'.js')
 		r.script('', type='text/javascript', src=image_extents1+'.js')
@@ -267,6 +292,9 @@ class Report:
 		r.script('', type='text/javascript', src=image_fsizes2+'.js')
 		r.script('', type='text/javascript', src=image_rsp_plot1+'.js')
 		r.script('', type='text/javascript', src=image_rsp_plot2+'.js')
+		r.script('', type='text/javascript', src=image_rsp_reg1+'.js')
+		r.script('', type='text/javascript', src=image_rsp_reg2+'.js')
+
 		table = r.table
 		tr = table.tr
 		tr.td.div(id=image_ID1, align='left')
@@ -276,6 +304,12 @@ class Report:
 #		tr.td.img(src=self.tar2.image_rsp_plot)
 		tr.td.div(id=image_rsp_plot1, align='left')
 		tr.td.div(id=image_rsp_plot2, align='left')
+
+		tr = table.tr
+#		tr.td.img(src=self.tar1.image_rsp_plot)
+#		tr.td.img(src=self.tar2.image_rsp_plot)
+		tr.td.div(id=image_rsp_reg1, align='left')
+		tr.td.div(id=image_rsp_reg2, align='left')
 
 		tr = table.tr
 		tr.td.img(src=self.tar1.image_usage_plot)
@@ -333,9 +367,15 @@ path1 = glob.glob('./draven_images/*-drift_job-xfs-1SASHDD-DIVRSP.tar.xz')[0]
 path2 = glob.glob('./draven_images/*-drift_job-ext4-1SASHDD-DIVRSP.tar.xz')[0]
 r = Report(path1,path2,'./res/')
 r.save()
+
+path1 = glob.glob('./draven_images/*W4LONG*.tar.xz')[0]
+path2 = glob.glob('./draven_images/*W4LONG*.tar.xz')[0]
+r = Report(path1,path2,'./res/')
+r.save()
 """
-path1 = glob.glob('./blade_images/*W480*.tar.xz')[0]
-path2 = glob.glob('./blade_images/*W480*.tar.xz')[1]
+
+path1 = glob.glob('./blade_images/*W490.tar.xz')[1]
+path2 = glob.glob('./blade_images/*W490TRIM*.tar.xz')[0]
 r = Report(path1,path2,'./res/')
 r.save()
 

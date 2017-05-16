@@ -21,7 +21,7 @@ XXX_NAME_XXX= new Highcharts.Chart({
       height: 600,
       backgroundColor: '#F2F2F2',
  renderTo: 'XXX_NAME_XXX'},
-title: {text: 'Evolution of latency'},xAxis: [{categories: XXX_BINS_XXX,title: {text: 'time'}}],
+title: {text: 'XXX_TITLE_XXX'},xAxis: [{categories: XXX_BINS_XXX,title: {text: 'time'}}],
     plotOptions: {
         column: {
             groupPadding: 0,

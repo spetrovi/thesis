@@ -37,12 +37,14 @@ class Fragmented_file:
 			self.extents_size.append((self.extents[i][1]-self.extents[i][0])*512)
 			self.optimally_allocated = False
 
-def file_size_histogram(files, destination):
+def file_size_histogram(_file, destination):
 	#files = reduce(lambda x, y: x+[y.file_size], frag_files, [])
 #	files = [1,2,3]
-#	print len(frag_files)	
+#	print len(frag_files)
+	contents = read_file(_file,'r').split('\n')[:-1]
+	files = map(lambda x: int(x.split('\t')[0]), contents)
 	print 'sum '+str(sizeof_fmt(sum(files)))
-	bins = [(2**i) for i in range(4,35)]
+	bins = [(2**i) for i in range(2,35)]
 	fs_histogram, fs_bins = np.histogram(files, bins)
 	fs_histogram = map(lambda x: int(x), fs_histogram)
 	ticks = []
@@ -65,7 +67,6 @@ def file_size_histogram(files, destination):
 	return ID
 
 def used_space_histogram(_file, destination):
-#	_file = 'fiemap_exp'
 	contents = read_file(_file,'r').split('\n')[:-1]
 	#frag_files = []
 	frag_data = []
@@ -83,8 +84,6 @@ def used_space_histogram(_file, destination):
 			extents = []
 		else:
 			extents.append(line)
-	
-	ID2 = file_size_histogram(files, destination)
 	
 	filenum = len(files)
 
@@ -119,5 +118,5 @@ def used_space_histogram(_file, destination):
 	_file = open(destination+ID+'.js','w')
 	_file.write(template)
 	_file.close()
-	return ID, ID2
+	return ID
 

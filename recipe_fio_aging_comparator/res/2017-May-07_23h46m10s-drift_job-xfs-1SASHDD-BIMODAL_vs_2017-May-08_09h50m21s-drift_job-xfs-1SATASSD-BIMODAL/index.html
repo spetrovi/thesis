@@ -1,0 +1,86 @@
+<html>
+<head>
+<title>Results of fs aging test</title>
+<script src="http://code.jquery.com/jquery-1.9.1.js" type="text/javascript"></script>
+</head>
+<body>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/highcharts-more.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/highcharts-3d.js"></script>
+<link href="stylesheet.css" type="text/css" rel="stylesheet">
+<br>
+<font size="3">
+<style>
+table {
+	    width:20%;
+	    }
+	    table, th, td{
+	    border: 1px solid black;
+	    border-collapse: collapse;
+	    font-size: 14px;
+	    }
+	    th, td{
+	    padding: 5px;
+	    text-align: left;
+	    }
+	    table#t01 tr:nth-child(even) {
+	    background-color: #eee;
+	    }
+	    table#t01 tr:nth-child(odd) {
+	    background-color:#fff;
+	    }
+	    table#t01 th	{
+	    background-color: white;
+	    color: black;
+	    })
+</style>
+<dt>
+<strong>recipe fio results on draven</strong>
+<br>
+<br>
+<dt><strong>Kernels</strong></dt>
+<ul>
+<li>set1: 3.10.0-514.el7.x86_64</li>
+<li>set2: 3.10.0-514.el7.x86_64</li>
+</ul>
+<dt>
+<strong>Builds</strong>
+<ul>
+<li>set1: RHEL-7.3</li>
+<li>set2: RHEL-7.3</li>
+</ul>
+<dt><strong>Machine</strong></dt>
+<ul>
+<li><a href="https://beaker.engineering.redhat.com/view/blade.tpb.lab.eng.brq.redhat.com#details">blade.tpb.lab.eng.brq.redhat.com</a></li>
+</ul>
+<strong>Test script, raw data and test logs</strong>
+<ul>
+<li><a href="http://pkgs.devel.redhat.com/cgit/tests/performance/tree/recipe_fio/runtest.sh">Test Bash script</a></li>
+<li><a href="http://perf-desktop.brq.redhat.com/fsage_thesis/sors">Raw data folder</a></li>
+</ul>
+<dt><strong>Used tools</strong></dt>
+<ul>
+<li><a href="https://github.com/axboe/fio">FIO (Flexible Input/Output tool)</a></li>
+<ul>
+<li>version: fio-2.1.10</li>
+</ul>
+<li><a href="https://github.com/bengland2/fs-drift">Fs-drift, file system aging test</a></li>
+</ul>
+<dt><strong>Image</strong></dt>
+<script src="image_464.js" type="text/javascript"></script>
+<script src="image_313.js" type="text/javascript"></script>
+<script src="used_6861.js" type="text/javascript"></script>
+<script src="used_2635.js" type="text/javascript"></script>
+<script src="fs_2649.js" type="text/javascript"></script>
+<script src="fs_9054.js" type="text/javascript"></script>
+<script src="image_464_rsp.js" type="text/javascript"></script>
+<script src="image_313_rsp.js" type="text/javascript"></script>
+<table>
+<tr><td><div align="left" id="image_464"></td><td><div align="left" id="image_313"></td></tr>
+<tr><td><div align="left" id="image_464_rsp"></td><td><div align="left" id="image_313_rsp"></td></tr>
+<tr><td><img src="usage_image_464.png"></td><td><img src="usage_image_313.png"></td></tr>
+<tr><td><div align="left" id="used_6861"></td><td><div align="left" id="used_2635"></td></tr>
+<tr><td><div align="left" id="fs_2649"></td><td><div align="left" id="fs_9054"></td></tr>
+<tr><td><li>storage_info=./2017-May-07_23h45m05s-storage_create-1SASHDD_xfs.tar.gz</li><li>benchmark=fs_drift</li><li>recipe=-t_/RHTSspareLUN1-d_18000-f_80000-s_1000000-+v_100-l_5-D_5-w_wtable3.csv-i_300-+D_gaussian-T_on</li><li>build=RHEL-7.3</li><li>kernel=3.10.0-514.el7.x86_64</li><li>hostname=blade.tpb.lab.eng.brq.redhat.com</li><li>result_time=May-07-2017_23:46:10</li><li>filesystem=xfs</li><li>mountpoint=/RHTSspareLUN1</li><li>whiteboard={RHEL-7.3, blade.tpb.lab.eng.brq.redhat.com, 1SASHDD, 1SATASSD, drift_job test, xfs, ext4, bimodal file size distribution}</li><li>Source RPM  : kernel-3.10.0-514.el7.src.rpm</li><li></li><li>SELinux status=enabled</li><li>Current mode=enforcing</li><li></li></td><td><li>storage_info=./2017-May-08_09h49m51s-storage_create-1SATASSD_xfs.tar.gz</li><li>benchmark=fs_drift</li><li>recipe=-t_/RHTSspareLUN1-d_18000-f_80000-s_1000000-+v_100-l_5-D_5-w_wtable3.csv-i_300-+D_gaussian-T_on</li><li>build=RHEL-7.3</li><li>kernel=3.10.0-514.el7.x86_64</li><li>hostname=blade.tpb.lab.eng.brq.redhat.com</li><li>result_time=May-08-2017_09:50:21</li><li>filesystem=xfs</li><li>mountpoint=/RHTSspareLUN1</li><li>whiteboard={RHEL-7.3, blade.tpb.lab.eng.brq.redhat.com, 1SASHDD, 1SATASSD, drift_job test, xfs, ext4, bimodal file size distribution}</li><li>Source RPM  : kernel-3.10.0-514.el7.src.rpm</li><li></li><li>SELinux status=enabled</li><li>Current mode=enforcing</li><li></li></td></tr>
+</table>

@@ -2,37 +2,38 @@
 \defcounter {refsection}{0}\relax 
 \select@language {english}
 \contentsline {chapter}{\numberline {1}\bfseries Introduction}{1}{chapter.1}
-\contentsline {chapter}{\numberline {2}\bfseries Related work}{3}{chapter.2}
-\contentsline {section}{\numberline {2.1}\slshape Aging file system using real-life data}{3}{section.2.1}
-\contentsline {section}{\numberline {2.2}\slshape Synthetic aging simulation}{4}{section.2.2}
-\contentsline {chapter}{\numberline {3}\bfseries File systems}{5}{chapter.3}
-\contentsline {section}{\numberline {3.1}\slshape XFS}{6}{section.3.1}
-\contentsline {section}{\numberline {3.2}\slshape Ext4}{6}{section.3.2}
-\contentsline {chapter}{\numberline {4}\bfseries Used tools}{9}{chapter.4}
-\contentsline {section}{\numberline {4.1}\slshape Beaker}{9}{section.4.1}
-\contentsline {section}{\numberline {4.2}\slshape FIO}{9}{section.4.2}
-\contentsline {section}{\numberline {4.3}\slshape Fs-drift}{10}{section.4.3}
-\contentsline {subsection}{\numberline {4.3.1}\rmfamily Changes to original code}{12}{subsection.4.3.1}
-\contentsline {section}{\numberline {4.4}\slshape Storage generator}{13}{section.4.4}
-\contentsline {chapter}{\numberline {5}\bfseries Creating aged file system}{15}{chapter.5}
-\contentsline {section}{\numberline {5.1}\slshape Aging process}{15}{section.5.1}
-\contentsline {section}{\numberline {5.2}\slshape File system images}{17}{section.5.2}
-\contentsline {section}{\numberline {5.3}\slshape Implementation details}{17}{section.5.3}
-\contentsline {chapter}{\numberline {6}\bfseries Performance testing of aged file system}{19}{chapter.6}
-\contentsline {section}{\numberline {6.1}\slshape Benchmark settings}{19}{section.6.1}
-\contentsline {section}{\numberline {6.2}\slshape Test structure}{19}{section.6.2}
-\contentsline {chapter}{\numberline {7}\bfseries Testing environment}{21}{chapter.7}
-\contentsline {section}{\numberline {7.1}\slshape Storage}{23}{section.7.1}
-\contentsline {subsection}{\numberline {7.1.1}\rmfamily Hard disk drive}{23}{subsection.7.1.1}
-\contentsline {subsection}{\numberline {7.1.2}\rmfamily Solid state drive}{23}{subsection.7.1.2}
-\contentsline {chapter}{\numberline {8}\bfseries Results}{25}{chapter.8}
-\contentsline {section}{\numberline {8.1}\slshape Data processing}{25}{section.8.1}
-\contentsline {subsection}{\numberline {8.1.1}\rmfamily Fragmentation}{25}{subsection.8.1.1}
-\contentsline {subsection}{\numberline {8.1.2}\rmfamily Fs-drift}{26}{subsection.8.1.2}
-\contentsline {subsection}{\numberline {8.1.3}\rmfamily FIO}{26}{subsection.8.1.3}
-\contentsline {section}{\numberline {8.2}\slshape Performance of aged file system}{26}{section.8.2}
-\contentsline {section}{\numberline {8.3}\slshape Differences betweem XFS and EXT4}{26}{section.8.3}
-\contentsline {section}{\numberline {8.4}\slshape Differences accross different storage}{26}{section.8.4}
-\contentsline {chapter}{\numberline {9}\bfseries Conclusion}{27}{chapter.9}
+\contentsline {chapter}{\numberline {2}\bfseries Related work}{5}{chapter.2}
+\contentsline {section}{\numberline {2.1}\slshape Aging file system using real-life data}{5}{section.2.1}
+\contentsline {section}{\numberline {2.2}\slshape Synthetic aging simulation}{6}{section.2.2}
+\contentsline {chapter}{\numberline {3}\bfseries File system and storage devices}{7}{chapter.3}
+\contentsline {section}{\numberline {3.1}\slshape File systems}{7}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}\rmfamily XFS}{8}{subsection.3.1.1}
+\contentsline {subsection}{\numberline {3.1.2}\rmfamily Ext4}{8}{subsection.3.1.2}
+\contentsline {section}{\numberline {3.2}\slshape Storage}{9}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}\rmfamily Hard disk drive}{9}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {3.2.2}\rmfamily Solid state drive}{9}{subsection.3.2.2}
+\contentsline {chapter}{\numberline {4}\bfseries Environment setup and benchmark tools}{11}{chapter.4}
+\contentsline {section}{\numberline {4.1}\slshape Beaker}{11}{section.4.1}
+\contentsline {section}{\numberline {4.2}\slshape Storage generator}{11}{section.4.2}
+\contentsline {section}{\numberline {4.3}\slshape FIO}{12}{section.4.3}
+\contentsline {section}{\numberline {4.4}\slshape Fs-drift}{12}{section.4.4}
+\contentsline {subsection}{\numberline {4.4.1}\rmfamily Changes to original code}{13}{subsection.4.4.1}
+\contentsline {chapter}{\numberline {5}\bfseries Aging the file system}{17}{chapter.5}
+\contentsline {section}{\numberline {5.1}\slshape Aging process}{17}{section.5.1}
+\contentsline {section}{\numberline {5.2}\slshape File system images}{18}{section.5.2}
+\contentsline {section}{\numberline {5.3}\slshape Implementation details}{19}{section.5.3}
+\contentsline {chapter}{\numberline {6}\bfseries Performance testing of aged file system}{21}{chapter.6}
+\contentsline {section}{\numberline {6.1}\slshape Benchmark settings}{21}{section.6.1}
+\contentsline {section}{\numberline {6.2}\slshape Test structure}{21}{section.6.2}
+\contentsline {chapter}{\numberline {7}\bfseries Results}{23}{chapter.7}
+\contentsline {section}{\numberline {7.1}\slshape Testing environment}{23}{section.7.1}
+\contentsline {section}{\numberline {7.2}\slshape Data processing}{25}{section.7.2}
+\contentsline {subsection}{\numberline {7.2.1}\rmfamily Fragmentation}{25}{subsection.7.2.1}
+\contentsline {subsection}{\numberline {7.2.2}\rmfamily Fs-drift}{25}{subsection.7.2.2}
+\contentsline {subsection}{\numberline {7.2.3}\rmfamily FIO}{26}{subsection.7.2.3}
+\contentsline {section}{\numberline {7.3}\slshape Performance of aged file system}{26}{section.7.3}
+\contentsline {section}{\numberline {7.4}\slshape Differences betweem XFS and EXT4}{26}{section.7.4}
+\contentsline {section}{\numberline {7.5}\slshape Differences accross different storage}{26}{section.7.5}
+\contentsline {chapter}{\numberline {8}\bfseries Conclusion}{27}{chapter.8}
 \contentsline {chapter}{\numberline {A}\bfseries Reports}{31}{appendix.A}
 \contentsline {chapter}{\numberline {B}\bfseries Examples}{33}{appendix.B}

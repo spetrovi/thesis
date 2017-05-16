@@ -18,30 +18,13 @@
 
 \sortlist[entry]{none/global/}
   \entry{Traeger:2008:NYS:1367829.1367831}{article}{}
-    \name{author}{4}{}{%
+    \true{moreauthor}
+    \name{author}{1}{}{%
       {{hash=TA}{%
          family={Traeger},
          familyi={T\bibinitperiod},
          given={Avishay},
          giveni={A\bibinitperiod},
-      }}%
-      {{hash=ZE}{%
-         family={Zadok},
-         familyi={Z\bibinitperiod},
-         given={Erez},
-         giveni={E\bibinitperiod},
-      }}%
-      {{hash=JN}{%
-         family={Joukov},
-         familyi={J\bibinitperiod},
-         given={Nikolai},
-         giveni={N\bibinitperiod},
-      }}%
-      {{hash=WCP}{%
-         family={Wright},
-         familyi={W\bibinitperiod},
-         given={Charles\bibnamedelima P.},
-         giveni={C\bibinitperiod\bibinitdelim P\bibinitperiod},
       }}%
     }
     \list{publisher}{1}{%
@@ -49,7 +32,7 @@
     }
     \keyw{Benchmarks, file systems, storage systems}
     \strng{namehash}{TA+1}
-    \strng{fullhash}{TAZEJNWCP1}
+    \strng{fullhash}{TA+1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
     \verb{doi}
@@ -72,30 +55,13 @@
   \endentry
 
   \entry{Cotroneo:2014:SSA:2543749.2539117}{article}{}
-    \name{author}{4}{}{%
+    \true{moreauthor}
+    \name{author}{1}{}{%
       {{hash=CD}{%
          family={Cotroneo},
          familyi={C\bibinitperiod},
          given={Domenico},
          giveni={D\bibinitperiod},
-      }}%
-      {{hash=NR}{%
-         family={Natella},
-         familyi={N\bibinitperiod},
-         given={Roberto},
-         giveni={R\bibinitperiod},
-      }}%
-      {{hash=PR}{%
-         family={Pietrantuono},
-         familyi={P\bibinitperiod},
-         given={Roberto},
-         giveni={R\bibinitperiod},
-      }}%
-      {{hash=RS}{%
-         family={Russo},
-         familyi={R\bibinitperiod},
-         given={Stefano},
-         giveni={S\bibinitperiod},
       }}%
     }
     \list{publisher}{1}{%
@@ -104,7 +70,7 @@
     \keyw{Software aging, aging-related bugs, performance degradation, software
   aging literature, software rejuvenation}
     \strng{namehash}{CD+1}
-    \strng{fullhash}{CDNRPRRS1}
+    \strng{fullhash}{CD+1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
     \verb{doi}
@@ -169,49 +135,20 @@
   \endentry
 
   \entry{Ousterhout:1985:TAU:323647.323631}{inproceedings}{}
-    \name{author}{6}{}{%
+    \true{moreauthor}
+    \name{author}{1}{}{%
       {{hash=OJK}{%
          family={Ousterhout},
          familyi={O\bibinitperiod},
          given={John\bibnamedelima K.},
          giveni={J\bibinitperiod\bibinitdelim K\bibinitperiod},
       }}%
-      {{hash=DCH}{%
-         family={Da\bibnamedelima Costa},
-         familyi={D\bibinitperiod\bibinitdelim C\bibinitperiod},
-         given={Herv{\'e}},
-         giveni={H\bibinitperiod},
-      }}%
-      {{hash=HD}{%
-         family={Harrison},
-         familyi={H\bibinitperiod},
-         given={David},
-         giveni={D\bibinitperiod},
-      }}%
-      {{hash=KJA}{%
-         family={Kunze},
-         familyi={K\bibinitperiod},
-         given={John\bibnamedelima A.},
-         giveni={J\bibinitperiod\bibinitdelim A\bibinitperiod},
-      }}%
-      {{hash=KM}{%
-         family={Kupfer},
-         familyi={K\bibinitperiod},
-         given={Mike},
-         giveni={M\bibinitperiod},
-      }}%
-      {{hash=TJG}{%
-         family={Thompson},
-         familyi={T\bibinitperiod},
-         given={James\bibnamedelima G.},
-         giveni={J\bibinitperiod\bibinitdelim G\bibinitperiod},
-      }}%
     }
     \list{publisher}{1}{%
       {ACM}%
     }
     \strng{namehash}{OJK+1}
-    \strng{fullhash}{OJKDCHHDKJAKMTJG1}
+    \strng{fullhash}{OJK+1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
     \field{booktitle}{Proceedings of the Tenth ACM Symposium on Operating
@@ -234,31 +171,20 @@
   \endentry
 
   \entry{Zhu:2005:TSA:1251028.1251052}{inproceedings}{}
-    \name{author}{3}{}{%
+    \true{moreauthor}
+    \name{author}{1}{}{%
       {{hash=ZN}{%
          family={Zhu},
          familyi={Z\bibinitperiod},
          given={Ningning},
          giveni={N\bibinitperiod},
       }}%
-      {{hash=CJ}{%
-         family={Chen},
-         familyi={C\bibinitperiod},
-         given={Jiawu},
-         giveni={J\bibinitperiod},
-      }}%
-      {{hash=CTC}{%
-         family={Chiueh},
-         familyi={C\bibinitperiod},
-         given={Tzi-Cker},
-         giveni={T\bibinitperiod-C\bibinitperiod},
-      }}%
     }
     \list{publisher}{1}{%
       {USENIX Association}%
     }
-    \strng{namehash}{ZNCJCTC1}
-    \strng{fullhash}{ZNCJCTC1}
+    \strng{namehash}{ZN+1}
+    \strng{fullhash}{ZN+1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
     \field{booktitle}{Proceedings of the 4th Conference on USENIX Conference on
@@ -300,37 +226,20 @@
   \endentry
 
   \entry{Lu:2013:SLF:2591272.2591276}{inproceedings}{}
-    \name{author}{4}{}{%
+    \true{moreauthor}
+    \name{author}{1}{}{%
       {{hash=LL}{%
          family={Lu},
          familyi={L\bibinitperiod},
          given={Lanyue},
          giveni={L\bibinitperiod},
       }}%
-      {{hash=ADAC}{%
-         family={Arpaci-Dusseau},
-         familyi={A\bibinitperiod-D\bibinitperiod},
-         given={Andrea\bibnamedelima C.},
-         giveni={A\bibinitperiod\bibinitdelim C\bibinitperiod},
-      }}%
-      {{hash=ADRH}{%
-         family={Arpaci-Dusseau},
-         familyi={A\bibinitperiod-D\bibinitperiod},
-         given={Remzi\bibnamedelima H.},
-         giveni={R\bibinitperiod\bibinitdelim H\bibinitperiod},
-      }}%
-      {{hash=LS}{%
-         family={Lu},
-         familyi={L\bibinitperiod},
-         given={Shan},
-         giveni={S\bibinitperiod},
-      }}%
     }
     \list{publisher}{1}{%
       {USENIX Association}%
     }
     \strng{namehash}{LL+1}
-    \strng{fullhash}{LLADACADRHLS1}
+    \strng{fullhash}{LL+1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
     \field{booktitle}{Proceedings of the 11th USENIX Conference on File and
@@ -349,49 +258,20 @@
   \endentry
 
   \entry{xfs:qhe}{inproceedings}{}
-    \name{author}{6}{}{%
+    \true{moreauthor}
+    \name{author}{1}{}{%
       {{hash=SA}{%
          family={Sweeney},
          familyi={S\bibinitperiod},
          given={Adam},
          giveni={A\bibinitperiod},
       }}%
-      {{hash=DD}{%
-         family={Doucette},
-         familyi={D\bibinitperiod},
-         given={Doug},
-         giveni={D\bibinitperiod},
-      }}%
-      {{hash=HW}{%
-         family={Hu},
-         familyi={H\bibinitperiod},
-         given={Wei},
-         giveni={W\bibinitperiod},
-      }}%
-      {{hash=AC}{%
-         family={Anderson},
-         familyi={A\bibinitperiod},
-         given={Curtis},
-         giveni={C\bibinitperiod},
-      }}%
-      {{hash=NM}{%
-         family={Nishimoto},
-         familyi={N\bibinitperiod},
-         given={Mike},
-         giveni={M\bibinitperiod},
-      }}%
-      {{hash=PG}{%
-         family={Peck},
-         familyi={P\bibinitperiod},
-         given={Geoff},
-         giveni={G\bibinitperiod},
-      }}%
     }
     \list{publisher}{1}{%
       {USENIX Association}%
     }
     \strng{namehash}{SA+1}
-    \strng{fullhash}{SADDHWACNMPG1}
+    \strng{fullhash}{SA+1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
     \field{booktitle}{Proceedings of the 1996 Annual Conference on USENIX
@@ -410,47 +290,18 @@
   \endentry
 
   \entry{ext4:qhe}{inproceedings}{}
-    \name{author}{6}{}{%
+    \true{moreauthor}
+    \name{author}{1}{}{%
       {{hash=MA}{%
          family={Mathur},
          familyi={M\bibinitperiod},
          given={Avantika},
          giveni={A\bibinitperiod},
       }}%
-      {{hash=CM}{%
-         family={Cao},
-         familyi={C\bibinitperiod},
-         given={Mingming},
-         giveni={M\bibinitperiod},
-      }}%
-      {{hash=BS}{%
-         family={Bhattacharya},
-         familyi={B\bibinitperiod},
-         given={Suparna},
-         giveni={S\bibinitperiod},
-      }}%
-      {{hash=DA}{%
-         family={Dilger},
-         familyi={D\bibinitperiod},
-         given={Andreas},
-         giveni={A\bibinitperiod},
-      }}%
-      {{hash=TA}{%
-         family={Tomas},
-         familyi={T\bibinitperiod},
-         given={Alex},
-         giveni={A\bibinitperiod},
-      }}%
-      {{hash=VL}{%
-         family={Vivier},
-         familyi={V\bibinitperiod},
-         given={Laurent},
-         giveni={L\bibinitperiod},
-      }}%
     }
     \keyw{imported}
     \strng{namehash}{MA+1}
-    \strng{fullhash}{MACMBSDATAVL1}
+    \strng{fullhash}{MA+1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
     \field{booktitle}{Proceedings of the Linux Symposium}
@@ -488,37 +339,20 @@
   \endentry
 
   \entry{agrawal2007five}{article}{}
-    \name{author}{4}{}{%
+    \true{moreauthor}
+    \name{author}{1}{}{%
       {{hash=AN}{%
          family={Agrawal},
          familyi={A\bibinitperiod},
          given={Nitin},
          giveni={N\bibinitperiod},
       }}%
-      {{hash=BWJ}{%
-         family={Bolosky},
-         familyi={B\bibinitperiod},
-         given={William\bibnamedelima J},
-         giveni={W\bibinitperiod\bibinitdelim J\bibinitperiod},
-      }}%
-      {{hash=DJR}{%
-         family={Douceur},
-         familyi={D\bibinitperiod},
-         given={John\bibnamedelima R},
-         giveni={J\bibinitperiod\bibinitdelim R\bibinitperiod},
-      }}%
-      {{hash=LJR}{%
-         family={Lorch},
-         familyi={L\bibinitperiod},
-         given={Jacob\bibnamedelima R},
-         giveni={J\bibinitperiod\bibinitdelim R\bibinitperiod},
-      }}%
     }
     \list{publisher}{1}{%
       {ACM}%
     }
     \strng{namehash}{AN+1}
-    \strng{fullhash}{ANBWJDJRLJR1}
+    \strng{fullhash}{AN+1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
     \field{number}{3}
