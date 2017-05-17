@@ -1,5 +1,12 @@
 from random import randint
 
+def sizeof_fmt(num, suffix='B'):
+    for unit in ['','Ki','Mi','Gi','Ti','Pi','Ei','Zi']:
+        if abs(num) < 1024.0:
+            return "%3i%s%s" % (num, unit, suffix)
+        num /= 1024.0
+    return "%.1f%s%s" % (num, 'Yi', suffix)
+
 def remove_space(line):
     return filter(lambda x: x!='', line.split(' '))
 
@@ -21,7 +28,7 @@ class Free_space_fragmentation:
   				self.extents.append(int(histogram[i][2]))
  	 			self.blocks.append(int(histogram[i][3]))
 		if fsystem == 'xfs':
-			ffh = filter(lambda x: x.find('from') < 0 and x.find('from') < 0 and x.find('free') < 0, ffh)[:-1]
+			ffh = filter(lambda x: x.find('from') < 0 and x.find('free') < 0, ffh)[:-1]
 			histogram = {}
 			for line in ffh:
 				line = filter(lambda x: x!= '', line.split(' '))
@@ -31,12 +38,15 @@ class Free_space_fragmentation:
 					histogram[tick][1]+=int(line[3])
 				else:	
 					histogram[tick] = [int(line[2]), int(line[3])]
+				print tick
 			histogram = sorted(histogram.items(), key=lambda x: int(x[0].split('-')[0]))
-			for i in range(0,len(histogram)):
+			for i in range(len(histogram)):
   				tick = histogram[i][0].split('-')
-  				if len(tick[0]) < 4: self.bins.append(str(tick[0])+'K-'+str(tick[1])+'K')
-  				if len(tick[0]) > 3 and len(tick[0]) <7: self.bins.append(str(int(tick[0])/1000)+'M-'+str(int(tick[1])/1000)+'M')
-  				if len(tick[0]) > 7: self.bins.append(str(int(tick[0])/1000000)+'G-'+str(int(tick[1])/1000000)+'G')
+				self.bins.append(sizeof_fmt(int(tick[0])*4096)+'-'+sizeof_fmt(int(tick[1])*4096))
+				print sizeof_fmt(int(tick[0])*4096)+'-'+sizeof_fmt(int(tick[1])*4096)
+  				#if len(tick[0]) < 4: self.bins.append(str(tick[0])+'K-'+str(tick[1])+'K')
+  				#if len(tick[0]) > 3 and len(tick[0]) <7: self.bins.append(str(int(tick[0])/1000)+'M-'+str(int(tick[1])/1000)+'M')
+  				#if len(tick[0]) > 7: self.bins.append(str(int(tick[0])/1000000)+'G-'+str(int(tick[1])/1000000)+'G')
   				self.extents.append(histogram[i][1][0])
 				self.blocks.append(histogram[i][1][1])
 		self.ID = 'free_hist_'+fsystem+'_'+str(randint(0,10000)) #hash

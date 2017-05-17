@@ -203,6 +203,59 @@
     \warn{\item Can't use 'location' + 'address'}
   \endentry
 
+  \entry{ji2016empirical}{inproceedings}{}
+    \name{author}{6}{}{%
+      {{hash=JC}{%
+         family={Ji},
+         familyi={J\bibinitperiod},
+         given={Cheng},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=CLP}{%
+         family={Chang},
+         familyi={C\bibinitperiod},
+         given={Li-Pin},
+         giveni={L\bibinitperiod-P\bibinitperiod},
+      }}%
+      {{hash=SL}{%
+         family={Shi},
+         familyi={S\bibinitperiod},
+         given={Liang},
+         giveni={L\bibinitperiod},
+      }}%
+      {{hash=WC}{%
+         family={Wu},
+         familyi={W\bibinitperiod},
+         given={Chao},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=LQ}{%
+         family={Li},
+         familyi={L\bibinitperiod},
+         given={Qiao},
+         giveni={Q\bibinitperiod},
+      }}%
+      {{hash=XCJ}{%
+         family={Xue},
+         familyi={X\bibinitperiod},
+         given={Chun\bibnamedelima Jason},
+         giveni={C\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+    }
+    \list{organization}{1}{%
+      {USENIX Association}%
+    }
+    \strng{namehash}{JC+1}
+    \strng{fullhash}{JCCLPSLWCLQXCJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{booktitle}{8th USENIX Workshop on Hot Topics in Storage and File
+  Systems (HotStorage 16)}
+    \field{title}{An empirical study of file-system fragmentation in mobile
+  storage systems}
+    \field{year}{2016}
+  \endentry
+
   \entry{fs-drift:github}{misc}{}
     \name{author}{1}{}{%
       {{hash=EB}{%

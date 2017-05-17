@@ -142,54 +142,20 @@ Furthermore, to age a file system sized $\SI{1024}{\mega\byte}$, $\SI{87.3}{\gig
 
 Smith and Seltzer also defined a layout score as a method to evaluate fragmentation of a file system. Layout score is defined as a fraction of blocks of file, which are contiguously allocated. Files of one block size are ignored, since they can't be fragmented, and for every file, first block is ignored too. Evaluation of the whole file system is then computed as an aggregated layout score of all files.
 
-The problem resulting from not tracking shortly lived files can be solved by another approach called collecting traces. Traces are sequences of I/O operations performed by OS, captured at various levels (system call, drivers, network, etc.). The sequence of operations can be replayed back to the file system, aging it in a realistic manner.
+The problem resulting from not tracking shortly lived files can be solved by another approach called collecting traces. Traces are sequences of IO operations performed by OS, captured at various levels (system call, drivers, network, etc.). The sequence of operations can be replayed back to the file system, aging it in a realistic manner.
 
-Overall, using real-life data to age file systems brings realistic results, but at a cost of higher expenses, such as storing the collected data (metadata snapshot of $\SI{500}{\giga\byte}$ Ext4 file system can have up to $\SI{500}{\mega\byte}$). Additionally, to cover cases of different types of file system usage, data from several such file systems have to be collected, expanding the amount of needed data even further. Such data is not always available, rendering this type of approach useful only in cases the researcher is already in possession of said data.
+Overall, using real-life data to age file systems brings realistic results, but at a cost of higher expenses, such as storing the collected data. Additionally, to cover cases of different types of file system usage, data from several such file systems have to be collected, expanding the amount of needed data even further. Such materials are not always available, rendering this type of approach useful only in cases the researcher is already in their possession.
 
 \section{Synthetic aging simulation}
 Synthetic aging is a type of aging that does not require real-life data for its running. It relies on purely artificial workload performed on a file system, invoking aging factors, such as fragmentation.
 
 Fast file system aging was described as a part of a trace replay benchmark called TBBT~\cite{Zhu:2005:TSA:1251028.1251052}. This type of aging consists of sequence of interleaving append operations on a set of files. By controlling the amount of files involved in the process, researchers had great control over fragmentation. Such workflow, while creating desired fragmentation, is however quite unrealistic, making the results of testing on such file system questionable~\cite{Traeger:2008:NYS:1367829.1367831}.
 
-The way to conduct synthetic aging, while keeping some amount of realism is to try to mimic the real-life usage by creating requests of random nature. 
+Another attempt of inducing fragmenetation was made in an empirical study of file system fragmentation in mobile storage systems~\cite{ji2016empirical}. The aging process consisted of filling the device by alternative creation of files larger or equal to $\SI{100}{\mega\byte}$ and smaller or equal $\SI{100}{\kilo\byte}$. After 100\% file system utilization was reached, 5\% of files was randomly deleted. 
 
-Aging workload generator such as fs-drift~\cite{fs-drift:github}, used in this thesis, can be used (while carefully configured) to mimic long term real-life usage. Fs-drift simply creates a sequence of randomly chosen requests to be handled by the file system. The probability of the request type to be chosen is controlled by the workload table. In addition, whole process is highly configurable, making it possible to simulate various types of file system usage. Furthermore, a random distribution of file access can be controlled to mimic real-life user. All mentioned qualities, if used correctly, could result in fast, real-life mimicking file system aging.
+However, for truly realistic insight, a workflow generator which tries to mimic real-life usage can more suitable.
 
-
-
-
-
-
-
-
-%%The standard workflow is tu run benchmark clean instance of operating system without other applications running, to avoid noise, and on clean instance of researched file system.
-
-%%While this approach brings great results, with correct configuration of the benchmark, it only gives researchers a general idea about how does file system perform in early stage of it's usage. 
-
-%%However, there is a growing demand from users as well as from file system developers to explore behavior and performance of a file system, that has been used for longer period of time.
-
-
-
-%%This introduces problem in regard of devices with moving parts, such as widely used hard disk drive. When working with I/O operations on this type of device, the fragmentation cause larger seek times, which is a time for magnetic heads to reach desired location. This is a great example of how file system has to be flexible to solve such problems as well as of problems that emerge after running file system for a longer period of time.
-
-%%The ideal approach of research pointed on effect on age of file system would be to put file system under defined conditions for a few years or months, gathering information in the process. However, this is apparently impractical or even impossible, because the demand for results has to be satisfied in matter of weeks to respond to new versions of file systems, which are developed and released quite often.
-
-%%One of the earliest ideas about how to deal with this problem would be to capture a snapshot of a file system that had already been used for a prolonged time. This approach of testing on such a snapshot, however, would probably lead to optimising for a very specific instance of old version of given file system. 
-
-%%If researchers want to predict behavior of a new version of file system after prolonged time of usage, they should be able to create a simulation, which would mimic the aging process, but in short period of time.
-%%Aim of this thesis is to create 
-%%This can be technically implemented, because the idea is to run the simulation continuously under very heavy workload without using operations which does not alter file systems layout, therefore researchers should be able to compress the time of creating such an aged file system in a short period of time.
-
-%%Unfortunately the demand from users and developers has yet not been met by standard studies. There has been few studies executed in last millenium, that shed some light on this topic, but overall, modern research is in hands of regular users, remaining in amateur sphere, lacking professional equipment to execute such research properly.
-
-%%The aim of this thesis is to create standard, configurable workflow of creating and storing aged file system as well as a workflow to mesure its performance. Workflow for file system aging will use open source tool fs-drift to simulate aging process and then creates and stores file system image using system tools. Workflow for performance testing will then use created images to perform various tests.
-
-%%These workflows will then be used to test XFS and EXT4 file systems on different storage media to show their strenghts and weaknesses in respect to long time runnign, while showing importance of this kind of testing.
-
-%%The conclusion of research will show how does aging affect hard drive disks compared to solid state disks, what effect has aging on file system performance and what are the performance differences between XFS and EXT4 after long time usage.
-
-%%The workflows created for this thesis will be included in Red Hat File system performance testing campaigns.
-
+A workload generator such as fs-drift~\cite{fs-drift:github}, can be used (while carefully configured) to simulate desired long term real-life usage. While running, fs-drift is creating requests of variety of IO operations. The probability with which would be operation chosen can be controled by workload table. In addition, this tool offers different probability distributions of file access, making it easier to mimic behavior of natural user. Furthermore, whole process is highly configurable, making it possible to simulate various types of file system usage. Such qualities predispose fs-drift to be capable of conduction of more realistic results than mentioned attempts.
 
 \chapter{File system and storage devices}
 In this chapter, I present basic information about file systems and describe main features of chosen file system in regard of fragmentation and scalability, which are important topics when discussing file system aging.
@@ -221,7 +187,10 @@ Delayed allocation, also called allocate-on-flush is a feature that, when a file
 \subsection{Ext4}
 Ext4, also called fourth extended filesystem is a 48-bit journaling file system developed as successor of Ext3 for Linux kernel, improving reliability and performance features. Ext4 is scalable up to $\SI{1}{\exbi\byte}$ (approx. $\SI{1.15}{\exa\byte}$). Traditional Ext2 and Ext3 block mapping scheme was replaced by extent based approach similar to XFS, which positively affects performance.
 
-Similarly to XFS, Ext4 use delayed allocation to increase performance and reduce fragmentation. For cases of fragmentation that still occur, Ext4 provide support for online defragmentation~\cite{sato2007:ext4} and e4defrag tool to defragment either single file, or whole file system.
+Similarly to XFS, Ext4 use delayed allocation to increase performance and reduce fragmentation. For cases of fragmentation that still occur, Ext4 provide \textit{e4defrag} tool to defragment either single file, or whole file system. Performance penalties were, however, recognized and online defragmentation workflow was proposed by Sato~\cite{sato2007:ext4}.
+
+
+%Ext4 provide support for online defragmentation~\cite{sato2007:ext4} and \textit{e4defrag} tool to defragment either single file, or whole file system.
 
 
 \section{Storage}
@@ -471,7 +440,12 @@ Parameters available for recipe\_fio\_aging:
   \item -t, --tag, string to distinguish different tests
   \end{compactenum}
 
-
+\begin{figure}[ht]
+    \centering
+    \fbox{\includegraphics[width=\textwidth,keepaspectratio]{../scripts/recipe_fio_aging_activity}}
+    \caption{Activity diagram of aging test}
+    \label{fig:rec_activity}
+\end{figure}
 
 Installation of system and configuring is done using tools presented in Chapter 3. 
 

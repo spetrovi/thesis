@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.3.8)  16 MAY 2017 23:27
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.3.8)  17 MAY 2017 19:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -2625,73 +2625,74 @@ Chapter 2.
 Underfull \vbox (badness 1314) has occurred while \output is active []
 
  [5]
-[6]
+Underfull \vbox (badness 4634) has occurred while \output is active []
+
+ [6]
+[7] [8
+
+
+]
 Chapter 3.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [7
-
-
-]
-Underfull \vbox (badness 3343) has occurred while \output is active []
-
- [8]
-Overfull \hbox (1.60579pt too wide) in paragraph at lines 238--239
+ [9]
+[10]
+Overfull \hbox (1.60579pt too wide) in paragraph at lines 207--208
 []\T1/qpl/m/n/12 (-20) However, on SSDs, data can-not be di-rectly over-writ-te
 n (as in HDDs).
  []
 
-[9] [10]
+[11] [12]
 Chapter 4.
-[11
+[13
 
 
-] [12] <../scripts/fig1.png, id=385, 294.1389pt x 229.0959pt>
+] [14] <../scripts/fig1.png, id=397, 294.1389pt x 229.0959pt>
 File: ../scripts/fig1.png Graphic file (type png)
 
 <use ../scripts/fig1.png>
-Package pdftex.def Info: ../scripts/fig1.png used on input line 285.
+Package pdftex.def Info: ../scripts/fig1.png used on input line 254.
 (pdftex.def)             Requested size: 252.94388pt x 197.01863pt.
 
-<../scripts/fig2.png, id=387, 286.9119pt x 229.0959pt>
+<../scripts/fig2.png, id=399, 286.9119pt x 229.0959pt>
 File: ../scripts/fig2.png Graphic file (type png)
 
 <use ../scripts/fig2.png>
-Package pdftex.def Info: ../scripts/fig2.png used on input line 291.
+Package pdftex.def Info: ../scripts/fig2.png used on input line 260.
 (pdftex.def)             Requested size: 252.94388pt x 201.97556pt.
 
-<../scripts/fig3.png, id=388, 286.9119pt x 229.0959pt>
+<../scripts/fig3.png, id=400, 286.9119pt x 229.0959pt>
 File: ../scripts/fig3.png Graphic file (type png)
 
 <use ../scripts/fig3.png>
-Package pdftex.def Info: ../scripts/fig3.png used on input line 301.
+Package pdftex.def Info: ../scripts/fig3.png used on input line 270.
 (pdftex.def)             Requested size: 252.94388pt x 201.97556pt.
 
 Underfull \vbox (badness 2119) has occurred while \output is active []
 
- [13]
-[14 <../scripts/fig1.png> <../scripts/fig2.png>]
-<../scripts/dist3.png, id=402, 293.4162pt x 258.7266pt>
+ [15]
+[16 <../scripts/fig1.png> <../scripts/fig2.png>]
+<../scripts/dist3.png, id=415, 293.4162pt x 258.7266pt>
 File: ../scripts/dist3.png Graphic file (type png)
 
 <use ../scripts/dist3.png>
-Package pdftex.def Info: ../scripts/dist3.png used on input line 337.
+Package pdftex.def Info: ../scripts/dist3.png used on input line 306.
 (pdftex.def)             Requested size: 252.94388pt x 223.0453pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [15 <../scripts/fig3.png>] [16 <../scripts/dist3.png>]
+ [17 <../scripts/fig3.png>] [18 <../scripts/dist3.png>]
 Chapter 5.
 
-LaTeX Warning: Reference `text:duration' on page 17 undefined on input line 367
+LaTeX Warning: Reference `text:duration' on page 19 undefined on input line 336
 .
 
 
 Overfull \vbox (0.1915pt too high) has occurred while \output is active []
 
 
-[17
+[19
 
 
 ] (/usr/local/texlive/2016/texmf-dist/tex/latex/listings/lstlang1.sty
@@ -2700,7 +2701,7 @@ File: lstlang1.sty 2015/06/04 1.6 listings language file
 (/usr/local/texlive/2016/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2015/06/04 1.6 listings language file
 )
-LaTeX Font Info:    Try loading font information for T1+lmtt on input line 392.
+LaTeX Font Info:    Try loading font information for T1+lmtt on input line 361.
 
 
 (/usr/local/texlive/2016/texmf-dist/tex/latex/lm/t1lmtt.fd
@@ -2712,78 +2713,91 @@ Package microtype Info: Loading generic settings for font family
 (microtype)             See the microtype manual for details.
 
 
-Package Listings Warning: Text dropped after begin of listing on input line 392
+Package Listings Warning: Text dropped after begin of listing on input line 361
 .
 
 
-Package Listings Warning: Text dropped after begin of listing on input line 396
+Package Listings Warning: Text dropped after begin of listing on input line 365
 .
 
-[18]
+[20]
 
-Package Listings Warning: Text dropped after begin of listing on input line 402
+Package Listings Warning: Text dropped after begin of listing on input line 371
 .
 
 
-Package Listings Warning: Text dropped after begin of listing on input line 406
+Package Listings Warning: Text dropped after begin of listing on input line 375
 .
 
-<../scripts/drift_job_activity.pdf, id=436, 880.28876pt x 855.195pt>
+<../scripts/drift_job_activity.pdf, id=448, 880.28876pt x 855.195pt>
 File: ../scripts/drift_job_activity.pdf Graphic file (type pdf)
 
 <use ../scripts/drift_job_activity.pdf>
 Package pdftex.def Info: ../scripts/drift_job_activity.pdf used on input line 4
-31.
+00.
 (pdftex.def)             Requested size: 361.34999pt x 351.0498pt.
 
-Overfull \hbox (6.79999pt too wide) in paragraph at lines 431--432
+Overfull \hbox (6.79999pt too wide) in paragraph at lines 400--401
  [][] 
  []
 
-[19] [20 <../scripts/drift_job_activity.pdf>]
+[21] [22 <../scripts/drift_job_activity.pdf>]
 Chapter 6.
 
-Overfull \hbox (26.7962pt too wide) in paragraph at lines 456--457
+Overfull \hbox (26.7962pt too wide) in paragraph at lines 425--426
 \T1/qpl/m/n/12 (-20) Performance test-ing of cre-ated im-ages is done by a pack
 -age recipe_fio_aging.
  []
 
-[21
+[23
 
 
-] [22]
+]
+<../scripts/recipe_fio_aging_activity.pdf, id=476, 874.26625pt x 915.42pt>
+File: ../scripts/recipe_fio_aging_activity.pdf Graphic file (type pdf)
+
+<use ../scripts/recipe_fio_aging_activity.pdf>
+Package pdftex.def Info: ../scripts/recipe_fio_aging_activity.pdf used on input
+ line 445.
+(pdftex.def)             Requested size: 361.34999pt x 378.35573pt.
+
+Overfull \hbox (6.79999pt too wide) in paragraph at lines 445--446
+ [][] 
+ []
+
+[24 <../scripts/recipe_fio_aging_activity.pdf>] [25] [26
+
+
+]
 Chapter 7.
-LaTeX Font Info:    Try loading font information for OMS+qpl on input line 492.
+LaTeX Font Info:    Try loading font information for OMS+qpl on input line 466.
 
-LaTeX Font Info:    No file OMSqpl.fd. on input line 492.
+LaTeX Font Info:    No file OMSqpl.fd. on input line 466.
 
 LaTeX Font Warning: Font shape `OMS/qpl/m/n' undefined
-(Font)              using `OMS/cmsy/m/n' instead on input line 492.
+(Font)              using `OMS/cmsy/m/n' instead on input line 466.
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [23
-
-
-]
+ [27]
 Overfull \vbox (2.72412pt too high) has occurred while \output is active []
 
 
-[24] [25] [26]
+[28] [29] [30]
 Chapter 8.
-[27
-
-
-] [28
-
-
-] [29] [30]
-Appendix A.
 [31
 
 
 ] [32
+
+
+] [33] [34]
+Appendix A.
+[35
+
+
+] [36
 
 
 ]
@@ -2795,34 +2809,34 @@ File: lstlang1.sty 2015/06/04 1.6 listings language file
 File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
 )
 
-Package Listings Warning: Text dropped after begin of listing on input line 594
+Package Listings Warning: Text dropped after begin of listing on input line 568
 .
 
 
-Package Listings Warning: Text dropped after begin of listing on input line 605
+Package Listings Warning: Text dropped after begin of listing on input line 579
 .
 
 
-Package Listings Warning: Text dropped after begin of listing on input line 636
+Package Listings Warning: Text dropped after begin of listing on input line 610
 .
 
-[33]
+[37]
 
-Package Listings Warning: Text dropped after begin of listing on input line 644
+Package Listings Warning: Text dropped after begin of listing on input line 618
 .
 
-[34]
+[38]
 
 Package catoptions Warning: Undefined options 
 (catoptions)                [Family, Option, Value]: 
 (catoptions)                fontenc.sty,T1,. 
 (catoptions)                Default action already taken in each case .
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 652.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 652.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 626.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 626.
 (./thesis.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 652.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 652.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 626.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 626.
 Package rerunfilecheck Info: File `thesis.out' has not changed.
 (rerunfilecheck)             Checksum: D8CEAA6084E43A48408B1CA4673C104C;2498.
 
@@ -2832,15 +2846,18 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 LaTeX Warning: There were undefined references.
 
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
 Package logreq Info: Writing requests to 'thesis.run.xml'.
 \openout1 = `thesis.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 48293 strings out of 493013
- 896908 string characters out of 6133329
+ 48307 strings out of 493013
+ 897276 string characters out of 6133329
  1702477 words of memory out of 5000000
- 50714 multiletter control sequences out of 15000+600000
+ 50721 multiletter control sequences out of 15000+600000
  94008 words of font info for 137 fonts, out of 8000000 for 9000
  1143 hyphenation exceptions out of 8191
  62i,17n,97p,10370b,2430s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -2856,10 +2873,10 @@ b.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/tex-gyre/qplr.pfb>
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/tex-gyre/qplri.pfb></usr
 /local/texlive/2016/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/
 texlive/2016/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on thesis.pdf (50 pages, 480283 bytes).
+Output written on thesis.pdf (54 pages, 617989 bytes).
 PDF statistics:
- 673 PDF objects out of 1000 (max. 8388607)
- 573 compressed objects within 6 object streams
- 179 named destinations out of 1000 (max. 500000)
- 31175 words of extra memory for PDF output out of 35830 (max. 10000000)
+ 699 PDF objects out of 1000 (max. 8388607)
+ 594 compressed objects within 6 object streams
+ 185 named destinations out of 1000 (max. 500000)
+ 31180 words of extra memory for PDF output out of 35830 (max. 10000000)
 

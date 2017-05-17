@@ -9,17 +9,21 @@ def read_file(_file, op):
 	return s
 
 def tr(val):
-	suf = val[-1:]
-	val = int(val.split('-')[0][:-1])
-	if suf == 'K': return val*1000
-	if suf == 'M': return val*1000000
-	if suf == 'G': return val*1000000000
+	if val.find('i') >= 0:
+		suf = val[-3:]
+		val = int(val.split('-')[0][:-3])
+	else:
+		suf = val[-1:]
+		val = int(val.split('-')[0][:-1])
+	if suf.find('K') >= 0: return val*1000
+	if suf.find('M') >= 0: return val*1000000
+	if suf.find('G') >= 0: return val*1000000000
 
 def d_image(fsystem, destination):
 	ID = 'image_'+str(randint(0,1000))
 	raw_files = glob.glob('./out/free_space_*.log')
 	raw_files.sort(key=lambda x: int(x.split('free_space_')[1][:-4]))
-
+	print 'free files: '+str(len(raw_files))
 	histograms = []
 
 	for _file in raw_files:
@@ -28,9 +32,11 @@ def d_image(fsystem, destination):
 	bins = []
 	for hist in histograms:
 		bins += hist.bins
+	
 
 
 	bins = sorted(list(set(bins)),key=tr)
+	print bins
 	template = read_file('templates/image.js','r')
 
 	template = str(bins).join(template.split('XXX_BINS_XXX'))

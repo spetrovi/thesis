@@ -124,7 +124,7 @@ class Tar:
 			y_curve = list(yy_sg)
 
 			#regression
-			fit = np.polyfit(x,y,1)
+			fit = np.polyfit(x,y,2)
 			fit_fn = np.poly1d(fit)
 			y_regression = map(lambda x: fit_fn(x), xx)
 		
@@ -372,12 +372,19 @@ path1 = glob.glob('./draven_images/*W4LONG*.tar.xz')[0]
 path2 = glob.glob('./draven_images/*W4LONG*.tar.xz')[0]
 r = Report(path1,path2,'./res/')
 r.save()
-"""
+
 
 path1 = glob.glob('./blade_images/*W490.tar.xz')[1]
 path2 = glob.glob('./blade_images/*W490TRIM*.tar.xz')[0]
 r = Report(path1,path2,'./res/')
 r.save()
+"""
+
+path1 = glob.glob('./draven_images/*W4LONG.tar.xz')[0]
+path2 = glob.glob('./draven_images/*W4LONG.tar.xz')[1]
+r = Report(path1,path2,'./res/')
+r.save()
+
 
 #path1 = glob.glob('./blade_images/*-drift_job-xfs-1SASHDD-BIMODAL.tar.xz')[0]
 #path2 = glob.glob('./blade_images/*-drift_job-ext4-1SASHDD-BIMODAL.tar.xz')[0]
