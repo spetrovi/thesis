@@ -78,6 +78,7 @@ class Tar:
 
     self.host = get_value(self.properties,'hostname').split('.')[0]
     self.image_name = get_value(self.properties,'image')
+    print self.image_name
     self.image_tar = drift_compare.Tar(self.host+'_images/'+self.image_name.split('.')[0]+'.tar.xz', destination)
 
     self.runs = []
@@ -209,6 +210,8 @@ class Charts:
 
 class Report:
   def __init__(self,path1, path2, destination):
+	print path1
+	
 	self.destination = destination+path1.split('/')[-1:][0][:-7]+'_vs_'+path2.split('/')[-1:][0][:-7]+'/'
         subprocess.call('mkdir '+self.destination,shell=True)  
 	self.tar1 = Tar(path1, self.destination)
@@ -406,17 +409,26 @@ r = Report(path1,path2,'./res/')
 r.save()
 """
 
-tars = glob.glob('1848*_blade/*1SASHDD*.tar.xz')
+tars = glob.glob('1860552_blade/*W490.tar.xz')
+
 path1 = tars[0]
 path2 = tars[1]
-r = Report(path1,path2,'./res/')
+r = Report(path1,path2,'./fio_res/')
 r.save()
 
-tars = glob.glob('1848*_blade/*1SATASSD*.tar.xz')
-path1 = tars[0]
-#path2 = tars[1]
-r = Report(path1,path2,'./res/')
+path2 = tars[2]
+r = Report(path1,path2,'./fio_res/')
 r.save()
+
+path2 = tars[3]
+r = Report(path1,path2,'./fio_res/')
+r.save()
+
+#tars = glob.glob('1848*_blade/*1SATASSD*.tar.xz')
+#path1 = tars[0]
+#path2 = tars[1]
+#r = Report(path1,path2,'./res/')
+#r.save()
 
 
 

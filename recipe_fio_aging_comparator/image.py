@@ -23,7 +23,7 @@ def d_image(fsystem, destination):
 	ID = 'image_'+str(randint(0,1000))
 	raw_files = glob.glob('./out/free_space_*.log')
 	raw_files.sort(key=lambda x: int(x.split('free_space_')[1][:-4]))
-	print 'free files: '+str(len(raw_files))
+	#print 'free files: '+str(len(raw_files))
 	histograms = []
 
 	for _file in raw_files:
@@ -36,7 +36,7 @@ def d_image(fsystem, destination):
 
 
 	bins = sorted(list(set(bins)),key=tr)
-	print bins
+	#print bins
 	template = read_file('templates/image.js','r')
 
 	template = str(bins).join(template.split('XXX_BINS_XXX'))

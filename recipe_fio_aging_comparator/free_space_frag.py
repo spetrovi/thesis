@@ -16,7 +16,7 @@ class Free_space_fragmentation:
 		ffh = _file.split('\n')
 		self.bins = []
 		self.extents = []
-		self.blocks = []		
+		self.blocks = []
 		if fsystem == 'ext4':
 			histogram = []
 			for i in range(12,len(ffh)-1):
@@ -27,6 +27,7 @@ class Free_space_fragmentation:
   				self.bins.append(histogram[i][0][:-3] + '-' + histogram[i][1][:-1])
   				self.extents.append(int(histogram[i][2]))
  	 			self.blocks.append(int(histogram[i][3]))
+
 		if fsystem == 'xfs':
 			ffh = filter(lambda x: x.find('from') < 0 and x.find('free') < 0, ffh)[:-1]
 			histogram = {}
@@ -38,12 +39,12 @@ class Free_space_fragmentation:
 					histogram[tick][1]+=int(line[3])
 				else:	
 					histogram[tick] = [int(line[2]), int(line[3])]
-				print tick
+				#print tick
 			histogram = sorted(histogram.items(), key=lambda x: int(x[0].split('-')[0]))
 			for i in range(len(histogram)):
   				tick = histogram[i][0].split('-')
 				self.bins.append(sizeof_fmt(int(tick[0])*4096)+'-'+sizeof_fmt(int(tick[1])*4096))
-				print sizeof_fmt(int(tick[0])*4096)+'-'+sizeof_fmt(int(tick[1])*4096)
+				#print sizeof_fmt(int(tick[0])*4096)+'-'+sizeof_fmt(int(tick[1])*4096)
   				#if len(tick[0]) < 4: self.bins.append(str(tick[0])+'K-'+str(tick[1])+'K')
   				#if len(tick[0]) > 3 and len(tick[0]) <7: self.bins.append(str(int(tick[0])/1000)+'M-'+str(int(tick[1])/1000)+'M')
   				#if len(tick[0]) > 7: self.bins.append(str(int(tick[0])/1000000)+'G-'+str(int(tick[1])/1000000)+'G')

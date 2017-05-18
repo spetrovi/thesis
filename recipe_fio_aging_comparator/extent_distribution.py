@@ -43,7 +43,7 @@ def file_size_histogram(_file, destination):
 #	print len(frag_files)
 	contents = read_file(_file,'r').split('\n')[:-1]
 	files = map(lambda x: int(x.split('\t')[0]), contents)
-	print 'sum '+str(sizeof_fmt(sum(files)))
+	#print 'sum '+str(sizeof_fmt(sum(files)))
 	bins = [(2**i) for i in range(2,35)]
 	fs_histogram, fs_bins = np.histogram(files, bins)
 	fs_histogram = map(lambda x: int(x), fs_histogram)
