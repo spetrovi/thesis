@@ -26,7 +26,8 @@ def d_image(fsystem, destination):
 	#print 'free files: '+str(len(raw_files))
 	histograms = []
 
-	for _file in raw_files:
+	for i, _file in enumerate(raw_files):
+ 	   # if i % 3 == 0:
 		histograms.append(fsf.Free_space_fragmentation(read_file(_file,'r'), fsystem))
 
 	bins = []
@@ -36,22 +37,22 @@ def d_image(fsystem, destination):
 
 
 	bins = sorted(list(set(bins)),key=tr)
-	#print bins
+
 	template = read_file('templates/image.js','r')
 
-	template = str(bins).join(template.split('XXX_BINS_XXX'))
+	template = str(map(lambda x: x.split('-')[0][:-3]+'-'+x.split('-')[1], bins)).join(template.split('XXX_BINS_XXX'))
 	template = str(range(0,len(histograms))).join(template.split('XXX_TIMES_XXX'))
 	template = str(len(histograms)*7).join(template.split('XXX_DEPTH_XXX'))
 	data = ''
-	for i,hist in enumerate(histograms):
+	for i, hist in enumerate(histograms):
 		data += '{\nstack: '+str(i)+',\ndata:['
 		for j, _bin in enumerate(hist.bins):
 			col = bins.index(_bin)
 			val = hist.extents[j]
 			data +='['+str(col)+','+str(val)+'],'
 		data += ']},'
-	template = data.join(template.split('XXX_DATA_XXX'))
 
+	template = data.join(template.split('XXX_DATA_XXX'))
 	template = ID.join(template.split('XXX_NAME_XXX'))
 
 	_file = open(destination+ID+'.js','w')

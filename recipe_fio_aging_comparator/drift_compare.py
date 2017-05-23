@@ -46,7 +46,7 @@ class Tar:
 #    self.free_space_pretest = []
 #    self.free_space_posttest = []
 #    self.extent_distribution = []
-    self.image = glob.glob(self.tar[:-7]+'*bz2')[0]#]get_value(self.properties,'image')
+    #self.image = glob.glob(self.tar[:-7]+'*bz2')[0]#]get_value(self.properties,'image')
     self.host = get_value(self.properties,'hostname').split('.')[0]
     self.image_ID = ''
 
@@ -58,7 +58,7 @@ class Tar:
 	self.image_rsp_plot, self.image_rsp_reg = self.generate_rsp_plot(glob.glob('./out/*rspt.csv')[0])
 	self.image_usage_plot = self.generate_usage_plot()
 	self.extents_ID= used_space_histogram('./out/fie_data', self.destination)
-	self.fsize_ID = file_size_histogram('./out/du_data', self.destination)
+#	self.fsize_ID = file_size_histogram('./out/du_data', self.destination)
 	self.image_log = read_file('./out/log.out','r')
 	self.image_recipe = read_file('./out/recipe','r')
 	subprocess.call('rm -rf out',shell=True)
@@ -136,7 +136,7 @@ class Tar:
 			template_reg = (line_reg+'XXX_LINE_XXX').join(template_reg.split('XXX_LINE_XXX'))
 
 
-
+	
 	template_cur = ''.join(template_cur.split('XXX_LINE_XXX'))
 	template_reg = ''.join(template_reg.split('XXX_LINE_XXX'))
 
@@ -278,8 +278,8 @@ class Report:
 		image_ID2 = self.tar2.image_ID
 		image_extents1 = self.tar1.extents_ID
 		image_extents2 = self.tar2.extents_ID
-		image_fsizes1 = self.tar1.fsize_ID
-		image_fsizes2 = self.tar2.fsize_ID
+		#image_fsizes1 = self.tar1.fsize_ID
+		#image_fsizes2 = self.tar2.fsize_ID
 		image_rsp_plot1 = self.tar1.image_rsp_plot
 		image_rsp_plot2 = self.tar2.image_rsp_plot
 		image_rsp_reg1 = self.tar1.image_rsp_reg
@@ -288,8 +288,8 @@ class Report:
 		r.script('', type='text/javascript', src=image_ID2+'.js')
 		r.script('', type='text/javascript', src=image_extents1+'.js')
 		r.script('', type='text/javascript', src=image_extents2+'.js')
-		r.script('', type='text/javascript', src=image_fsizes1+'.js')
-		r.script('', type='text/javascript', src=image_fsizes2+'.js')
+		#r.script('', type='text/javascript', src=image_fsizes1+'.js')
+		#r.script('', type='text/javascript', src=image_fsizes2+'.js')
 		r.script('', type='text/javascript', src=image_rsp_plot1+'.js')
 		r.script('', type='text/javascript', src=image_rsp_plot2+'.js')
 		r.script('', type='text/javascript', src=image_rsp_reg1+'.js')
@@ -317,9 +317,9 @@ class Report:
 		tr = table.tr
 		tr.td.div(id=image_extents1, align='left')
 		tr.td.div(id=image_extents2, align='left')
-		tr = table.tr
-		tr.td.div(id=image_fsizes1, align='left')
-		tr.td.div(id=image_fsizes2, align='left')
+		#tr = table.tr
+		#tr.td.div(id=image_fsizes1, align='left')
+		#tr.td.div(id=image_fsizes2, align='left')
 		tr = table.tr
 		td = tr.td
 		for line in self.tar1.properties.split('\n'):
@@ -368,23 +368,29 @@ path2 = glob.glob('./draven_images/*-drift_job-ext4-1SASHDD-DIVRSP.tar.xz')[0]
 r = Report(path1,path2,'./res/')
 r.save()
 
-path1 = glob.glob('./draven_images/*W4LONG*.tar.xz')[0]
-path2 = glob.glob('./draven_images/*W4LONG*.tar.xz')[0]
-r = Report(path1,path2,'./res/')
-r.save()
+
 
 """
-path1 = glob.glob('./blade_images/*W490.tar.xz')[1]
-path2 = glob.glob('./blade_images/*W490TRIM*.tar.xz')[0]
+path1 = glob.glob('./blade_images/*ext4*W490.tar.xz')[0]
+path2 = glob.glob('./blade_images/*ext4*W495TRIM.tar.xz')[0]
 r = Report(path1,path2,'./res/')
 r.save()
 
-
-path1 = glob.glob('./draven_images/*W4LONG.tar.xz')[1]
-path2 = glob.glob('./draven_images/*W4LONG.tar.xz')[1]
+path1 = glob.glob('./draven_images/*xfs*W4LONG.tar.xz')[0]
+path2 = glob.glob('./draven_images/*ext4*W4LONG.tar.xz')[0]
 r = Report(path1,path2,'./res/')
 r.save()
 
+path1 = glob.glob('./draven_images/*xfs*W495LONG3.tar.xz')[0]
+path2 = glob.glob('./draven_images/*xfs*W495LONG3.tar.xz')[0]
+r = Report(path1,path2,'./res/')
+r.save()
+
+path1 = glob.glob('./wolverine_images/*xfs*.tar.xz')[0]
+path2 = glob.glob('./wolverine_images/*ext4*.tar.xz')[0]
+r = Report(path1,path2,'./res/')
+r.save()
+"""
 
 path1 = glob.glob('./blade_images/*-drift_job-xfs*W490.tar.xz')[0]
 path2 = glob.glob('./blade_images/*-drift_job-ext4*W490.tar.xz')[0]
@@ -402,7 +408,7 @@ r.save()
 #r = Report(path1,path2,'./res/')
 #r.save()
 
-
+"""
 
 
 

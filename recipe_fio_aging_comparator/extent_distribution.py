@@ -110,8 +110,14 @@ def used_space_histogram(_file, destination):
 	template = read_file('templates/used_space_template.js','r')
 	template = ID.join(template.split('XXX_NAME_XXX'))
 	template = str(sum(frag_histogram)).join(template.split('XXX_FRAGSUM_XXX'))
-	template = str(sum(opt_histogram)).join(template.split('XXX_OPTNUM_XXX'))
-	template = str(filenum).join(template.split('XXX_OPTSUM_XXX'))
+	
+	print str(filenum)
+	print str(len(opt_data))
+	#more_info = ' '+str(sum(opt_histogram))+'/'+str(filenum)+' ('+str(int(100*float(sum(opt_histogram))/filenum))+'%)'
+	more_info = ', fragments: '+str(len(frag_data))+', optimal files: '+str(int(100*float(len(opt_data))/filenum))+'%'
+	template = more_info.join(template.split('XXX_MOREINFO_XXX'))
+
+
 	template = str(ticks).join(template.split('XXX_BINS_XXX'))
 	template = str(frag_histogram).join(template.split('XXX_FRAG_XXX'))
 	template = str(opt_histogram).join(template.split('XXX_OPT_XXX'))

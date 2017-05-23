@@ -21,7 +21,7 @@ XXX_NAME_XXX= new Highcharts.Chart({
       height: 600,
       backgroundColor: '#F2F2F2',
  renderTo: 'XXX_NAME_XXX'},
-title: {text: 'Histogram of used space fragmentation, extents=XXX_FRAGSUM_XXX, optimal files=XXX_OPTNUM_XXX/XXX_OPTSUM_XXX'},xAxis: [{categories: XXX_BINS_XXX,title: {text: 'Size'}}],
+title: {text: 'Histogram of used space fragmentationXXX_MOREINFO_XXX'},xAxis: [{categories: XXX_BINS_XXX,title: {text: 'Size'}}],
     plotOptions: {
         column: {
             groupPadding: 0,

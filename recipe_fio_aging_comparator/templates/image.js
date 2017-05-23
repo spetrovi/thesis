@@ -51,11 +51,9 @@ XXX_NAME_XXX_chart= new Highcharts.Chart({
     }
   },
   title: {
-    text: 'Draggable box'
+    text: 'Evolution of free space fragmentation'
   },
-  subtitle: {
-    text: 'Click and drag the plot area to rotate in space'
-  },
+
   plotOptions: {
     column: {
       stacking: true,

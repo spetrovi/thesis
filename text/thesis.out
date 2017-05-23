@@ -20,7 +20,7 @@
 \BOOKMARK [1][-]{section.5.2}{\040File\040system\040images}{chapter.5}% 20
 \BOOKMARK [1][-]{section.5.3}{\040Implementation\040details}{chapter.5}% 21
 \BOOKMARK [0][-]{chapter.6}{Performance\040testing\040of\040aged\040file\040system}{}% 22
-\BOOKMARK [1][-]{section.6.1}{\040Benchmark\040settings}{chapter.6}% 23
+\BOOKMARK [1][-]{section.6.1}{\040FIO\040settings}{chapter.6}% 23
 \BOOKMARK [1][-]{section.6.2}{\040Test\040structure}{chapter.6}% 24
 \BOOKMARK [0][-]{chapter.7}{Results}{}% 25
 \BOOKMARK [1][-]{section.7.1}{\040Testing\040environment}{chapter.7}% 26
@@ -30,7 +30,7 @@
 \BOOKMARK [2][-]{subsection.7.2.3}{\040FIO}{section.7.2}% 30
 \BOOKMARK [1][-]{section.7.3}{\040Performance\040of\040aged\040file\040system}{chapter.7}% 31
 \BOOKMARK [1][-]{section.7.4}{\040Differences\040betweem\040XFS\040and\040EXT4}{chapter.7}% 32
-\BOOKMARK [1][-]{section.7.5}{\040Differences\040accross\040different\040storage}{chapter.7}% 33
+\BOOKMARK [1][-]{section.7.5}{\040Differences\040amoung\040storage\040devices}{chapter.7}% 33
 \BOOKMARK [0][-]{chapter.8}{Conclusion}{}% 34
 \BOOKMARK [0][-]{appendix.A}{Reports}{}% 35
 \BOOKMARK [0][-]{appendix.B}{Examples}{}% 36

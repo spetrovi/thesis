@@ -330,7 +330,16 @@ First, the amount of fullness had to be taken into account. Heavily used file sy
 
 \footnotetext[1]{For all the changes made to original code of fs-drift, see Subsection \ref{text:fsdrift_changes}}
 
-Duration of the test is an important factor as well. In general, the testing time should be long enough for the environment to stabilise. When considering file system aging, the test should spend most of the run time after the saturation phase (e.g. the phase of filling the file system to a desired fullness). After developing a test, it is necessary to conduct few pilot runs to confirm if any stabilisation occur and set the duration accordingly. On the other hand, for the test to be usefull in professional environment, testing time should not be too long. The goal is to maximize testing correctness while minimising the time for the test to complete. The ideal duration of testing is discussed and experimented with in Section~\ref{text:duration}
+Duration of the test is an important factor as well. In general, the testing time should be long enough for the environment to stabilise. After developing a test, it is necessary to conduct few pilot runs to confirm if any stabilisation of performance occur and set the duration accordingly for best effectivity
+
+% When considering file system aging, 
+
+
+%the test should spend most of the run time after the saturation phase (e.g. the phase of filling the file system to a desired fullness). 
+
+
+
+%. On the other hand, for the test to be usefull in professional environment, testing time should not be too long. The goal is to maximize testing correctness while minimising the time for the test to complete. The ideal duration of testing is discussed and experimented with in Section~\ref{text:duration}
 
 Fs-drift offers to control testing length by elapsed time. The elapsed time is computed as current time substracted from starting time. However, pausing the fs-drift to release space, examine file system, etc. resulted in non-uniform testing time across runs. Therefore, testing length by operation count is used in conducted tests.
 
@@ -409,8 +418,21 @@ Parameters available for drift\_job:
 \chapter{Performance testing of aged file system}
 In this chapter, I describe structure of performance test which use images created by previous workflow. In the first section, I present settings of FIO benchmark for the optimal results and in section two, I describe implementation of this test as beaker task.
 
-\section{Benchmark settings}
-To ensure stability of test results, simple form of standard performance test was used.
+\section{FIO settings} 
+
+%While designing FIO workload to test performance of aged file system, 
+
+By default, FIO will create one file for every triggered thread. Furtermore, this file is created and opened before FIO begins issuing IO requests. This default settings is unfit for file system aging testing, because the subject of iterest is among others file allocation.
+
+The first step to make FIO workload more relevant to file system aging is to ask for creation of many files for every thread. The number of files was set in such a way, their individual size was approximately $\SI{4}{\kilo\byte}$. FIO will try to open all the files at once, which results in error for more than 102 files, therefore, maximal amount of open files was specified to 100. Furthermore, to include creation of files and allocation into the performance measurement, \texttt{create\_on\_open} was set, so FIO creates file at the moment of opening, if the file does not exist. Another important factor is distribution of which FIO access the files. Default is set to round-robin, but was reset to gauss, so the distribution of file access is more similar to file system aging test.
+
+Similarily to aging test, FIO should perform \texttt{fsync} from time to time. This can be set as amount of write requests after which \texttt{fsync} should be performed.
+
+Overall size is set in such a way, it consumes most of space left after loading the image. Same size is used while testing on fresh file system. Block size is set to $\SI{4}{\kilo\byte}$ as that is default block size of used file systems.
+
+To ensure stable runtime of FIO test, time-based testing is used with runtime of 10 minutes. It is not expected of FIO to issue total specified size, but to measure the performance effectively.
+
+
 %Volume is randomly removed using random\_delete\_volume.py script. This scriptt globs all files in the filesystem, retrieves information about used volume as well as it's overall size. Then proceeds to randomly choosing files to delete and stops when desired volume is freed. The approach of recursively globbing all files may be inefficient, but this way, we can be sure, that volume is deleted from whole device evenly.
 
 %\section{Inspecting filesystem}
@@ -426,34 +448,41 @@ To ensure stability of test results, simple form of standard performance test wa
 %Script free\_space\_fragmentation.py use the tool e2freefrag, which runs over a device, and outputs the histogram of free space fragmentation in texutal form. Script will store this output and then easily parse the histogram and aggregate the data into a graphic form.
 
 \section{Test structure}
-Performance testing of created images is done by a package recipe\_fio\_aging. Upon instalation of necessary tools (libs, fio), the package finds and downloads coresponding file system image according to obtained parameters. As shown, images are stored compressed, therefore decompression is needed after download. Once these steps are succesfully completed, the image is restored on the device by using presented tools (e2image, xfs\_mdrestore). If the image restoring completes succesfully, file system can be mounted and worked with exactly like it would be just after the aging process.
+Performance testing of created images is contained in Beaker task recipe\_fio\_aging. Upon instalation of necessary tools (libs, fio), the package finds and downloads coresponding file system image according to obtained parameters. As shown, images are stored compressed, therefore decompression is needed after download. Once these steps are succesfully completed, testing phase can begin.
 
-After image restoration, some amount of the files needs to be deleted to create space for the performance test to take place. The files to be removed are chosen randomly until desired amount of volume has been freed. By using this workflow, e.g. freeing some amount of space, we can simulate aged file system in various phases of aging by using just one image of a very fragmented file system.
+Before every test, initialization is performed by running \texttt{sync}, \texttt{fstrim} and dropping caches.
 
-When free space is reclaimed, FIO test will take place using parameters given to recipe\_fio\_aging. The overall space occupied by the test should not be larger than available space on the file system, otherwise the test will either fail completely or report incorrect results.
+At first, performance measurements of fresh file system is done. Test configuration of fresh and aged test is similar, with an exception, that after testing fresh file system, FIO will delete all the created files. This is disabled for aged tests, because post-test fragmentation is gathered afterwards.
 
-For statistical correctness, the FIO test can run several times in a row. After last iteration, the results are archived and sent to data-collecting server.
+After testing fresh file system, image is loaded and mouted. If the mounted file system utilize too much space, some files can be randomly deleted. Afterwards, pre-test fragmentation is logged and environment is initalized. When the test is over, post-test fragmentation is gathered.
+
+For statistical correctness, these tests can run in loops $n$ times. Fresh and aged testing is divided into separate loops.
+
+After last iteration, the results are archived and sent to data-collecting server. 
+
+For better oversight of the tests functionality, its activity diagram is presented as Figure~\ref{fig:rec_activity}
 
 Parameters available for recipe\_fio\_aging:
 \begin{compactenum}
-  \item -s, --sync, flag to signalise wheather or not to send data to server (usefull for developing purposes)
-  \item -n, --numjobs, number of test repetitions. For statistical stability
-  \item -m, --mountpoint
-  \item -d, --device
-  \item -r, --recipe, parameters to pass to FIO test
-  \item -t, --tag, string to distinguish different tests
+  \item sync, flag to signalise wheather or not to send data to server (usefull for developing purposes)
+  \item numjobs, number of test repetitions. For statistical stability
+  \item mountpoint
+  \item device
+  \item recipe, parameters to pass to FIO test
+  \item tag, string to distinguish different tests
   \end{compactenum}
 
 \begin{figure}[ht]
     \centering
     \fbox{\includegraphics[width=\textwidth,keepaspectratio]{../scripts/recipe_fio_aging_activity}}
-    \caption{Activity diagram of aging test}
+    \caption{Activity diagram of testing of aged file system}
     \label{fig:rec_activity}
 \end{figure}
 
-Installation of system and configuring is done using tools presented in Chapter 3. 
 
-The system installed on machines is RHEL-7.3 with kernel 3.10.0-514.el7.x86\_64
+
+
+
 
 
 \chapter{Results}
@@ -523,16 +552,19 @@ Generally, fragmentation of free space is easier to obtain, since this informati
 As stated, in the aging test, fragmentation of free space is logged periodically, allowing for an analysis of how fragmentation evolves in time. For the purpose of visualising this evolution, 3D charts are introduced in the final reports.
 
 \subsection{Fs-drift}
-The main researched output of fs-drift is an evolution of latency of different operations. This property is displayed as a chart with elapsed time on X axis and measured latency on Y axis. Since the data are quite noisy, interpolation and filtering using Savitzky-Golay filter had to be used for meaningfull display of latency change in time. Additionally linear regression is computed and displayed for every operation providing even more insight into the effects of aging through test.
+The main researched output of fs-drift is an \emph{evolution} of latency of different operations. This property is displayed as a chart with elapsed time on X axis and measured latency on Y axis. Since the data are quite noisy, interpolation and filtering using Savitzky-Golay filter had to be used for meaningfull display of latency change in time. Additionally linear regression is computed and displayed for every operation providing even more insight into the effects of aging through test.
 
 \subsection{FIO}
+The output of FIO is recorded bandwidth and latency through tests. Since topic of research when using FIO was \emph{state} of file system in terms of performance, statistics are computed from the whole test run. These statistics are minimum and maximum value, first and second quartile and median. These atributes are then displayed on a chart in form of boxplot. Latency and bandwidth have separate charts. On the X axis, state of file system utilization is displayed and on the Y axis there is throughput or latency.
 
 \section{Performance of aged file system}
+The file sysem aging tool succesfully induced fragmentation on all used devices. From the results generated by aging tool, it is apparent, that the aging process negatively affects performance of file systems. Figure shows evolution of free space fragmetation when using XFS file system on signle SAS HDD. Figure X shows 
+
 
 \section{Differences betweem XFS and EXT4}
 
 
-\section{Differences accross different storage}
+\section{Differences amoung storage devices}
 
 
 
