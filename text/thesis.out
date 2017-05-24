@@ -30,7 +30,10 @@
 \BOOKMARK [2][-]{subsection.7.2.3}{\040FIO}{section.7.2}% 30
 \BOOKMARK [1][-]{section.7.3}{\040Performance\040of\040aged\040file\040system}{chapter.7}% 31
 \BOOKMARK [1][-]{section.7.4}{\040Differences\040betweem\040XFS\040and\040EXT4}{chapter.7}% 32
-\BOOKMARK [1][-]{section.7.5}{\040Performance\040accross\040different\040storage\040devices}{chapter.7}% 33
-\BOOKMARK [0][-]{chapter.8}{Conclusion}{}% 34
-\BOOKMARK [0][-]{appendix.A}{Reports}{}% 35
-\BOOKMARK [0][-]{appendix.B}{Examples}{}% 36
+\BOOKMARK [2][-]{subsection.7.4.1}{\040XFS\040and\040EXT4\040on\040SSD}{section.7.4}% 33
+\BOOKMARK [2][-]{subsection.7.4.2}{\040XFS\040and\040EXT4\040on\040NVMe}{section.7.4}% 34
+\BOOKMARK [2][-]{subsection.7.4.3}{\040XFS\040and\040EXT4\040on\040600GB\040HDD}{section.7.4}% 35
+\BOOKMARK [1][-]{section.7.5}{\040Performance\040accross\040different\040storage\040devices}{chapter.7}% 36
+\BOOKMARK [0][-]{chapter.8}{Conclusion}{}% 37
+\BOOKMARK [0][-]{appendix.A}{Reports}{}% 38
+\BOOKMARK [0][-]{appendix.B}{Examples}{}% 39

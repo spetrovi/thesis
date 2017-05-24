@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.3.8)  24 MAY 2017 10:56
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.3.8)  25 MAY 2017 00:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -2222,7 +2222,11 @@ Package biblatex Info: ... file 'german.lbx' found.
 (/usr/local/texlive/2016/texmf-dist/tex/latex/biblatex/lbx/german.lbx
 File: german.lbx 2016/12/05 v3.7 biblatex localization (PK/JW/AB)
 )
-(./thesis.aux)
+(./thesis.aux
+
+LaTeX Warning: Label `tab:ssd_xfs_ext4' multiply defined.
+
+)
 \openout1 = `thesis.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 101.
@@ -2243,8 +2247,7 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 101.
 LaTeX Font Info:    ... okay on input line 101.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 101.
 LaTeX Font Info:    ... okay on input line 101.
-
-(/usr/local/texlive/2016/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+ (/usr/local/texlive/2016/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count443
 \scratchdimen=\dimen315
@@ -2448,7 +2451,7 @@ Package microtype Info: Character `029' is missing
 (microtype)             in font `T1/qpl/m/sc/17.28'.
 (microtype)             Ignoring protrusion settings for this character.
 
-<fithesis/logo/mu/fithesis-fi-color.pdf, id=177, 291.0875pt x 292.09125pt>
+<fithesis/logo/mu/fithesis-fi-color.pdf, id=189, 291.0875pt x 292.09125pt>
 File: fithesis/logo/mu/fithesis-fi-color.pdf Graphic file (type pdf)
 
 <use fithesis/logo/mu/fithesis-fi-color.pdf>
@@ -2667,21 +2670,21 @@ Overfull \hbox (7.70094pt too wide) in paragraph at lines 247--248
 /12 mean-velocity\T1/qpl/m/n/12 (-20) , fs-drift will choose
  []
 
-<../scripts/fig1.png, id=403, 294.1389pt x 229.0959pt>
+<../scripts/fig1.png, id=424, 294.1389pt x 229.0959pt>
 File: ../scripts/fig1.png Graphic file (type png)
 
 <use ../scripts/fig1.png>
 Package pdftex.def Info: ../scripts/fig1.png used on input line 253.
 (pdftex.def)             Requested size: 252.94388pt x 197.01863pt.
 
-<../scripts/fig2.png, id=405, 286.9119pt x 229.0959pt>
+<../scripts/fig2.png, id=426, 286.9119pt x 229.0959pt>
 File: ../scripts/fig2.png Graphic file (type png)
 
 <use ../scripts/fig2.png>
 Package pdftex.def Info: ../scripts/fig2.png used on input line 259.
 (pdftex.def)             Requested size: 252.94388pt x 201.97556pt.
 
-<../scripts/fig3.png, id=406, 286.9119pt x 229.0959pt>
+<../scripts/fig3.png, id=427, 286.9119pt x 229.0959pt>
 File: ../scripts/fig3.png Graphic file (type png)
 
 <use ../scripts/fig3.png>
@@ -2702,7 +2705,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
  [16 <../scripts/fig1.png> <../scripts/fig2.png>]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [17 <../scripts/fig3.png>] <../scripts/dist3.png, id=426, 293.4162pt x 258.726
+ [17 <../scripts/fig3.png>] <../scripts/dist3.png, id=447, 293.4162pt x 258.726
 6pt>
 File: ../scripts/dist3.png Graphic file (type png)
 
@@ -2737,7 +2740,7 @@ Package Listings Warning: Text dropped after begin of listing on input line 380
 Package Listings Warning: Text dropped after begin of listing on input line 384
 .
 
-[21] <../scripts/drift_job_activity.pdf, id=467, 877.2775pt x 985.6825pt>
+[21] <../scripts/drift_job_activity.pdf, id=488, 877.2775pt x 985.6825pt>
 File: ../scripts/drift_job_activity.pdf Graphic file (type pdf)
 
 <use ../scripts/drift_job_activity.pdf>
@@ -2763,7 +2766,7 @@ Overfull \hbox (8.88474pt too wide) in paragraph at lines 460--461
 ent to data-collecting
  []
 
-<../scripts/recipe_fio_aging_activity.pdf, id=493, 874.26625pt x 915.42pt>
+<../scripts/recipe_fio_aging_activity.pdf, id=514, 874.26625pt x 915.42pt>
 File: ../scripts/recipe_fio_aging_activity.pdf Graphic file (type pdf)
 
 <use ../scripts/recipe_fio_aging_activity.pdf>
@@ -2798,48 +2801,58 @@ Overfull \vbox (2.72412pt too high) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [31]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+[32] [33]
+Underfull \vbox (badness 3240) has occurred while \output is active []
 
- [32]
-<../charts/HDD_xfs/screenshot.png, id=535, 836.12375pt x 779.91376pt>
+ [34]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                \kern 2.00043pt
+(hyperref)                removed on input line 673.
+
+<../charts/HDD_xfs/screenshot.png, id=567, 836.12375pt x 779.91376pt>
 File: ../charts/HDD_xfs/screenshot.png Graphic file (type png)
 
 <use ../charts/HDD_xfs/screenshot.png>
-Package pdftex.def Info: ../charts/HDD_xfs/screenshot.png used on input line 57
-2.
+Package pdftex.def Info: ../charts/HDD_xfs/screenshot.png used on input line 72
+6.
 (pdftex.def)             Requested size: 361.34999pt x 336.82674pt.
 
-Overfull \hbox (6.79999pt too wide) in paragraph at lines 572--573
+Overfull \hbox (6.79999pt too wide) in paragraph at lines 726--727
  [][] 
  []
 
-<../charts/HDD_ext4/screenshot.png, id=537, 858.20625pt x 784.9325pt>
+<../charts/HDD_ext4/screenshot.png, id=569, 858.20625pt x 784.9325pt>
 File: ../charts/HDD_ext4/screenshot.png Graphic file (type png)
 
 <use ../charts/HDD_ext4/screenshot.png>
-Package pdftex.def Info: ../charts/HDD_ext4/screenshot.png used on input line 5
-79.
+Package pdftex.def Info: ../charts/HDD_ext4/screenshot.png used on input line 7
+33.
 (pdftex.def)             Requested size: 361.34999pt x 330.20882pt.
 
-Overfull \hbox (6.79999pt too wide) in paragraph at lines 579--580
+Overfull \hbox (6.79999pt too wide) in paragraph at lines 733--734
  [][] 
  []
 
-[33 <../charts/HDD_xfs/screenshot.png>] [34 <../charts/HDD_ext4/screenshot.png>
+[35]
+Underfull \vbox (badness 1478) has occurred while \output is active []
+
+ [36]
+[37 <../charts/HDD_xfs/screenshot.png>] [38 <../charts/HDD_ext4/screenshot.png>
 ]
 Chapter 8.
-[35
-
-
-] [36
-
-
-] [37] [38]
-Appendix A.
 [39
 
 
 ] [40
+
+
+] [41] [42]
+Appendix A.
+[43
+
+
+] [44
 
 
 ]
@@ -2851,52 +2864,52 @@ File: lstlang1.sty 2015/06/04 1.6 listings language file
 File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
 )
 
-Package Listings Warning: Text dropped after begin of listing on input line 625
+Package Listings Warning: Text dropped after begin of listing on input line 813
 .
 
 
-Package Listings Warning: Text dropped after begin of listing on input line 636
+Package Listings Warning: Text dropped after begin of listing on input line 824
 .
 
 
-Package Listings Warning: Text dropped after begin of listing on input line 667
+Package Listings Warning: Text dropped after begin of listing on input line 855
 .
 
-[41]
+[45]
 
-Package Listings Warning: Text dropped after begin of listing on input line 675
+Package Listings Warning: Text dropped after begin of listing on input line 863
 .
 
-[42]
+[46]
 
 Package catoptions Warning: Undefined options 
 (catoptions)                [Family, Option, Value]: 
 (catoptions)                fontenc.sty,T1,. 
 (catoptions)                Default action already taken in each case .
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 683.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 683.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 871.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 871.
 (./thesis.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 683.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 683.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 871.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 871.
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 6EE3DF9D2D46328A2BFADE340DB565FA;2503.
+(rerunfilecheck)             Checksum: 70643811BBEDC5E1606D9D51BD2B18D7;2780.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+LaTeX Warning: There were multiply-defined labels.
 
 Package logreq Info: Writing requests to 'thesis.run.xml'.
 \openout1 = `thesis.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 48327 strings out of 493013
- 897725 string characters out of 6133329
- 1702477 words of memory out of 5000000
- 50731 multiletter control sequences out of 15000+600000
+ 48343 strings out of 493013
+ 897930 string characters out of 6133329
+ 1702475 words of memory out of 5000000
+ 50737 multiletter control sequences out of 15000+600000
  94008 words of font info for 137 fonts, out of 8000000 for 9000
  1143 hyphenation exceptions out of 8191
  62i,17n,97p,10370b,2430s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -2912,10 +2925,10 @@ b.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/tex-gyre/qplr.pfb>
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/tex-gyre/qplri.pfb></usr
 /local/texlive/2016/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/
 texlive/2016/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on thesis.pdf (58 pages, 1130747 bytes).
+Output written on thesis.pdf (62 pages, 1142474 bytes).
 PDF statistics:
- 736 PDF objects out of 1000 (max. 8388607)
- 620 compressed objects within 7 object streams
- 192 named destinations out of 1000 (max. 500000)
- 31202 words of extra memory for PDF output out of 35830 (max. 10000000)
+ 778 PDF objects out of 1000 (max. 8388607)
+ 658 compressed objects within 7 object streams
+ 202 named destinations out of 1000 (max. 500000)
+ 31226 words of extra memory for PDF output out of 35830 (max. 10000000)
 

@@ -110,14 +110,19 @@ class Tar:
 			if len(x) > len(mx): mx = x[:]
 
 	bins_xx = np.linspace(min(mx),max(mx), 600)
-
+	info_file = open(self.destination+self.tar_name+'.info','w')
+	
 	for key, (x,y) in rsptimes.items():
 		if x!=[]:
 			#prepare values
 
 			xx = np.linspace(min(x),max(x), 600)
+
 			y = map(lambda x: x*1000, y) #s to ms
-			
+
+			info_file.write(key+'\n')
+			info_file.write(str(np.median(y))+'\,ms\n')
+			info_file.write(str(np.mean(y))+'\,ms\n')
 			#print key
 			#print np.median(y)
 			#print np.mean(y)
@@ -145,7 +150,7 @@ class Tar:
 			fit = np.polyfit(x,y,2)
 			fit_fn = np.poly1d(fit)
 			y_regression = map(lambda x: fit_fn(x), bins_xx)
-		
+	
 			#push data to template
 			line_cur = str(y_curve).join(line.split('XXX_DATA_XXX'))
 			template_cur = (line_cur+'XXX_LINE_XXX').join(template_cur.split('XXX_LINE_XXX'))
@@ -154,7 +159,7 @@ class Tar:
 			template_reg = (line_reg+'XXX_LINE_XXX').join(template_reg.split('XXX_LINE_XXX'))
 
 
-	
+	info_file.close()
 	template_cur = ''.join(template_cur.split('XXX_LINE_XXX'))
 	template_reg = ''.join(template_reg.split('XXX_LINE_XXX'))
 
@@ -389,6 +394,18 @@ r.save()
 
 
 """
+path1 = glob.glob('./durden_images/*xfs*.tar.xz')[0]
+path2 = glob.glob('./draven_images/*xfs*W495LONG3.tar.xz')[0]
+r = Report(path1,path2,'./res/')
+r.save()
+
+"""
+
+path1 = glob.glob('./wolverine_images/*xfs*TRIM.tar.xz')[0]
+path2 = glob.glob('./blade_images/*xfs*TRIM.tar.xz')[0]
+r = Report(path1,path2,'./res/')
+r.save()
+
 
 path1 = glob.glob('./blade_images/*xfs*W495TRIM.tar.xz')[0]
 path2 = glob.glob('./blade_images/*ext4*W495TRIM.tar.xz')[0]
@@ -396,7 +413,10 @@ r = Report(path1,path2,'./res/')
 r.save()
 
 
-
+path1 = glob.glob('./blade_images/*xfs*W495.tar.xz')[0]
+path2 = glob.glob('./blade_images/*xfs*W495TRIM.tar.xz')[0]
+r = Report(path1,path2,'./res/')
+r.save()
 
 
 path1 = glob.glob('./blade_images/*ext4*W495.tar.xz')[0]
@@ -415,16 +435,10 @@ r.save()
 #r = Report(path1,path2,'./res/')
 #r.save()
 
-path1 = glob.glob('./wolverine_images/*xfs*.tar.xz')[0]
-path2 = glob.glob('./wolverine_images/*ext4*.tar.xz')[0]
-r = Report(path1,path2,'./res/')
-r.save()
 
-path1 = glob.glob('./blade_images/*ext4*.tar.xz')[0]
-path2 = glob.glob('./wolverine_images/*ext4*.tar.xz')[0]
-r = Report(path1,path2,'./res/')
-r.save()
-"""
+
+
+
 path1 = glob.glob('./draven_images/*ext4*W4LONG.tar.xz')[0]
 path2 = glob.glob('./blade_images/*ext4*.tar.xz')[0]
 r = Report(path1,path2,'./res/')

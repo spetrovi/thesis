@@ -33,7 +33,10 @@
 \contentsline {subsection}{\numberline {7.2.3}\rmfamily FIO}{32}{subsection.7.2.3}
 \contentsline {section}{\numberline {7.3}\slshape Performance of aged file system}{32}{section.7.3}
 \contentsline {section}{\numberline {7.4}\slshape Differences betweem XFS and EXT4}{33}{section.7.4}
-\contentsline {section}{\numberline {7.5}\slshape Performance accross different storage devices}{34}{section.7.5}
-\contentsline {chapter}{\numberline {8}\bfseries Conclusion}{35}{chapter.8}
-\contentsline {chapter}{\numberline {A}\bfseries Reports}{39}{appendix.A}
-\contentsline {chapter}{\numberline {B}\bfseries Examples}{41}{appendix.B}
+\contentsline {subsection}{\numberline {7.4.1}\rmfamily XFS and EXT4 on SSD}{34}{subsection.7.4.1}
+\contentsline {subsection}{\numberline {7.4.2}\rmfamily XFS and EXT4 on NVMe}{35}{subsection.7.4.2}
+\contentsline {subsection}{\numberline {7.4.3}\rmfamily XFS and EXT4 on 600\tmspace +\thinmuskip {.1667em}GB HDD}{35}{subsection.7.4.3}
+\contentsline {section}{\numberline {7.5}\slshape Performance accross different storage devices}{35}{section.7.5}
+\contentsline {chapter}{\numberline {8}\bfseries Conclusion}{39}{chapter.8}
+\contentsline {chapter}{\numberline {A}\bfseries Reports}{43}{appendix.A}
+\contentsline {chapter}{\numberline {B}\bfseries Examples}{45}{appendix.B}

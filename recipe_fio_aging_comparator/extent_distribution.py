@@ -1,5 +1,6 @@
 from random import randint
 import numpy as np
+import os
 
 def sizeof_fmt(num, suffix='B'):
     for unit in ['','Ki','Mi','Gi','Ti','Pi','Ei','Zi']:
@@ -86,6 +87,11 @@ def used_space_histogram(_file, destination):
 			extents.append(line)
 
 	filenum = len(files)
+	if os.path.exists('./out/du_data'):
+		du_file = read_file('./out/du_data','r').split('\n')[:-1]
+		filenum = len(du_file)
+		file_size_histogram('./out/du_data', destination)
+		print 'was du'
 #	print 'filenum: '+str(filenum)
 #	print 'opt: '+str(len(opt_data))
 #	print 'frag: '+str(len(frag_data))
@@ -116,7 +122,7 @@ def used_space_histogram(_file, destination):
 
 	
 	#more_info = ' '+str(sum(opt_histogram))+'/'+str(filenum)+' ('+str(int(100*float(sum(opt_histogram))/filenum))+'%)'
-	more_info = ', fragments: '+str(len(frag_data))+', optimal files: '+str(int(100*float(len(opt_data))/filenum))+'%'
+	more_info = 'fragments: '+str(len(frag_data))+', total files: '+str(filenum)+', optimal files: '+str(int(100*float(len(opt_data))/filenum))+'%'
 	template = more_info.join(template.split('XXX_MOREINFO_XXX'))
 
 
