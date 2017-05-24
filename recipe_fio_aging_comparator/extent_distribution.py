@@ -75,7 +75,7 @@ def used_space_histogram(_file, destination):
 	files = []
 	for line in contents:
 		if line.find('/') >= 0:
-			if extents: 
+			if extents:
 				_ff = Fragmented_file(name, extents)
 				if _ff.optimally_allocated: opt_data += _ff.extents_size
 				else: frag_data += _ff.extents_size
@@ -84,9 +84,11 @@ def used_space_histogram(_file, destination):
 			extents = []
 		else:
 			extents.append(line)
-	
-	filenum = len(files)
 
+	filenum = len(files)
+#	print 'filenum: '+str(filenum)
+#	print 'opt: '+str(len(opt_data))
+#	print 'frag: '+str(len(frag_data))
 	bins = [(2**i) for i in range(4,35)]
 
 #	opt_files = filter(lambda x: x.optimally_allocated, frag_files)
@@ -111,8 +113,8 @@ def used_space_histogram(_file, destination):
 	template = ID.join(template.split('XXX_NAME_XXX'))
 	template = str(sum(frag_histogram)).join(template.split('XXX_FRAGSUM_XXX'))
 	
-	print str(filenum)
-	print str(len(opt_data))
+
+	
 	#more_info = ' '+str(sum(opt_histogram))+'/'+str(filenum)+' ('+str(int(100*float(sum(opt_histogram))/filenum))+'%)'
 	more_info = ', fragments: '+str(len(frag_data))+', optimal files: '+str(int(100*float(len(opt_data))/filenum))+'%'
 	template = more_info.join(template.split('XXX_MOREINFO_XXX'))

@@ -100,7 +100,7 @@
 
 \begin{document}
 \chapter{Introduction}
-File systems remain an important part of modern storage solutions.  Large, growing databases, multi-media and other storage based applications need to be supported by high-performing infrastructure layer of storing and retrieving information. Such infrastructure have to be provided by operating systems (OS) in form of file system.
+File systems remain an important part of modern storage solutions. Large, growing databases, multi-media and other storage based applications need to be supported by high-performing infrastructure layer of storing and retrieving information. Such infrastructure have to be provided by operating systems (OS) in form of file system.
 
 Originally, file system was a simple tool developed to handle communication between OS and physical device, but today, it is a very complex piece of software with large set of tools and features to go~with.
 
@@ -118,11 +118,10 @@ In the first-stage testing, file system is aged using open-source benchmark fs-d
 
 Created images are then used in second-stage testing. By using created images, higher stability and consistency of results is achieved. By reloading the file system image on the device, it is possible to bring the file system to the original aged state, therefore for every performance test, the same file system layout is available.
 
-In the second-stage testing, file system is brought to the aged state by reloading image corresponding with desired testing configuration. Before every performance test, some volume is released from file system, so the performance test has space to test on. By using this workflow, it may be possible to simulate behavior of aged file systems at different stages of volume usage.
+In the second-stage testing, file system is brought to the aged state by reloading image corresponding with desired testing configuration. Before every performance test, some volume can released from file system, so the performance test has space to test on. After environment initalization (\texttt{fstrim}, \texttt{sync}), the performance test can begin. Testing of performance of fresh instance of file system is done as well to conclude if any performance drop occur.
 
-%The aging tests implemented in this thesis are established as part of testing cycle in Red Hat Kernel Performance team.
 
-In the later parts of this thesis, usage of developed tests on different configurations of file systems and storage is demonstrated. The subject of research are differences between popular Linux file systems (XFS, Ext4) and storage technology (solid state and hard disk drives) in context of aging. Because of nature of collected data, a processing tool was implemented to parse large amount of information into human readable reports. All the generated reports are part of this thesis in form of Appendix A.
+In the later parts of this thesis, usage of developed tests on different configurations of file systems and storage is demonstrated. The subject of research are differences between popular Linux file systems (XFS, Ext4) and differences between used storage technologies (solid state and hard disk drives) in context of aging. Because of nature of collected data, a processing tool was implemented to parse large amount of information into human readable reports with interactive charts. These reports were reformated and included in this thesis in form of Appendix~\ref{reports}.
 
 In the second chapter, the text present already conducted research of effects of age and fragmentation on file system performance. Third chapter describes used file systems and theirs main features. Chapter 4 introduce tools used in implementation of tests while describing their relevant features. Chapters 5 and 6 describe actual implementation of mentioned tests. Chapter 7 describes testing environment and presents used storage technology. Chapter 8 presents the results obtained by using created tests. The research is focused describing the effect of aging file systems, differences between file systems in terms of aging and relations of underlying storage to performance of aged file system. In the conclusion chapter, I discuss the effects of age on file system performance as well as recommendations for this type of testing. Furthermore, future of testing of file system performance and aging is discussed.
 
@@ -204,11 +203,11 @@ Obviously, block layout would have a large impact on performence of this kind of
 \subsection{Solid state drive}
 Solid state drive (i.e. SSD) is  a type of storage device which use integrated cirquit to store and retreive data. SSD has no moving parts, therefore the data access is purely electronic, which results in lower access time and latency than HDD.
 
-However, on SSDs, data cannot be directly overwritten (as in HDDs). The cell of an SSD can only be directly written to, therefore have to be erased before writing. Moreover, due to physical construction limits, write operation can be conducted to one page (4-$\SI{16}{\kilo\byte}$), but erasure have to be done to a whole block (128 to 512 pages). Therefore, if OS have to rewrite some blocks (e.g. update metadata), the data have to be read, erased from the drive and written back modified. This effect, known as write amplification, can have significant impact on performance of file systems. 
+However, on SSDs, data cannot be directly overwritten (as in HDDs). The cell of an SSD can only be directly written to, therefore have to be erased before writing. Moreover, due to physical construction limits, write operation can be conducted to one page (4-$\SI{16}{\kilo\byte}$), but erasure have to be done to a whole block (128 to 512 pages). Therefore, if OS have to rewrite some part of a page (e.g. update metadata), the page have to be read, modified and submited back on available part of the drive. The original page is then marked as discarded. This effect is known as write amplification, and is computed as amount of bytes written to the device divided by amount of bytes requested to be written by user. For example, if user updates $\SI{512}{\byte}$ of data on device that uses $\SI{8}{\kilo\byte}$ pages, write amplification is then 16.
 
-In addition, the memory cell can be rewritten finite amount of times, therefore, a form of wear leveling has to be employed. Wear leveling prevents frequently accessed blocks from exhaustion of cells life-cycle by moving files around the device.
+In addition, the memory cell can be rewritten finite amount of times, therefore, a form of wear leveling has to be employed. Wear leveling prevents frequently accessed blocks from exhaustion of cell life-cycle by moving files around the device.
 
-Static wear leveling rotates even unused files around the drive to ensure equal wear. However, deleting file in file system doesn't always ensure its deletion on the device. Typically, the file is only marked as deleted, but this information is not submited to underlying device itself. However, files that are not valid for file system anymore can still circulate on the device, increasing its wear and write amplification, since there are less free block that could have been.
+Static wear leveling rotates even unused files around the drive to ensure equal wear. However, deleting file, in file system doesn't always ensure its deletion on the device. Typically, the file is only marked as deleted, but this information is not submited to underlying device itself. Problem is, files that are not valid for file system anymore can still circulate on the device, increasing its wear and write amplification, since there are less free block that could have been.
 
 To decrease this effect, trim commands were introduced. Trim command communicate to SSD all the deletions that were realised in the file system, so the drive can erase blocks accordingly. Nevertheless this operation is reducing performance of IO operations while being conducted, it can increase overall performance and life time of an SSD.
 
@@ -232,16 +231,16 @@ Flexible Input/Output tool is a workload generator written by Jens Axboe. It is 
 
 FIO accepts the workload specification as either a configuration file or a single line. Multiple different jobs can be specified as well as global options valid for every job. 
 
-There is a possibility to choose from 4 IO operations to be performed (or their mix). These operations are sequential write, sequential read, random write and random read. Verification of the issued data is offered as well. Size of generated file and block size can be controlled too and it can be either stable or chosen from given range. For cache-tiering workloads, different random distributions (e.g. Zipf) can be specified. FIO also supports process forking and threading.
+There is a possibility to choose from 4 IO operations to be performed (or their mix). These operations are sequential write, sequential read, random write and random read. Verification of the issued data is offered as well. Size of generated file and block size can be controlled too and it can be either stable or chosen from given range. For cache-tiering workloads, different random distributions (e.g. Zipf, Gauss) can be specified. FIO also supports process forking and threading.
 
 After the test, FIO generates overall report of measured performance. However, logging of multiple properties can be enabled, giving researchers even more oversight about the nature of file system performance.
 
 \section{Fs-drift}
 Fs-drift is a very flexible aging test, which can be used to simulate lots of different workloads. The test is based on random file access and randomly generated mix of requests. These requests can be writes, reads, creates, appends, truncates or deletes.
 
-At the beginning of run time, the top directory is empty, therefore \texttt{create} requests success the most, other requests, such as \texttt{read} or \texttt{delete}, will fail because not many files has yet been created. Over time, as the file system grows, \texttt{create} requests began to fail and other requests will more likely succeede. File system will eventually reach a state of equilibrium, when requests are equaly likely to execute. From this point, the file system would not grow anymore, and the test runs unless one of the stop conditions are met.
+At the beginning of run time, the top directory is empty, therefore create requests success the most, other requests, such as \texttt{read} or \texttt{delete}, will fail because not many files has yet been created. Over time, as the file system grows, create requests began to fail and other requests will more likely succeede. File system will eventually reach a state of equilibrium, when requests are equaly likely to execute. From this point, the file system would not grow anymore, and the test runs unless one of the stop conditions are met.
 
-The mix of operation probabilities can be specified in separate csv file. Fs-drift will try to issue more \texttt{create} operations at the beggining of testing, so other operations execute with higher likeliness.
+The mix of operation probabilities can be specified in separate CSV file. Fs-drift will try to issue more create operations at the beggining of testing, so other operations execute with higher likeliness.
 
 The file to perform a request on is randomly chosen from the list of indexes. If the type of random distribution is set to \emph{uniform}, all indexes have the same probability to be chosen, see \ref{fig:rand1}. However, if the type of random distribution is set to \emph{gaussian}, the probability will behave according to normal distribution with the center at index 0 and width controled by parameter \texttt{gaussian-stddev}. This is usefull for performing cache-tiering tests. Please note, that file index is computed as modulo maximal number of files, therefore instead of accessing negative index values, the test access indexes from the other side of spectrum, see Figure \ref{fig:rand2}
 
@@ -288,7 +287,7 @@ Used configuration of fs-drift for purposes of aging testing is further describe
 \label{text:fsdrift_changes}
 Several changes had to be made to the original code prior to testing.
 
-The most obvious problem with the tools was, that it did not conduct \texttt{delete} operations. As stated, deleting files is quite crucial to file system aging.
+The most obvious problem with the tools was, that it did not conduct delete operations. As stated, deleting files is quite crucial to file system aging.
 
 Another problem emerged when gathering statistics of response time evolution through the aging process. Since the tool is generating the IO requests at random, sometimes error occurs. Most operations need the file to exist to success, but sometimes, the file is non-existent. The problem with response time logging was, it logged the response time even if the operation didn't carry, causing noise in the data.
 
@@ -545,7 +544,7 @@ Accounting for great amount of data generated by the tests, some kind of automat
 \subsection{Fragmentation}
 During the tests, two types of fragmentation were recorded, namely fragmentation of used space and fragmentation of free space.
 
-To find out fragmentation of used space, \texttt{xfs\_io fiemap} was used. This tool can display physical mapping of any file, using $\SI{512}{\byte}$ blocks. Therefore, if run on every file in file system, histogram of fragments of used space can be computed.
+To find out fragmentation of used space, \texttt{xfs\_io fiemap} was used. This tool can display physical mapping of any file, using $\SI{512}{\byte}$ blocks. Therefore, if run on every file in file system, histogram of fragments of used space can be computed. Files created by fs-drift which are smaller then file system blocksize are nevertheless mapped on one block of file system. This may skew the resulting histogram and it may be apparent, that fs-drift haven't created files smaller then default block size.
 
 Generally, fragmentation of free space is easier to obtain, since this information is stored in the metadata of file system. However, the way of reading the information differs through implementations of file systems. In Ext4, the tool \texttt{e2freefrag} displays histogram of free space of Ext* file system. When looking for this information in XFS, at~first user has to find number of allocation grups in the file system instance. Then, for every allocation group, histogram of free space can be obtained using \texttt{xfs\_db}.
 
@@ -555,17 +554,39 @@ As stated, in the aging test, fragmentation of free space is logged periodically
 The main researched output of fs-drift is an \emph{evolution} of latency of different operations. This property is displayed as a chart with elapsed time on X axis and measured latency on Y axis. Since the data are quite noisy, interpolation and filtering using Savitzky-Golay filter had to be used for meaningfull display of latency change in time. Additionally linear regression is computed and displayed for every operation providing even more insight into the effects of aging through test.
 
 \subsection{FIO}
-The output of FIO is recorded bandwidth and latency through tests. Since topic of research when using FIO was \emph{state} of file system in terms of performance, statistics are computed from the whole test run. These statistics are minimum and maximum value, first and second quartile and median. These atributes are then displayed on a chart in form of boxplot. Latency and bandwidth have separate charts. On the X axis, state of file system utilization is displayed and on the Y axis there is throughput or latency.
+Through tests, FIO outputs throughput and latency into a log file separate for every thread. Since topic of research when using FIO was \emph{state} of file system in terms of performance, statistics are computed from the whole test run, i.e. accross all statistic runs and for all threads. These statistics are minimum and maximum value, first and second quartile and median. These atributes are then displayed on a chart in form of boxplot. Latency and bandwidth have separate charts. On the X axis, state of file system utilization is displayed and on the Y axis there is throughput or latency.
 
 \section{Performance of aged file system}
-The file sysem aging tool succesfully induced fragmentation on all used devices. From the results generated by aging tool, it is apparent, that the aging process negatively affects performance of file systems. Figure shows evolution of free space fragmetation when using XFS file system on signle SAS HDD. Figure X shows 
+The file sysem aging tool succesfully induced fragmentation in all performed tests. From the data generated by aging tool, it is apparent, that the aging process negatively affects performance of the file systems. Performance degradation varies with used storage, file system implementation and maintainance techniques (i.e. \texttt{fstrim}).
+
+The greatest performance penalty can be seen while testing on HDD using sequential operations. Figure X shows evolution of sequential read on SAS HDD. By examining linear regression, we can conclude, that latency raised by 50\% during the test.
 
 
 \section{Differences betweem XFS and EXT4}
+From the graph of evolution of free space fragmentation, it is apparent, that XFS fights free space fragmentation significantly better than Ext4. On the Figure~\ref{fig:hdd_xfs_free_frag} we can see, that XFS tries to maximise size of free space blocks. Even at the end of testing stage, XFS still operates with large blocks of free space (up to $\SI{63}{\giga\byte}$).
+
+By default, Ext4 operates with size of free blocks no larger than $\SI{2}{\giga\byte}$. With greater utilisation of file system, induced fragmentation of free space is visible. At the end of the test, Ext4 operates with up to nine thousands of fragments of free space, as can be seen on Figure~\ref{fig:hdd_ext4_free_frag}.
+
+\begin{figure}[ht]
+    \centering
+    \fbox{\includegraphics[width=\textwidth,keepaspectratio,trim=4 4 4 4,clip]{../charts/HDD_xfs/screenshot.png}}
+    \caption{Evolution of free space fragmentation using XFS}
+    \label{fig:hdd_xfs_free_frag}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \fbox{\includegraphics[width=\textwidth,keepaspectratio,trim=4 4 4 4,clip]{../charts/HDD_ext4/screenshot.png}}
+    \caption{Evolution of free space fragmentation using Ext4}
+    \label{fig:hdd_ext4_free_frag}
+\end{figure}
 
 
-\section{Differences amoung storage devices}
 
+\section{Performance accross different storage devices}
+Underlying storage has significant impact on file system performance. As mentioned, SSDs lack of moving parts allows the file system to perform IOs faster. Even when connected through a slower (SATA) interface than HDD (SAS), SSD issues operations much faster.
+
+Running \texttt{fstrim} regularly through the test has significant impact on perofmance on operations create and append. Those operations create IO requests sequentially, so it is expected
 
 
 
@@ -582,7 +603,7 @@ The file sysem aging tool succesfully induced fragmentation on all used devices.
 \printbibliography
 
 \appendix %% Start the appendices.
-\chapter{Reports}
+\chapter{Reports}\label{reports}
 \chapter{Examples}
 \lstset{language=XML, 
 numbers=left, 

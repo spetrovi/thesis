@@ -103,18 +103,35 @@ class Tar:
 					if rsptimes == {}: rsptimes.update({name:([],[])})
 					rsptimes[name][0].append(float(row[0]))
 					rsptimes[name][1].append(float(row[1]))
+	bins_xx = []
+	mx = []
+	for key, (x,y) in rsptimes.items():
+		if x!=[]:
+			if len(x) > len(mx): mx = x[:]
+
+	bins_xx = np.linspace(min(mx),max(mx), 600)
+
 	for key, (x,y) in rsptimes.items():
 		if x!=[]:
 			#prepare values
+
 			xx = np.linspace(min(x),max(x), 600)
-			y = map(lambda x: x*1000, y)
-			print key
-			print linregress(x,y)			
+			y = map(lambda x: x*1000, y) #s to ms
+			
+			#print key
+			#print np.median(y)
+			#print np.mean(y)
+			#print '\n'
+		
+			#print key
+			#print linregress(x,y)			
 			
 			# interpolate + smooth
 			itp = interp1d(x,y)
 			window_size, poly_order = 101, 3
 			yy_sg = savgol_filter(itp(xx), window_size, poly_order)
+			
+
 			
 			#name template
 			line = line_template
@@ -122,11 +139,12 @@ class Tar:
 
 			#actual curve			
 			y_curve = list(yy_sg)
+			#y_curve = list(itp(xx))
 
 			#regression
-			fit = np.polyfit(x,y,1)
+			fit = np.polyfit(x,y,2)
 			fit_fn = np.poly1d(fit)
-			y_regression = map(lambda x: fit_fn(x), xx)
+			y_regression = map(lambda x: fit_fn(x), bins_xx)
 		
 			#push data to template
 			line_cur = str(y_curve).join(line.split('XXX_DATA_XXX'))
@@ -140,7 +158,7 @@ class Tar:
 	template_cur = ''.join(template_cur.split('XXX_LINE_XXX'))
 	template_reg = ''.join(template_reg.split('XXX_LINE_XXX'))
 
-	ticks = map(lambda x: int(x), list(xx))
+	ticks = map(lambda x: int(x), list(bins_xx))
 	template_cur = str(ticks).join(template_cur.split('XXX_BINS_XXX'))
 	template_reg = str(ticks).join(template_reg.split('XXX_BINS_XXX'))
 	
@@ -371,26 +389,47 @@ r.save()
 
 
 """
-path1 = glob.glob('./blade_images/*ext4*W490.tar.xz')[0]
+
+path1 = glob.glob('./blade_images/*xfs*W495TRIM.tar.xz')[0]
 path2 = glob.glob('./blade_images/*ext4*W495TRIM.tar.xz')[0]
 r = Report(path1,path2,'./res/')
 r.save()
+
+
+
+
+
+path1 = glob.glob('./blade_images/*ext4*W495.tar.xz')[0]
+path2 = glob.glob('./blade_images/*ext4*W495TRIM.tar.xz')[0]
+r = Report(path1,path2,'./res/')
+r.save()
+
 
 path1 = glob.glob('./draven_images/*xfs*W4LONG.tar.xz')[0]
 path2 = glob.glob('./draven_images/*ext4*W4LONG.tar.xz')[0]
 r = Report(path1,path2,'./res/')
 r.save()
 
-path1 = glob.glob('./draven_images/*xfs*W495LONG3.tar.xz')[0]
-path2 = glob.glob('./draven_images/*xfs*W495LONG3.tar.xz')[0]
-r = Report(path1,path2,'./res/')
-r.save()
+#path1 = glob.glob('./draven_images/*xfs*W495LONG3.tar.xz')[0]
+#path2 = glob.glob('./draven_images/*xfs*W495LONG3.tar.xz')[0]
+#r = Report(path1,path2,'./res/')
+#r.save()
 
 path1 = glob.glob('./wolverine_images/*xfs*.tar.xz')[0]
 path2 = glob.glob('./wolverine_images/*ext4*.tar.xz')[0]
 r = Report(path1,path2,'./res/')
 r.save()
+
+path1 = glob.glob('./blade_images/*ext4*.tar.xz')[0]
+path2 = glob.glob('./wolverine_images/*ext4*.tar.xz')[0]
+r = Report(path1,path2,'./res/')
+r.save()
 """
+path1 = glob.glob('./draven_images/*ext4*W4LONG.tar.xz')[0]
+path2 = glob.glob('./blade_images/*ext4*.tar.xz')[0]
+r = Report(path1,path2,'./res/')
+r.save()
+
 
 path1 = glob.glob('./blade_images/*-drift_job-xfs*W490.tar.xz')[0]
 path2 = glob.glob('./blade_images/*-drift_job-ext4*W490.tar.xz')[0]

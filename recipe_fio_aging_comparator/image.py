@@ -39,8 +39,10 @@ def d_image(fsystem, destination):
 	bins = sorted(list(set(bins)),key=tr)
 
 	template = read_file('templates/image.js','r')
-
-	template = str(map(lambda x: x.split('-')[0][:-3]+'-'+x.split('-')[1], bins)).join(template.split('XXX_BINS_XXX'))
+	if fsystem == 'xfs':
+		template = str(map(lambda x: x.split('-')[0][:-3]+'-'+x.split('-')[1], bins)).join(template.split('XXX_BINS_XXX'))
+	else:
+		template = str(bins).join(template.split('XXX_BINS_XXX'))
 	template = str(range(0,len(histograms))).join(template.split('XXX_TIMES_XXX'))
 	template = str(len(histograms)*7).join(template.split('XXX_DEPTH_XXX'))
 	data = ''
