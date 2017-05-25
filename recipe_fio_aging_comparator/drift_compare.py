@@ -73,8 +73,8 @@ class Tar:
 	ax.set_xlabel('Time[s]')
 	#ax.set_ylim([0,0.1])
 	ax.grid()
-#	fig.set_size_inches(4, 3)
-	plt.savefig(self.destination+'usage_'+self.image_ID+'.png')#,bbox_inches='tight')
+	fig.set_size_inches(4, 3)
+	plt.savefig(self.destination+'usage_'+self.image_ID+'.png', bbox_inches='tight')
 	return 'usage_'+self.image_ID+'.png'
 
   def generate_rsp_plot(self, filename):
@@ -399,12 +399,12 @@ path2 = glob.glob('./draven_images/*xfs*W495LONG3.tar.xz')[0]
 r = Report(path1,path2,'./res/')
 r.save()
 
-"""
 
-path1 = glob.glob('./wolverine_images/*xfs*TRIM.tar.xz')[0]
-path2 = glob.glob('./blade_images/*xfs*TRIM.tar.xz')[0]
+path1 = glob.glob('./blade_images/*xfs*W495TRIM.tar.xz')[0]
+path2 = glob.glob('./durden_images/*xfs*.tar.xz')[0]
 r = Report(path1,path2,'./res/')
 r.save()
+
 
 
 path1 = glob.glob('./blade_images/*xfs*W495TRIM.tar.xz')[0]
@@ -425,18 +425,25 @@ r = Report(path1,path2,'./res/')
 r.save()
 
 
-path1 = glob.glob('./draven_images/*xfs*W4LONG.tar.xz')[0]
-path2 = glob.glob('./draven_images/*ext4*W4LONG.tar.xz')[0]
-r = Report(path1,path2,'./res/')
-r.save()
 
 #path1 = glob.glob('./draven_images/*xfs*W495LONG3.tar.xz')[0]
 #path2 = glob.glob('./draven_images/*xfs*W495LONG3.tar.xz')[0]
 #r = Report(path1,path2,'./res/')
 #r.save()
 
+"""
 
 
+path1 = glob.glob('./wolverine_images/*xfs*TRIM.tar.xz')[0]
+path2 = glob.glob('./blade_images/*xfs*TRIM.tar.xz')[0]
+r = Report(path1,path2,'./res/')
+r.save()
+
+
+path1 = glob.glob('./draven_images/*xfs*W4LONG.tar.xz')[0]
+path2 = glob.glob('./draven_images/*ext4*W4LONG.tar.xz')[0]
+r = Report(path1,path2,'./res/')
+r.save()
 
 
 path1 = glob.glob('./draven_images/*ext4*W4LONG.tar.xz')[0]

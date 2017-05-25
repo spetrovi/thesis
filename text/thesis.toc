@@ -30,13 +30,16 @@
 \contentsline {section}{\numberline {7.2}\slshape Data processing}{31}{section.7.2}
 \contentsline {subsection}{\numberline {7.2.1}\rmfamily Fragmentation}{31}{subsection.7.2.1}
 \contentsline {subsection}{\numberline {7.2.2}\rmfamily Fs-drift}{32}{subsection.7.2.2}
-\contentsline {subsection}{\numberline {7.2.3}\rmfamily FIO}{32}{subsection.7.2.3}
-\contentsline {section}{\numberline {7.3}\slshape Performance of aged file system}{32}{section.7.3}
-\contentsline {section}{\numberline {7.4}\slshape Differences betweem XFS and EXT4}{34}{section.7.4}
-\contentsline {section}{\numberline {7.5}\slshape Performance accross different storage devices}{35}{section.7.5}
-\contentsline {chapter}{\numberline {8}\bfseries Conclusion}{37}{chapter.8}
-\contentsline {chapter}{Bibliography}{39}{chapter*.8}
-\contentsline {chapter}{\numberline {A}\bfseries Reports}{41}{appendix.A}
-\contentsline {section}{\numberline {A.1}\slshape XFS, HDD, medium utilisation}{41}{section.A.1}
-\contentsline {section}{\numberline {A.2}\slshape XFS, HDD, high utilisation}{41}{section.A.2}
-\contentsline {chapter}{\numberline {B}\bfseries Examples}{43}{appendix.B}
+\contentsline {section}{\numberline {7.3}\slshape Testing on images of aged file system}{32}{section.7.3}
+\contentsline {section}{\numberline {7.4}\slshape Performance of aged file system}{32}{section.7.4}
+\contentsline {section}{\numberline {7.5}\slshape Differences betweem XFS and EXT4}{33}{section.7.5}
+\contentsline {section}{\numberline {7.6}\slshape Performance accross different storage devices}{36}{section.7.6}
+\contentsline {section}{\numberline {7.7}\slshape Testing with \texttt {fstrim}}{36}{section.7.7}
+\contentsline {chapter}{\numberline {8}\bfseries Conclusion}{41}{chapter.8}
+\contentsline {chapter}{Bibliography}{43}{chapter*.8}
+\contentsline {chapter}{\numberline {A}\bfseries Reports}{45}{appendix.A}
+\contentsline {section}{\numberline {A.1}\slshape XFS, HDD, medium utilisation}{45}{section.A.1}
+\contentsline {section}{\numberline {A.2}\slshape XFS, HDD, high utilisation}{45}{section.A.2}
+\contentsline {section}{\numberline {A.3}\slshape XFS, SSD}{46}{section.A.3}
+\contentsline {section}{\numberline {A.4}\slshape EXT4, SSD}{46}{section.A.4}
+\contentsline {chapter}{\numberline {B}\bfseries Examples}{53}{appendix.B}

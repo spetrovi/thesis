@@ -25,8 +25,8 @@ XXX_NAME_XXX_chart= new Highcharts.Chart({
     renderTo: 'XXX_NAME_XXX',
     margin: 100,
     type: 'column',
-    width: 900,
-    height: 900,
+    width: 550,
+    height: 550,
     options3d: {
       enabled: true,
       alpha: 10,

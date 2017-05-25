@@ -8,9 +8,11 @@
 \addvspace {4\p@ }
 \addvspace {4\p@ }
 \addvspace {4\p@ }
-\contentsline {table}{\numberline {7.1}{\ignorespaces Comparison of latencies of high and medium utilisation}}{33}{table.7.1}
-\contentsline {table}{\numberline {7.2}{\ignorespaces Table of overall latencies}}{35}{table.7.2}
+\contentsline {table}{\numberline {7.1}{\ignorespaces Comparison of latencies of medium and high utilisation}}{34}{table.7.1}
+\contentsline {table}{\numberline {7.2}{\ignorespaces Comparison of latencies gathered during testing with XFS and EXT4 on SSD}}{35}{table.7.2}
+\contentsline {table}{\numberline {7.3}{\ignorespaces Comparison of latencies of gathered during aging test on HDD and SSD}}{37}{table.7.3}
+\contentsline {table}{\numberline {7.4}{\ignorespaces Differences in latency on trimmed and non trimmed file system (XFS)}}{39}{table.7.4}
 \addvspace {4\p@ }
 \addvspace {4\p@ }
 \addvspace {4\p@ }
-\contentsline {table}{\numberline {B.1}{\ignorespaces Table of overall latencies}}{45}{table.B.1}
+\contentsline {table}{\numberline {B.1}{\ignorespaces Table of overall latencies}}{55}{table.B.1}

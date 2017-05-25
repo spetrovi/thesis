@@ -139,21 +139,23 @@ def dist3():
 	probs = norm.pdf(x, loc = mu, scale = sigma)	
 
 	normed = [i/sum(probs) for i in probs]
+	print normed
+	print file_sizes
 #	np.random.choice(file_sizes, p=normed)
 #	print normed
 	ticks = []
 	for i in range(len(file_sizes)):
-		if i % 3 == 1:
+		#if i % 3 == 1:
 			ticks.append(sizeof_fmt(file_sizes[i]))
-
+	ticks = ['8B', '128B', '2KB', '4KiB']
 
 	fig, ax = plt.subplots()
 
 	ax.plot(x, normed)
 	y = np.random.choice(file_sizes, 10000, p = normed)
 	histogram, bins =  np.histogram(y, bins = [8,16,128,2048, 32000, 512000, 8000000,128000000])
-	print map(lambda x: sizeof_fmt(x), list(bins))
-	print list(histogram)
+#	print map(lambda x: sizeof_fmt(x), list(bins))
+#	print list(histogram)
 #	bins = list(bins)[:-1]
 #	histogram = list(histogram)
 

@@ -17,8 +17,8 @@ $(document).ready(function () {
     });
 XXX_NAME_XXX= new Highcharts.Chart({
       chart: {zoomType: 'xy',
-      width: 900,
-      height: 600,
+      width: 600,
+      height: 400,
       backgroundColor: '#F2F2F2',
  renderTo: 'XXX_NAME_XXX'},
 title: {text: 'XXX_TITLE_XXX'},xAxis: [{categories: XXX_BINS_XXX,title: {text: 'time [s]'}}],

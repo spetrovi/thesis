@@ -14,9 +14,15 @@
 \addvspace {4\p@ }
 \contentsline {figure}{\numberline {6.1}{\ignorespaces Activity diagram of testing of aged file system}}{27}{figure.6.1}
 \addvspace {4\p@ }
-\contentsline {figure}{\numberline {7.1}{\ignorespaces Latency growth induced by aging test}}{34}{figure.7.1}
+\contentsline {figure}{\numberline {7.1}{\ignorespaces Latency growth induced by aging test}}{36}{figure.7.1}
+\contentsline {figure}{\numberline {7.2}{\ignorespaces Evolution of latency of create operation, tested on XFS}}{38}{figure.7.2}
 \addvspace {4\p@ }
 \addvspace {4\p@ }
-\contentsline {figure}{\numberline {A.1}{\ignorespaces Evolution of free space fragmentation with medium utilisation (XFS)}}{41}{figure.A.1}
-\contentsline {figure}{\numberline {A.2}{\ignorespaces Evolution of free space fragmentation with high utilisation (XFS)}}{42}{figure.A.2}
+\contentsline {figure}{\numberline {A.1}{\ignorespaces Evolution of free space fragmentation with medium utilisation (XFS)}}{45}{figure.A.1}
+\contentsline {figure}{\numberline {A.2}{\ignorespaces Evolution of free space fragmentation with high utilisation (XFS)}}{46}{figure.A.2}
+\contentsline {figure}{\numberline {A.3}{\ignorespaces Distribution of size of extents of used space}}{47}{figure.A.3}
+\contentsline {figure}{\numberline {A.4}{\ignorespaces Distribution of size of extents of used space}}{48}{figure.A.4}
+\contentsline {figure}{\numberline {A.5}{\ignorespaces Distribution of size of extents of used space}}{49}{figure.A.5}
+\contentsline {figure}{\numberline {A.6}{\ignorespaces Distribution of size of extents of used space}}{50}{figure.A.6}
+\contentsline {figure}{\numberline {A.7}{\ignorespaces Distribution of size of extents of used space}}{51}{figure.A.7}
 \addvspace {4\p@ }
