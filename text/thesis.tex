@@ -560,7 +560,7 @@ Generally, fragmentation of free space is easier to obtain, since this informati
 As stated, in the aging test, fragmentation of free space is logged periodically, allowing for an analysis of how fragmentation evolves in time. For the purpose of visualising this evolution, 3D charts are introduced in the final reports.
 
 \subsection{Fs-drift}
-The main researched output of fs-drift is an \emph{evolution} of latency of different operations. This property is displayed as a chart with elapsed time on X axis and measured latency on Y axis. Since the data are quite noisy, interpolation and filtering using Savitzky-Golay (polynome 3, window size 101) filter was used to display smooth curve. Further analysis of obtained data should be done in the future to understand behavior of aged file systems even better. Such analysis, however, is beyond scope of this thesis.
+The main researched output of fs-drift is an \emph{evolution} of latency of different operations. This property is displayed as a chart with elapsed time on X axis and measured latency on Y axis. Since the data are quite noisy, interpolation and filtering using Savitzky-Golay (polynome 3, window size 101) filter was used to display smooth curve. Further analysis of obtained data should be done in the future to understand behavior of aged file systems even better. Such deep analysis, however, is beyond scope of this thesis.
 
 
 %\subsection{FIO}
@@ -595,7 +595,6 @@ Furthermore, seqential read and append display signs of slight progressive perfo
 
 \begin{table}
 \centering
-\caption{Comparison of latencies of medium and high utilisation}
 \begin{tabular}{|l|l|l|l|}
 \hline
  &80\% & 99\% &  \\
@@ -629,6 +628,7 @@ Furthermore, seqential read and append display signs of slight progressive perfo
                 & 3.63\,ms & 4.26\,ms & mean \\
     \hline
 \end{tabular}
+\caption{Comparison of latencies of medium and high utilisation}
 \label{tab:99_vs_80}
 \end{table}
 
@@ -648,7 +648,7 @@ In table~\ref{tab:ssd_xfs_ext4}, we can see median and mean of all operations th
 
 \begin{table}
 \centering
-\caption{Comparison of latencies gathered during testing with XFS and EXT4 on SSD}
+
 \begin{tabular}{|l|l|l|l|}
 \hline
  &XFS & EXT4 &  \\
@@ -682,6 +682,7 @@ In table~\ref{tab:ssd_xfs_ext4}, we can see median and mean of all operations th
                 & 0.701\,ms & 0.346\,ms & mean \\
     \hline
 \end{tabular}
+\caption{Comparison of latencies gathered during testing with XFS and EXT4 on SSD}
 \label{tab:ssd_xfs_ext4}
 \end{table}
 
@@ -755,40 +756,40 @@ This result is great example of testing long-term performance affecting features
 
 \begin{table}[htb]
 \centering
-\caption{Differences in latency on trimmed and non trimmed file system (XFS)}
 \begin{tabular}{|l|l|l|l|}
 \hline
- &Trimmed & Not tzrimmed &  \\
+ &Trimmed & Not trimmed &  \\
 \hline
-    random write & 0.434\,ms & 0.518\,ms & median \\
+    random write & 0.43\,ms & 0.52\,ms & median \\
  \hline
-                 & 1.40445603985\,ms & 4.99304837093\,ms & mean\\
+                 & 1.40\,ms & 4.99\,ms & mean\\
     \hline
-        truncate & 0.7015\,ms & 1.053\,ms & median\\
+        truncate & 0.70\,ms & 1.05\,ms & median\\
     \hline
-                 & 1.47939184306\,ms & 3.14665184244\,ms & mean \\
+                 & 1.48\,ms & 3.17\,ms & mean \\
     \hline
-            read & 1.37\,ms & 1.853\,ms & median\\
+            read & 1.37\,ms & 1.85\,ms & median\\
     \hline
-                 & 3.24068389363\,ms & 4.73508128872\,ms & mean \\
+                 & 3.24\,ms & 4.74\,ms & mean \\
     \hline
-          create & 0.327\,ms & 0.339\,ms & median\\
+          create & 0.33\,ms & 0.34\,ms & median\\
     \hline
-                 & 4.01490864698\,ms & 6.02075978775\,ms & mean \\
+                 & 4.02\,ms & 6.02\,ms & mean \\
     \hline
-     random read & 0.295\,ms & 0.3775\,ms & median\\
+     random read & 0.30\,ms & 0.38\,ms & median\\
     \hline
-                 & 1.31688047095\,ms & 1.99043537924\,ms & mean \\
+                 & 1.32\,ms & 1.99\,ms & mean \\
     \hline
-          append & 1.492\,ms & 1.994\,ms & median\\
+          append & 1.49\,ms & 1.99\,ms & median\\
     \hline
-                 & 6.46510758655\,ms & 8.33286837596\,ms & mean \\
+                 & 6.47\,ms & 8.33\,ms & mean \\
     \hline
           delete & 0.097\,ms & 0.102\,ms & median\\
     \hline
-                & 0.70091986938\,ms & 0.96856525\,ms & mean \\
+                & 0.70\,ms & 0.97\,ms & mean \\
     \hline
 \end{tabular}
+\caption{Differences in latency on trimmed and non trimmed file system (XFS)}
 \label{tab:trim}
 \end{table}
 
