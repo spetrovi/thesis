@@ -42,9 +42,6 @@
     \field{number}{2}
     \field{pages}{5:1\bibrangedash 5:56}
     \field{title}{A Nine Year Study of File System and Storage Benchmarking}
-    \verb{url}
-    \verb http://doi.acm.org/10.1145/1367829.1367831
-    \endverb
     \field{volume}{4}
     \list{location}{1}{%
       {New York, NY, USA}%
@@ -80,9 +77,6 @@
     \field{number}{1}
     \field{pages}{8:1\bibrangedash 8:34}
     \field{title}{A Survey of Software Aging and Rejuvenation Studies}
-    \verb{url}
-    \verb http://doi.acm.org/10.1145/2539117
-    \endverb
     \field{volume}{10}
     \list{location}{1}{%
       {New York, NY, USA}%
@@ -122,9 +116,6 @@
     \field{pages}{203\bibrangedash 213}
     \field{title}{File System Aging; Increasing the Relevance of File System
   Benchmarks}
-    \verb{url}
-    \verb http://doi.acm.org/10.1145/258623.258689
-    \endverb
     \field{volume}{25}
     \list{location}{1}{%
       {New York, NY, USA}%
@@ -160,9 +151,6 @@
     \field{pages}{15\bibrangedash 24}
     \field{series}{SOSP '85}
     \field{title}{A Trace-driven Analysis of the UNIX 4.2 BSD File System}
-    \verb{url}
-    \verb http://doi.acm.org/10.1145/323647.323631
-    \endverb
     \list{location}{1}{%
       {Orcas Island, Washington, USA}%
     }

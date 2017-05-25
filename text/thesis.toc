@@ -35,6 +35,7 @@
 \contentsline {section}{\numberline {7.4}\slshape Differences betweem XFS and EXT4}{34}{section.7.4}
 \contentsline {section}{\numberline {7.5}\slshape Performance accross different storage devices}{35}{section.7.5}
 \contentsline {chapter}{\numberline {8}\bfseries Conclusion}{37}{chapter.8}
+\contentsline {chapter}{Bibliography}{39}{chapter*.8}
 \contentsline {chapter}{\numberline {A}\bfseries Reports}{41}{appendix.A}
 \contentsline {section}{\numberline {A.1}\slshape XFS, HDD, medium utilisation}{41}{section.A.1}
 \contentsline {section}{\numberline {A.2}\slshape XFS, HDD, high utilisation}{41}{section.A.2}

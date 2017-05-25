@@ -5,9 +5,9 @@
 \addvspace {4\p@ }
 \addvspace {4\p@ }
 \addvspace {4\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Uniform distribution of file access}}{16}{figure.4.1}
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Normal distribution of file access}}{16}{figure.4.2}
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Moving random distribution}}{17}{figure.4.3}
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Normal distribution of file access}}{16}{figure.4.1}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Moving random distribution}}{17}{figure.4.2}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces File size distribution as measured by Agrawal~\cite {agrawal2007five}}}{18}{figure.4.3}
 \contentsline {figure}{\numberline {4.4}{\ignorespaces Logarhitmic normal distribution of file size}}{18}{figure.4.4}
 \addvspace {4\p@ }
 \contentsline {figure}{\numberline {5.1}{\ignorespaces Activity diagram of aging test}}{23}{figure.5.1}

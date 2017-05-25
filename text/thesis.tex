@@ -69,6 +69,7 @@
 }
 %% The following section sets up the bibliography.
 
+
 \usepackage{csquotes}
 \usepackage[              %% When typesetting the bibliography, the
   backend=bibtex,          %% `numeric` style will be used for the
@@ -92,7 +93,6 @@
 \usepackage{menukeys}
 \usepackage{pdfpages}
 \usepackage{mwe}
-\usepackage{cleveref}
 
 \renewcommand{\lstlistingname}{Example}
 \renewcommand{\lstlistlistingname}{List of \lstlistingname s}
@@ -245,18 +245,18 @@ At the beginning of run time, the top directory is empty, therefore create reque
 
 The mix of operation probabilities can be specified in separate CSV file. Fs-drift will try to issue more create operations at the beggining of testing, so other operations execute with higher likeliness.
 
-The file to perform a request on is randomly chosen from the list of indexes. If the type of random distribution is set to \emph{uniform}, all indexes have the same probability to be chosen, see \ref{fig:rand1}. However, if the type of random distribution is set to \emph{gaussian}, the probability will behave according to normal distribution with the center at index 0 and width controled by parameter \texttt{gaussian-stddev}. This is usefull for performing cache-tiering tests. Please note, that file index is computed as modulo maximal number of files, therefore instead of accessing negative index values, the test access indexes from the other side of spectrum, see Figure \ref{fig:rand2}
+The file to perform a request on is randomly chosen from the list of indexes. If the type of random distribution is set to \emph{uniform}, all indexes have the same probability to be chosen. However, if the type of random distribution is set to \emph{gaussian}, the probability will behave according to normal distribution with the center at index 0 and width controled by parameter \texttt{gaussian-stddev}. This is usefull for performing cache-tiering tests. Please note, that file index is computed as modulo maximal number of files, therefore instead of accessing negative index values, the test access indexes from the other side of spectrum, see Figure~\ref{fig:rand2}
 
 Furthermore, fs-drift offers one more option to influence random distribution. After setting parameter \texttt{mean-velocity}, fs-drift will choose files by means of moving random distribution. The principle relies on a simulated time, which runs inside the test. For every tick of the simulated time, the center of bell curve will move on the file index array by the value specified by \texttt{mean-velocity} parameter. By enabling this feature, the process of testing moves closer to reality by simulating more natural patterns of file system access (the user won't access file system randomly, but rather works with some set of data at a time). On Figure \ref{fig:rand3}, you can see bell curve moving by 5 units two times.
 
 \begin{figure}[!htb]
-    \centering
-    \begin{minipage}{\textwidth}
-        \centering
-        \includegraphics[width=0.7\textwidth]{../scripts/fig1.png}
-        \caption{Uniform distribution of file access}
-\label{fig:rand1}
-    \end{minipage}\hfill
+%    \centering
+%   \begin{minipage}{\textwidth}
+%        \centering
+%        \includegraphics[width=0.7\textwidth]{../scripts/fig1.png}
+%        \caption{Uniform distribution of file access}
+%\label{fig:rand1}
+%    \end{minipage}\hfill
     \begin{minipage}{\textwidth}
         \centering
         \includegraphics[width=0.7\textwidth]{../scripts/fig2.png}
@@ -284,7 +284,7 @@ Fs-drift offers even more parameters to control the test run such as number of d
 
 For evaulation of the aging process, fs-drift can log latency of the performed opperations. However, the log doesn't differentiate between the operations, which could be usefull for further research.
 
-Used configuration of fs-drift for purposes of aging testing is further described in Chapter~\ref{text:aging}.
+Used configuration of fs-drift for purposes of aging testing is further described in Chapter~\ref{aging}.
 
 \subsection{Changes to original code}
 \label{text:fsdrift_changes}
@@ -298,11 +298,18 @@ Further problem with response time logging was, it didn't differentiate between 
 
 As mentioned, possibility of specifying \emph{pause file} was added, making the fs-drift easy to pause for file system contents inspection.
 
-Another feature added to fs-drift was non-uniform distribution of file sizes. Originally, fs-drift only uniform distribution to choose file size from zero to specified maximum size. Such implementation offers very little control over file size distribution and is quite unrealistic. Therefore, possibility to request natural file size distribution was added. As a reference for file size distribution, five year old study of file system metadata was used~\cite{agrawal2007five}. Figure 3 shows measured file size distribution of used file systems. To mimic this layout, log-normal distribution was modeled. The shape of resulting distribution is shown in Figure~\ref{fig:lognormal}.
+Another feature added to fs-drift was non-uniform distribution of file sizes. Originally, fs-drift only uniform distribution to choose file size from zero to specified maximum size. Such implementation offers very little control over file size distribution and is quite unrealistic. Therefore, possibility to request natural file size distribution was added. As a reference for file size distribution, five year old study of file system metadata was used~\cite{agrawal2007five}. Figure~\ref{fig:filedist} shows measured file size distribution of used file systems. To mimic this layout, log-normal distribution was modeled. The shape of resulting distribution is shown in Figure~\ref{fig:lognormal}.
 
 The version used for testing in this thesis have all afformentioned features implemented and problems repaired. The code is also included in eletronic appendix.
 
-\begin{figure}[!htb]
+\begin{figure}
+    \centering
+    \fbox{\includegraphics[width=\textwidth,keepaspectratio,trim=4 4 4 4,clip]{../charts/filedist.png}}
+    \caption{File size distribution as measured by Agrawal~\cite{agrawal2007five}}
+    \label{fig:filedist}
+\end{figure}
+
+\begin{figure}%[!htb]
     \begin{minipage}{\textwidth}
         \centering
         \includegraphics[width=0.7\textwidth]{../scripts/dist3.png}
@@ -313,22 +320,14 @@ The version used for testing in this thesis have all afformentioned features imp
 
 
 
-
-
-
-
-
-
-
-
-
-\chapter{Aging the file system}\label{text:aging}
+\chapter{Aging the file system}
+\label{aging}
 In this chapter, I describe process of developement of file system aging workflow and its implementation as a form of automated test.
 
 \section{Aging process}
-As mentioned, fs-drift was used as a mean of aging the fresh file system, bringing it to the aged, fragmented state. Fs-drift is quite flexible, therefore a lot of parameters and their impact on the final layout had to be considered.
+As mentioned, fs-drift was used as a mean of bringing file systems to an aged, fragmented state. Fs-drift is quite flexible, therefore a lot of parameters and their impact on the final layout had to be considered.
 
-First, the amount of fullness had to be taken into account. Heavily used file systems tend to be full at amounts ranging from 65 to 100 percent~\cite{agrawal2007five}. However, fs-drift does not offer an option to directly control the fullness of the file system. As the creator states in README, to fill a file system, maximum number of files and mean size of file should be defined such that the product is greater than the available space. Parameters to overload the volume are not difficult to come up with. The problem is, the random nature of the test doesn't allow for meaningfull reporoducibility of the reached equilibrium. In most cases, fs-drift plainly saturates given volume, so utilization remains at 100\% through the rest of the testing time. This drawback was overridden by a change in fs-drift code\footnotemark[1]. By adding the possibility to pause fs-drift, other processes can stop fs-drift to generate IO requests if the file system usage reaches a specified amount and release some space. This way, desired amount of maximal utilization can be reached.
+First, the amount of fullness had to be taken into account. Heavily used file systems tend to be full at amounts ranging from 65~\cite{Smith:1997:FSA:258623.258689} to 100 percent~\cite{agrawal2007five}. However, fs-drift does not offer an option to directly control the fullness of the file system. As the creator states in README, to fill a file system, maximum number of files and mean size of file should be defined such that the product is greater than the available space. Parameters to overload the volume are not difficult to come up with. The problem is, the random nature of the test doesn't allow for meaningfull reporoducibility of the reached equilibrium. In most cases, fs-drift plainly saturates given volume, so utilization remains at 100\% through the rest of the testing time. This drawback was overridden by a change in fs-drift code\footnotemark[1]. By adding the possibility to pause fs-drift, other processes can stop fs-drift to generate IO requests if the file system usage reaches a specified amount and release some space. This way, desired amount of maximal utilization can be reached.
 
 \footnotetext[1]{For all the changes made to original code of fs-drift, see Subsection \ref{text:fsdrift_changes}}
 
@@ -750,7 +749,7 @@ The aim of this thesis
 
 
 
-\printbibliography
+\printbibliography[heading=bibintoc]
 
 \appendix %% Start the appendices.
 \chapter{Reports}\label{reports}
@@ -898,7 +897,7 @@ caption={},
                 & 0.701\,ms & 0.346\,ms & mean \\
     \hline
 \end{tabular}
-\label{tab:ssd_xfs_ext4}
+\label{empty}
 \end{table}
 
 \end{document}
