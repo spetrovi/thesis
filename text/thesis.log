@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.3.8)  26 MAY 2017 00:24
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.3.8)  26 MAY 2017 00:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -2680,14 +2680,14 @@ Overfull \hbox (7.70094pt too wide) in paragraph at lines 250--251
 /12 mean-velocity\T1/qpl/m/n/12 (-20) , fs-drift will choose
  []
 
-<../scripts/fig2.png, id=479, 286.9119pt x 229.0959pt>
+<../scripts/fig2.png, id=483, 286.9119pt x 229.0959pt>
 File: ../scripts/fig2.png Graphic file (type png)
 
 <use ../scripts/fig2.png>
 Package pdftex.def Info: ../scripts/fig2.png used on input line 262.
 (pdftex.def)             Requested size: 252.94388pt x 201.97556pt.
 
-<../scripts/fig3.png, id=481, 286.9119pt x 229.0959pt>
+<../scripts/fig3.png, id=485, 286.9119pt x 229.0959pt>
 File: ../scripts/fig3.png Graphic file (type png)
 
 <use ../scripts/fig3.png>
@@ -2704,7 +2704,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [15]
 [16 <../scripts/fig2.png>]
-<../charts/filedist.png, id=497, 905.3825pt x 522.95375pt>
+<../charts/filedist.png, id=500, 905.3825pt x 522.95375pt>
 File: ../charts/filedist.png Graphic file (type png)
 
 <use ../charts/filedist.png>
@@ -2715,7 +2715,7 @@ Overfull \hbox (6.79999pt too wide) in paragraph at lines 307--308
  [][] 
  []
 
-<../scripts/dist3.png, id=500, 293.4162pt x 258.7266pt>
+<../scripts/dist3.png, id=503, 293.4162pt x 258.7266pt>
 File: ../scripts/dist3.png Graphic file (type png)
 
 <use ../scripts/dist3.png>
@@ -2754,7 +2754,7 @@ Package Listings Warning: Text dropped after begin of listing on input line 382
 Package Listings Warning: Text dropped after begin of listing on input line 386
 .
 
-[21] <../scripts/drift_job_activity.pdf, id=550, 877.2775pt x 985.6825pt>
+[21] <../scripts/drift_job_activity.pdf, id=553, 877.2775pt x 985.6825pt>
 File: ../scripts/drift_job_activity.pdf Graphic file (type pdf)
 
 <use ../scripts/drift_job_activity.pdf>
@@ -2786,7 +2786,7 @@ Overfull \hbox (8.88474pt too wide) in paragraph at lines 465--466
 ent to data-collecting
  []
 
-<../scripts/recipe_fio_aging_activity.pdf, id=573, 874.26625pt x 915.42pt>
+<../scripts/recipe_fio_aging_activity.pdf, id=576, 874.26625pt x 915.42pt>
 File: ../scripts/recipe_fio_aging_activity.pdf Graphic file (type pdf)
 
 <use ../scripts/recipe_fio_aging_activity.pdf>
@@ -2821,7 +2821,7 @@ Overfull \vbox (2.72412pt too high) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [31]
-[32] <../charts/HDD_xfs/rt99.png, id=622, 931.48pt x 626.34pt>
+[32] <../charts/HDD_xfs/rt99.png, id=625, 931.48pt x 626.34pt>
 File: ../charts/HDD_xfs/rt99.png Graphic file (type png)
 
 <use ../charts/HDD_xfs/rt99.png>
@@ -2832,13 +2832,8 @@ Overfull \hbox (6.79999pt too wide) in paragraph at lines 591--592
  [][] 
  []
 
-[33] [34] [35]
-
-LaTeX Warning: Reference `notrim_create' on page 36 undefined on input line 742
-.
-
-[36 <../charts/HDD_xfs/rt99.png>] [37]
-<../charts/SSD_xfs_notrim/create.pdf, id=655, 1204.5pt x 803.0pt>
+[33] [34] [35] [36 <../charts/HDD_xfs/rt99.png>] [37]
+<../charts/SSD_xfs_notrim/create.pdf, id=660, 1204.5pt x 803.0pt>
 File: ../charts/SSD_xfs_notrim/create.pdf Graphic file (type pdf)
 
 <use ../charts/SSD_xfs_notrim/create.pdf>
@@ -2876,7 +2871,7 @@ lash-memory
 
 [44]
 Appendix A.
-<../charts/HDD_xfs/free80.png, id=719, 728.7225pt x 626.34pt>
+<../charts/HDD_xfs/free80.png, id=723, 728.7225pt x 626.34pt>
 File: ../charts/HDD_xfs/free80.png Graphic file (type png)
 
 <use ../charts/HDD_xfs/free80.png>
@@ -2887,7 +2882,7 @@ Overfull \hbox (6.79999pt too wide) in paragraph at lines 888--889
  [][] 
  []
 
-<../charts/HDD_xfs/free99.png, id=721, 726.715pt x 627.34375pt>
+<../charts/HDD_xfs/free99.png, id=725, 726.715pt x 627.34375pt>
 File: ../charts/HDD_xfs/free99.png Graphic file (type png)
 
 <use ../charts/HDD_xfs/free99.png>
@@ -2898,7 +2893,7 @@ Overfull \hbox (6.79999pt too wide) in paragraph at lines 901--902
  [][] 
  []
 
-<../charts/HDD_xfs/used99.pdf, id=723, 1204.5pt x 803.0pt>
+<../charts/HDD_xfs/used99.pdf, id=727, 1204.5pt x 803.0pt>
 File: ../charts/HDD_xfs/used99.pdf Graphic file (type pdf)
 
 <use ../charts/HDD_xfs/used99.pdf>
@@ -2909,7 +2904,7 @@ Overfull \hbox (6.79999pt too wide) in paragraph at lines 908--909
  [][] 
  []
 
-<../charts/SSD_xfs_trim/free.pdf, id=724, 1104.125pt x 1104.125pt>
+<../charts/SSD_xfs_trim/free.pdf, id=728, 1104.125pt x 1104.125pt>
 File: ../charts/SSD_xfs_trim/free.pdf Graphic file (type pdf)
 
 <use ../charts/SSD_xfs_trim/free.pdf>
@@ -2925,7 +2920,7 @@ Overfull \hbox (6.79999pt too wide) in paragraph at lines 916--917
 
 
  <../charts/HDD_xfs/free80.png>]
-<../charts/SSD_xfs_trim/used.pdf, id=736, 1204.5pt x 803.0pt>
+<../charts/SSD_xfs_trim/used.pdf, id=740, 1204.5pt x 803.0pt>
 File: ../charts/SSD_xfs_trim/used.pdf Graphic file (type pdf)
 
 <use ../charts/SSD_xfs_trim/used.pdf>
@@ -2937,7 +2932,7 @@ Overfull \hbox (6.79999pt too wide) in paragraph at lines 923--924
  [][] 
  []
 
-<../charts/SSD_ext4_trim/free.pdf, id=737, 1104.125pt x 1104.125pt>
+<../charts/SSD_ext4_trim/free.pdf, id=741, 1104.125pt x 1104.125pt>
 File: ../charts/SSD_ext4_trim/free.pdf Graphic file (type pdf)
 
 <use ../charts/SSD_ext4_trim/free.pdf>
@@ -2949,7 +2944,7 @@ Overfull \hbox (6.79999pt too wide) in paragraph at lines 932--933
  [][] 
  []
 
-<../charts/SSD_ext4_trim/used.pdf, id=738, 1204.5pt x 803.0pt>
+<../charts/SSD_ext4_trim/used.pdf, id=742, 1204.5pt x 803.0pt>
 File: ../charts/SSD_ext4_trim/used.pdf Graphic file (type pdf)
 
 <use ../charts/SSD_ext4_trim/used.pdf>
@@ -3012,20 +3007,14 @@ Package rerunfilecheck Info: File `thesis.out' has not changed.
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
 Package logreq Info: Writing requests to 'thesis.run.xml'.
 \openout1 = `thesis.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
  47052 strings out of 493013
- 867706 string characters out of 6133329
- 1624209 words of memory out of 5000000
+ 867701 string characters out of 6133329
+ 1625209 words of memory out of 5000000
  49377 multiletter control sequences out of 15000+600000
  94767 words of font info for 140 fonts, out of 8000000 for 9000
  1143 hyphenation exceptions out of 8191
@@ -3044,10 +3033,10 @@ exlive/2016/texmf-dist/fonts/type1/public/tex-gyre/qplr.pfb></usr/local/texlive
 /2016/texmf-dist/fonts/type1/public/tex-gyre/qplri.pfb></usr/local/texlive/2016
 /texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2016/texmf-
 dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on thesis.pdf (71 pages, 1249133 bytes).
+Output written on thesis.pdf (71 pages, 1249205 bytes).
 PDF statistics:
- 1036 PDF objects out of 1200 (max. 8388607)
- 873 compressed objects within 9 object streams
+ 1040 PDF objects out of 1200 (max. 8388607)
+ 877 compressed objects within 9 object streams
  260 named destinations out of 1000 (max. 500000)
  32321 words of extra memory for PDF output out of 35830 (max. 10000000)
 

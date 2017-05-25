@@ -38,7 +38,7 @@ xAxis: [{categories: XXX_BINS_XXX,title: {text: 'Size'}}],
       tooltip: {shared: true},
       series: [
       {
-      name: 'fragments',
+      name: 'extents',
 color: 'rgba(0, 0, 255, 0.50)',
 	type: 'column',
 	data: XXX_FRAG_XXX,visible: true,
