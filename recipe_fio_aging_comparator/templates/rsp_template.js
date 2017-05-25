@@ -6,7 +6,7 @@ $(document).ready(function () {
                 beforePrint: function () {
                     this.oldhasUserSize = this.hasUserSize;
                     this.resetParams = [this.chartWidth, this.chartHeight, false];
-                    this.setSize(600, 400, false);
+                    this.setSize(500, 333, false);
                 },
                 afterPrint: function () {
                     this.setSize.apply(this, this.resetParams);
@@ -21,7 +21,7 @@ XXX_NAME_XXX= new Highcharts.Chart({
       height: 600,
       backgroundColor: '#F2F2F2',
  renderTo: 'XXX_NAME_XXX'},
-title: {text: 'XXX_TITLE_XXX'},xAxis: [{categories: XXX_BINS_XXX,title: {text: 'time'}}],
+title: {text: 'XXX_TITLE_XXX'},xAxis: [{categories: XXX_BINS_XXX,title: {text: 'time [s]'}}],
     plotOptions: {
         column: {
             groupPadding: 0,

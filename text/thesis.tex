@@ -52,10 +52,10 @@
     author        = Samuel Petrovič,
     gender        = m,
     advisor       = Adam Rambousek,
-    title         = {The effects of age on file system performance},
-    TeXtitle      = {The effects of age on file system performance},
-    keywords      = {filesystem, xfs, IO operation, aging, fragmentation ...},
-    TeXkeywords   = {filesystem, xfs, IO operation, aging, fragmentation ...},
+    title         = {The effects of age \\ on file system performance},
+    TeXtitle      = {The effects of age \\ on file system performance},
+    keywords      = {file system, XFS, EXT4, IO, performance, aging, fragmentation, SSD, HDD, TRIM, fs-drift, FIO, benchmark},
+    TeXkeywords   = {file system, XFS, EXT4, IO, performance, aging, fragmentation, SSD, HDD, TRIM, fs-drift, FIO, benchmark},
 }
 \thesislong{abstract}{
     This is the abstract of my thesis, which can
@@ -120,14 +120,14 @@ Created images are then used in second-stage testing. By using created images, h
 
 In the second-stage testing, file system is brought to the aged state by reloading image corresponding with desired testing configuration. Before every performance test, some volume can released from file system, so the performance test has space to test on. After environment initalization (\texttt{fstrim}, \texttt{sync}), the performance test can begin. Testing of performance of fresh instance of file system is done as well to conclude if any performance drop occur.
 
+In the later parts of this thesis, usage of developed tests on different configurations of file systems and storage is demonstrated. The subject of research are differences between popular Linux file systems (XFS, Ext4) and differences between used storage technologies (solid state and hard disk drives) in context of aging. Because of nature of collected data, a processing tool was implemented to parse large amount of information into human readable reports with interactive charts.
 
-In the later parts of this thesis, usage of developed tests on different configurations of file systems and storage is demonstrated. The subject of research are differences between popular Linux file systems (XFS, Ext4) and differences between used storage technologies (solid state and hard disk drives) in context of aging. Because of nature of collected data, a processing tool was implemented to parse large amount of information into human readable reports with interactive charts. These reports were reformated and included in this thesis in form of Appendix~\ref{reports}.
+In the Chapter~\ref{2}, the text present already conducted research of effects of age and fragmentation on file system performance. Chapter~\ref{fs} describes used storage and file systems and theirs main features. Chapter~\ref{tools} introduce tools used in implementation of tests while describing their relevant features. Chapters~\ref{aging} and ~\ref{fio} describe actual implementation of mentioned tests. Chapter~\ref{results} describes testing environment and and used data procesing. Then, it presents results obtained by using created tests. The research is focused describing the effect of aging file systems, differences between file systems in terms of aging and relations of underlying storage to performance of aged file system. In Chapter~\ref{conclusion}, I discuss the effects of age on file system performance as well as recommendations for this type of testing. Furthermore, future of testing of file system performance and aging is discussed.
 
-In the second chapter, the text present already conducted research of effects of age and fragmentation on file system performance. Third chapter describes used file systems and theirs main features. Chapter 4 introduce tools used in implementation of tests while describing their relevant features. Chapters 5 and 6 describe actual implementation of mentioned tests. Chapter 7 describes testing environment and presents used storage technology. Chapter 8 presents the results obtained by using created tests. The research is focused describing the effect of aging file systems, differences between file systems in terms of aging and relations of underlying storage to performance of aged file system. In the conclusion chapter, I discuss the effects of age on file system performance as well as recommendations for this type of testing. Furthermore, future of testing of file system performance and aging is discussed.
-
-Appendix A contains complete reports generated from conducted tests. Appendix B contains examples of usage of used tools.  
+Appendix~\ref{reports} contains overall information about tests and generated charts. Appendix~\ref{examples} contains examples of usage of used tools.  
 
 \chapter{Related work}
+\label{2}
 In this chapter I present different approaches of file system aging and fragmentation research described and implemented in the past. The first section discuss usage of collected data to create aging workload. The second section discuss possibilities of aging the file system artificially, without pre-collected data.
 
 \section{Aging file system using real-life data}
@@ -157,6 +157,7 @@ However, for truly realistic insight, a workflow generator which tries to mimic 
 A workload generator such as fs-drift~\cite{fs-drift:github}, can be used (while carefully configured) to simulate desired long term real-life usage. While running, fs-drift is creating requests of variety of IO operations. The probability with which would be operation chosen can be controled by workload table. In addition, this tool offers different probability distributions of file access, making it easier to mimic behavior of natural user. Furthermore, whole process is highly configurable, making it possible to simulate various types of file system usage. Such qualities predispose fs-drift to be capable of conduction of more realistic results than mentioned attempts.
 
 \chapter{File system and storage devices}
+\label{fs}
 In this chapter, I present basic information about used file systems and storage devices and its features relevant to performance and aging.
 
 \section{File systems}
@@ -169,6 +170,7 @@ Files which are non-contigous are stored in form of extents, which is one or mor
 Information about how many blocks does a file occupy, as well as other information like date of creation, date of last access or access permissions is known as metadata, e.g. data about stored data. This information is stored separately from the content of files. On modern file systems, metadata are stored in objects called index nodes (e.g. inodes). Each file a file system manages is associated with an inode and every inode has its number in an inode table. On top of that the file system stores metadata about itself (unrelated to any specific file), such as information about bad sectors, free space or block availability in a structure called superblock.
 
 In this thesis, targeted file systems are two most popular Linux file systems~\cite{Lu:2013:SLF:2591272.2591276}, XFS~\cite{xfs:qhe} and Ext4~\cite{ext4:qhe}, which are also main Red Hat supported file systems. These file systems belong to the group of file systems called journaling file systems.
+
 
 Journaling file system keeps a structure called journal, which is a buffer of changes not yet commited to the file system. After system failure, these planned changes can be easily read from the journal, thus making the file system easily fully operational, and in correct and consistent state again.
 
@@ -214,6 +216,7 @@ To decrease this effect, trim commands were introduced. Trim command communicate
 
 
 \chapter{Environment setup and benchmark tools}
+\label{tools}
 In this chapter, I present tools which were used to implement automated tests for creating and storing aged file systems and measuring their performance. Furthermore, I describe the main features and means of their usage. All the presented tools are open source projects.
 
 \section{Beaker}
@@ -415,6 +418,7 @@ Parameters available for drift\_job:
 \end{figure}
 
 \chapter{Performance testing of aged file system}
+\label{fio}
 In this chapter, I describe structure of performance test which use images created by previous workflow. In the first section, I present settings of FIO benchmark for the optimal results and in section two, I describe implementation of this test as beaker task.
 
 \section{FIO settings} 
@@ -485,6 +489,7 @@ Parameters available for recipe\_fio\_aging:
 
 
 \chapter{Results}
+\label{results}
 This chapter present results of implemented tests. In the first section I describe environment used for testing. In the second section, I describe means of data evaluation. In the third section, I show elementary differences between fresh and aged file systems. In the fourth section, I describe differences between two tested file systems (XFS, Ext4) in terms of aging. In fifth section I demonstrate the effect file system aging have on underlying storage.
 
 \section{Testing environment}
@@ -537,6 +542,7 @@ In this section, I describe testing environment and storage used for testing wit
     Interface &  SATA\\ \hline
     Capacity & $\SI{400}{\giga\byte}$\\ \hline
 \end{tabular}
+\label{machines}
 
 \section{Data processing}
 Accounting for great amount of data generated by the tests, some kind of automatic processing needs to be implemented to make evaluation easier for humans. Therefore, I developed set of scripts which can compare results of two different runs of implemented test. The output of those script is human-readable HTML report. The report displays information about testing environment and different charts described bellow. All the reports generated from the tests can be found in Appendix A. The scripts used to generate reports are part of this thesis in form of electronic appendix
@@ -554,26 +560,35 @@ As stated, in the aging test, fragmentation of free space is logged periodically
 The main researched output of fs-drift is an \emph{evolution} of latency of different operations. This property is displayed as a chart with elapsed time on X axis and measured latency on Y axis. Since the data are quite noisy, interpolation and filtering using Savitzky-Golay filter had to be used for meaningfull display of latency change in time. Additionally linear regression is computed and displayed for every operation providing even more insight into the effects of aging through test.
 
 \subsection{FIO}
-Through tests, FIO outputs throughput and latency into a log file separate for every thread. Since topic of research when using FIO was \emph{state} of file system in terms of performance, statistics are computed from the whole test run, i.e. accross all statistic runs and for all threads. These statistics are minimum and maximum value, first and second quartile and median. These atributes are then displayed on a chart in form of boxplot. Latency and bandwidth have separate charts. On the X axis, state of file system utilization is displayed and on the Y axis there is throughput or latency.
+%Through tests, FIO outputs throughput and latency into a log file separate for every thread. Since topic of research when using FIO was \emph{state} of file system in terms of performance, statistics are computed from the whole test run, i.e. accross all statistic runs and for all threads. These statistics are minimum and maximum value, first and second quartile and median. These atributes are then displayed on a chart in form of boxplot. Latency and bandwidth have separate charts. On the X axis, state of file system utilization is displayed and on the Y axis there is throughput or latency.
 
 \section{Performance of aged file system}
-The file sysem aging tool succesfully induced fragmentation in all performed tests. From the data generated by aging tool, it is apparent, that the aging process may negatively affects performance of the file systems. Performance degradation varies with used storage, file system implementation and maintainance techniques (i.e. \texttt{fstrim}).
+The file sysem aging tool succesfully induced fragmentation in all performed tests. From the data generated by aging tool, it is apparent, that the aging process may negatively affects performance of file systems. Performance degradation varies with used storage, file system implementation and maintainance techniques (e.g. \texttt{fstrim}).
 
 %durden W495 xfs vs draven
-On Figure X, we can see evolution of fragmentation of free space gathered while testing at lower file system utilisation (up to 80\%). From the figure X, we can see that with higher file system utilisation, free space becomes tremendously fragmented.
+On Figure~\ref{fig:free80}, we can see evolution of fragmentation of free space gathered while testing at medium file system utilisation (up to 80\%). From the Figure~\ref{fig:free99}, we can see that higher file system utilisation induces tremendous fragmentation of free space.
 
-Despite this occurence, it is remarkable, that fragmentation of used space is very similar accross these two test runs. On Figure X and Y, we can see, both file systems have about 92\% of files optimally allocated. Considering amount of fragments of free space differs in orders of tens of thousands, it is remarkable, that amount of non-contiguous extents of free files differs only by 33\%
+Despite this occurence, it is remarkable, that fragmentation of used space is very similar accross these two test runs. On Figure X and Y, we can see, that both file systems have about 92\% of files optimally allocated. Considering amount of fragments of free space differs in orders of tens of thousands, it is remarkable, that amount of non-contiguous extents of free files differs only by 33\%
 
 On Table~\ref{tab:99_vs_80}, we can see overall raise of latency in regard of highly utilised file system.
 
-From the Figure X
+Furthermore, seqential read and append display signs of slight progressive performance degradation through test. Furthermore, operation truncate and create shows sign of performance degradation only on high utilised file systems. Figure~\ref{fig:readtrunc99} displays latency growth of operations truncate and read on high utilised file system.
 
-\begin{table}[htb]
+
+
+\begin{figure}
+    \centering
+    \fbox{\includegraphics[width=\textwidth,keepaspectratio,trim=4 4 4 4,clip]{../charts/HDD_xfs/rt99.png}}
+    \caption{Latency growth induced by aging test}
+    \label{fig:readtrunc99}
+\end{figure}
+
+\begin{table}
 \centering
-\caption{Table of overall latencies}
+\caption{Comparison of latencies of high and medium utilisation}
 \begin{tabular}{|l|l|l|l|}
 \hline
- &80 & 99 &  \\
+ &80\% & 99\% &  \\
 \hline
     random write & 11.40\,ms & 11.84\,ms & median \\
  \hline
@@ -609,16 +624,18 @@ From the Figure X
 
 
 \section{Differences betweem XFS and EXT4}
-From the graph of evolution of free space fragmentation, it is apparent, that XFS fights free space fragmentation significantly better than Ext4. On the Figure~\ref{fig:hdd_xfs_free_frag} we can see, that XFS tries to maximise size of free space blocks. Even at the end of testing stage, XFS still operates with large blocks of free space (up to $\SI{63}{\giga\byte}$).
+%From the graph of evolution of free space fragmentation, it is apparent, that XFS fights free space fragmentation significantly better than Ext4. On the Figure~\ref{fig:hdd_xfs_free_frag} we can see, that XFS tries to maximise size of free space blocks. Even at the end of testing stage, XFS still operates with large blocks of free space (up to $\SI{63}{\giga\byte}$).
 
-By default, Ext4 operates with size of free blocks no larger than $\SI{2}{\giga\byte}$. With greater utilisation of file system, induced fragmentation of free space is visible. At the end of the test, Ext4 operates with up to nine thousands of fragments of free space, as can be seen on Figure~\ref{fig:hdd_ext4_free_frag}.
+%By default, Ext4 operates with size of free blocks no larger than $\SI{2}{\giga\byte}$. With greater utilisation of file system, induced fragmentation of free space is visible. At the end of the test, Ext4 operates with up to nine thousands of fragments of free space, as can be seen on Figure~\ref{fig:hdd_ext4_free_frag}.
 
-\subsection{XFS and EXT4 on SSD}
+%\subsection{XFS and EXT4 on SSD}
 %SSD xfs vs SSD ext4
 %Fragmentacia volneho aj pouziteho miesta priblizne rovnaka. Optimalnych filov u oboch 98\%. Rozlozenie fragmentov, v ext4 je malo stredne velkych fragmentov. Randwrite neaguje, obcas vyskoci, hodnoty podobne. Truncate slaby aging, hodnoty podobne. Read, XFS rychlejsie, resp nema take peaky ako ext4, ale zda sa, ze je tam nejake stupanie na rozdiel od ext4. Create bez agingu, ale xfs sa zda pomalsie (treba skontrolovat hodnoty). Rand read, bez agingu, xfs sa zda pomalsie, ale mozno len koli jednomu peaku. Append bez agingu. Ext4 vacsi peak, ale mozno nizsie hodnoty. Delete, xfs rychlejsie, ext4 velke peaky, chekni hondoty.
-XFS and EXT4 have very similar disk layouts in spite of free and used space fragmentation. After maximal disk utilisation both file systems have up to 50\,000 fragments. At the end of the test, both file systems had 98\% of files optimally allocated. The only difference when considering file block layout seems to be in size distribution of extents. As can be seen on Figure , EXT4 has more smaller fragments than XFS. Since continuity of relevant data may play role even while using SSD, this could mean potential performance penalty.
+When testing with SSD, XFS and EXT4 have very similar disk layouts in spite of free and used space fragmentation. After maximal disk utilisation both file systems have up to 50\,000 fragments. At the end of the test, both file systems had 98\% of files optimally allocated. The only difference when considering file block layout seems to be in size distribution of extents. As can be seen on Figure X, EXT4 has more smaller fragments than XFS. Since continuity of relevant data may play role even while using SSD, this could mean potential performance penalty.
 
 In table~\ref{tab:ssd_xfs_ext4}, we can see median and mean of all operations through the whole test. It is clear that all the operations except delete and truncate are slightly faster if performed by XFS. This small difference can be result of lesser used space fragmentation.
+
+
 
 \begin{table}[htb]
 \centering
@@ -661,140 +678,115 @@ In table~\ref{tab:ssd_xfs_ext4}, we can see median and mean of all operations th
 
 
 
-
-\subsection{XFS and EXT4 on NVMe}
-Filesystemy
-NVME xfs vs NVME ext4
-%***cakame na NVME ext4***
-
-
-300 HDD xfs vs 300 HDD ext4
-%***cakame na vsetko***
-
-
-\subsection{XFS and EXT4 on 600\,GB HDD}
+%\subsection{XFS and EXT4 on 600\,GB HDD}
 %600 HDD xfs vs 600 HDD ext4
-Lebo mali file systemy vela miesta, tak velmi nefragmentovali, optimalnych filov je 99\%, ale u xfs to vyzera, ze fragmentovalo viacej, POZOR FIEMAP MALO ZALOGOVAL. Kazdopadne ma menej fragmentov volneho miesta, radovo desiatky, ext4 ma tisicky.
-Vyzera to, ze xfs ma pomalsi randwrite, aj ked treba ceknut hodnoty, inak aging sa neprejavuje. Truncate, aging sa prejavuje, xfs pomalsie. Read, xfs o cosi pomalsie, aging sa prejavuje. Create, aging sa asi neprejavuje, chce to lepsi graf, inak xfs vyzera horsie. Random read, xfs horsie, aging sa prejavuje. Append, aging sa neprejavuje, len vyskocil, mozno ext4 trochu horsie. Delete xfs horsi, agung sa asi neprejavuje.
+%Lebo mali file systemy vela miesta, tak velmi nefragmentovali, optimalnych filov je 99\%, ale u xfs to vyzera, ze fragmentovalo viacej, POZOR FIEMAP MALO ZALOGOVAL. Kazdopadne ma menej fragmentov volneho miesta, %radovo desiatky, ext4 ma tisicky.
+%Vyzera to, ze xfs ma pomalsi randwrite, aj ked treba ceknut hodnoty, inak aging sa neprejavuje. Truncate, aging sa prejavuje, xfs pomalsie. Read, xfs o cosi pomalsie, aging sa prejavuje. Create, aging sa asi neprejavuje, chce to lepsi graf, inak xfs vyzera horsie. Random read, xfs horsie, aging sa prejavuje. Append, aging sa neprejavuje, len vyskocil, mozno ext4 trochu horsie. Delete xfs horsi, agung sa asi neprejavuje.
 
-While testing on large HDDs, aging tests were unable to fill devices in reasonable time. Despite the fact the devices were utilised to 80-85\%, file system performance degradation could have been observed.
-
-
-\begin{table}[htb]
-\centering
-\caption{Table of overall latencies}
-\begin{tabular}{|l|l|l|l|}
-\hline
- &XFS & EXT4 &  \\
-\hline
-    random write & & & median \\
- \hline
-                 &  & s & mean\\
-    \hline
-        truncate &  & 0.32\,ms & median\\
-    \hline
-                 &  & 1.35\,ms& mean \\
-    \hline
-            read &  & 1.56\,ms & median\\
-    \hline
-                 &  & 3.47\,ms & mean \\
-    \hline
-          create &  & 0.40\,ms & median\\
-    \hline
-                 &  & 3.84\,ms & mean \\
-    \hline
-     random read &  & 0.46\,ms & median\\
-    \hline
-                 &  & 1.37\,ms & mean \\
-    \hline
-          append &  & 1.76\,ms & median\\
-    \hline
-                 & 6.46\,ms & 6.65\,ms & mean \\
-    \hline
-          delete & 0.097\,ms & 0.049\,ms & median\\
-    \hline
-                & 0.701\,ms & 0.346\,ms & mean \\
-    \hline
-\end{tabular}
-\label{tab:ssd_xfs_ext4}
-\end{table}
-
-
-600 HDD xfs vs 300 HDD xfs
-***cakame na 300 HDD xfs***
-
-\begin{figure}[ht]
-    \centering
-    \fbox{\includegraphics[width=\textwidth,keepaspectratio,trim=4 4 4 4,clip]{../charts/HDD_xfs/screenshot.png}}
-    \caption{Evolution of free space fragmentation using XFS}
-    \label{fig:hdd_xfs_free_frag}
-\end{figure}
-
-\begin{figure}[ht]
-    \centering
-    \fbox{\includegraphics[width=\textwidth,keepaspectratio,trim=4 4 4 4,clip]{../charts/HDD_ext4/screenshot.png}}
-    \caption{Evolution of free space fragmentation using Ext4}
-    \label{fig:hdd_ext4_free_frag}
-\end{figure}
-
-
+%While testing on large HDDs, aging tests were unable to fill devices in reasonable time. Despite the fact the devices were utilised to 80-85\%, file system performance degradation could have been observed
 
 \section{Performance accross different storage devices}
 Underlying storage has significant impact on file system performance. As mentioned, SSDs lack of moving parts allows the file system to perform IOs faster. Even when connected through a slower (SATA) interface than HDD (SAS), SSD issues operations much faster.
 
-Running \texttt{fstrim} regularly through the test has significant impact on perofmance on operations create and append. Those operations create IO requests sequentially, so it is expected
+%Running \texttt{fstrim} regularly through the test has significant impact on performance on operations create and append. Those operations create IO requests sequentially, so it is expected
 
 
-POZNAMKY, CO VIDIM Z POROVNANI
-Vsetky pouzite SSD vysledky su TRIM
+%POZNAMKY, CO VIDIM Z POROVNANI
+%Vsetky pouzite SSD vysledky su TRIM
 
-Filesystemy
-NVME xfs vs NVME ext4
-***cakame na NVME ext4***
+%Filesystemy
+%NVME xfs vs NVME ext4
+%***cakame na NVME ext4***
 
-SSD xfs vs SSD ext4
-Fragmentacia volneho aj pouziteho miesta priblizne rovnaka. Optimalnych filov u oboch 98\%. Rozlozenie fragmentov, v ext4 je malo stredne velkych fragmentov. 
-Randwrite neaguje, obcas vyskoci, hodnoty podobne. Truncate slaby aging, hodnoty podobne. Read, XFS rychlejsie, resp nema take peaky ako ext4, ale zda sa, ze je tam nejake stupanie na rozdiel od ext4. Create bez agingu, ale xfs sa zda pomalsie (treba skontrolovat hodnoty). Rand read, bez agingu, xfs sa zda pomalsie, ale mozno len koli jednomu peaku. Append bez agingu. Ext4 vacsi peak, ale mozno nizsie hodnoty. Delete, xfs rychlejsie, ext4 velke peaky, chekni hondoty.
+%SSD xfs vs SSD ext4
+%Fragmentacia volneho aj pouziteho miesta priblizne rovnaka. Optimalnych filov u oboch 98\%. Rozlozenie fragmentov, v ext4 je malo stredne velkych fragmentov. 
+%Randwrite neaguje, obcas vyskoci, hodnoty podobne. Truncate slaby aging, hodnoty podobne. Read, XFS rychlejsie, resp nema take peaky ako ext4, ale zda sa, ze je tam nejake stupanie na rozdiel od ext4. Create bez agingu, ale xfs sa zda pomalsie (treba skontrolovat hodnoty). Rand read, bez agingu, xfs sa zda pomalsie, ale mozno len koli jednomu peaku. Append bez agingu. Ext4 vacsi peak, ale mozno nizsie hodnoty. Delete, xfs rychlejsie, ext4 velke peaky, chekni hondoty.
 
-300 HDD xfs vs 300 HDD ext4
-***cakame na vsetko***
+%300 HDD xfs vs 300 HDD ext4
+%***cakame na vsetko***
 
-600 HDD xfs vs 600 HDD ext4
-Lebo mali file systemy vela miesta, tak velmi nefragmentovali, optimalnych filov je 99\%, ale u xfs to vyzera, ze fragmentovalo viacej, ale moze to byt tym, ze stihlo viac zaplnit disk (85\% oproti 79\%). Kazdopadne ma menej fragmentov volneho miesta, radovo desiatky, ext4 ma tisicky.
-Vyzera to, ze xfs ma pomalsi randwrite, aj ked treba ceknut hodnoty, inak aging sa neprejavuje. Truncate, aging sa prejavuje, xfs pomalsie. Read, xfs o cosi pomalsie, aging sa prejavuje. Create, aging sa asi neprejavuje, chce to lepsi graf, inak xfs vyzera horsie. Random read, xfs horsie, aging sa prejavuje. Append, aging sa neprejavuje, len vyskocil, mozno ext4 trochu horsie. Delete xfs horsi, agung sa asi neprejavuje.
+%600 HDD xfs vs 600 HDD ext4
+%Lebo mali file systemy vela miesta, tak velmi nefragmentovali, optimalnych filov je 99\%, ale u xfs to vyzera, ze fragmentovalo viacej, ale moze to byt tym, ze stihlo viac zaplnit disk (85\% oproti 79\%). Kazdopadne ma menej fragmentov volneho miesta, radovo desiatky, ext4 ma tisicky.
+%Vyzera to, ze xfs ma pomalsi randwrite, aj ked treba ceknut hodnoty, inak aging sa neprejavuje. Truncate, aging sa prejavuje, xfs pomalsie. Read, xfs o cosi pomalsie, aging sa prejavuje. Create, aging sa asi neprejavuje, chce to lepsi graf, inak xfs vyzera horsie. Random read, xfs horsie, aging sa prejavuje. Append, aging sa neprejavuje, len vyskocil, mozno ext4 trochu horsie. Delete xfs horsi, agung sa asi neprejavuje.
 
-600 HDD xfs vs 300 HDD xfs
+%600 HDD xfs vs 300 HDD xfs
 
 
 
-STORAGE:
-NVME xfs vs SSD xfs
-Nvme, lebo je 400GB muselo vytvorit viac filov, preto ma aj vacsi pocet fragmentov, optimalnych filov je 88\% oproti 98 pri SSD.
-sdcko vykonalo 6 milionov operacii za 9000 sekund, nvme vykonalo 10 milionov operacii za 12000 sekund, to znamena, ze vykonalo za 9000 sekund 8.5 miliona operacii.
-Vidime, ze ked doslo volne miesto, velmi sa nafragmentoval
-Randwrite omnoho rychlejsi, ale aging sa neprejavuje ani u jednoho. Truncate stabilny.
-Aging readu sa prejavuje u obidvoch, vysledky z nvme su nestabilne, velke skoky. Create rychlejsi, s tym, ze aging sa neprejavuje. Random read stabilne rychlejsi. Append sa javi rychlejsi v SSD. Delete neaguje, nvme je rychlejsie.
+%STORAGE:
+%NVME xfs vs SSD xfs
+%Nvme, lebo je 400GB muselo vytvorit viac filov, preto ma aj vacsi pocet fragmentov, optimalnych filov je 88\% oproti 98 pri SSD.
+%sdcko vykonalo 6 milionov operacii za 9000 sekund, nvme vykonalo 10 milionov operacii za 12000 sekund, to znamena, ze vykonalo za 9000 sekund 8.5 miliona operacii.
+%Vidime, ze ked doslo volne miesto, velmi sa nafragmentoval
+%Randwrite omnoho rychlejsi, ale aging sa neprejavuje ani u jednoho. Truncate stabilny.
+%Aging readu sa prejavuje u obidvoch, vysledky z nvme su nestabilne, velke skoky. Create rychlejsi, s tym, ze aging sa neprejavuje. Random read stabilne rychlejsi. Append sa javi rychlejsi v SSD. Delete neaguje, nvme je rychlejsie.
 
-NVME ext4 vs SSD ext4
-***cakame na NVME ext4 ***
+%NVME ext4 vs SSD ext4
+%***cakame na NVME ext4 ***
 
 
 %SSD_xfs vs 300 HDD xfs
 %***cakame 300 HDD xfs***
 
-SSD ext4 vs 300 HDD ext4
+%SSD ext4 vs 300 HDD ext4
 
 
 
 
 \chapter{Conclusion}
+\label{conclusion}
+The aim of this thesis
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 \printbibliography
 
 \appendix %% Start the appendices.
 \chapter{Reports}\label{reports}
+\section{XFS, HDD, medium utilisation}
+
+\begin{compactenum}
+  \item Testing environment: Machine 3
+  \item OS: RHEL-7.4 
+  \end{compactenum}
+
+
+\begin{figure}[htb]
+    \centering
+    \fbox{\includegraphics[width=\textwidth,keepaspectratio,trim=4 4 4 4,clip]{../charts/HDD_xfs/free80.png}}
+    \caption{Evolution of free space fragmentation with medium utilisation (XFS)}
+    \label{fig:free80}
+\end{figure}
+
+\section{XFS, HDD, high utilisation}
+\begin{compactenum}
+  \item Testing environment: Machine 3
+  \item OS: RHEL-7.4 
+  \end{compactenum}
+
+\begin{figure}[htb]
+    \centering
+    \fbox{\includegraphics[width=\textwidth,keepaspectratio,trim=4 4 4 4,clip]{../charts/HDD_xfs/free99.png}}
+    \caption{Evolution of free space fragmentation with high utilisation (XFS)}
+    \label{fig:free99}
+\end{figure}
+
+
+
+
 \chapter{Examples}
+\label{examples}
 \lstset{language=XML, 
 numbers=left, 
 frame=single, 
@@ -869,6 +861,45 @@ caption={},
         </params>
       </task>
 \end{lstlisting}
+
+\begin{table}[htb]
+\centering
+\caption{Table of overall latencies}
+\begin{tabular}{|l|l|l|l|}
+\hline
+ &XFS & EXT4 &  \\
+\hline
+    random write & & & median \\
+ \hline
+                 &  & s & mean\\
+    \hline
+        truncate &  & 0.32\,ms & median\\
+    \hline
+                 &  & 1.35\,ms& mean \\
+    \hline
+            read &  & 1.56\,ms & median\\
+    \hline
+                 &  & 3.47\,ms & mean \\
+    \hline
+          create &  & 0.40\,ms & median\\
+    \hline
+                 &  & 3.84\,ms & mean \\
+    \hline
+     random read &  & 0.46\,ms & median\\
+    \hline
+                 &  & 1.37\,ms & mean \\
+    \hline
+          append &  & 1.76\,ms & median\\
+    \hline
+                 & 6.46\,ms & 6.65\,ms & mean \\
+    \hline
+          delete & 0.097\,ms & 0.049\,ms & median\\
+    \hline
+                & 0.701\,ms & 0.346\,ms & mean \\
+    \hline
+\end{tabular}
+\label{tab:ssd_xfs_ext4}
+\end{table}
 
 \end{document}
 

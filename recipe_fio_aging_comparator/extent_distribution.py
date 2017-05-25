@@ -122,7 +122,7 @@ def used_space_histogram(_file, destination):
 
 	
 	#more_info = ' '+str(sum(opt_histogram))+'/'+str(filenum)+' ('+str(int(100*float(sum(opt_histogram))/filenum))+'%)'
-	more_info = 'fragments: '+str(len(frag_data))+', total files: '+str(filenum)+', optimal files: '+str(int(100*float(len(opt_data))/filenum))+'%'
+	more_info = 'extents: '+str(len(frag_data))+', total files: '+str(filenum)+', optimal files: '+str(int(100*float(len(opt_data))/filenum))+'%'
 	template = more_info.join(template.split('XXX_MOREINFO_XXX'))
 
 
