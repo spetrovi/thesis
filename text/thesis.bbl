@@ -379,6 +379,131 @@
     \field{year}{2007}
   \endentry
 
+  \entry{kasavajhala2011solid}{article}{}
+    \name{author}{1}{}{%
+      {{hash=KV}{%
+         family={Kasavajhala},
+         familyi={K\bibinitperiod},
+         given={Vamsee},
+         giveni={V\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{KV1}
+    \strng{fullhash}{KV1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{pages}{8\bibrangedash 9}
+    \field{title}{Solid state drive vs. hard disk drive price and performance
+  study}
+    \field{journaltitle}{Proc. Dell Tech. White Paper}
+    \field{year}{2011}
+  \endentry
+
+  \entry{Hu:2009:WAA:1534530.1534544}{inproceedings}{}
+    \true{moreauthor}
+    \name{author}{1}{}{%
+      {{hash=HXY}{%
+         family={Hu},
+         familyi={H\bibinitperiod},
+         given={Xiao-Yu},
+         giveni={X\bibinitperiod-Y\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {ACM}%
+    }
+    \keyw{flash memory, solid state drives, solid state storage systems, write
+  amplification}
+    \strng{namehash}{HXY+1}
+    \strng{fullhash}{HXY+1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{booktitle}{Proceedings of SYSTOR 2009: The Israeli Experimental
+  Systems Conference}
+    \verb{doi}
+    \verb 10.1145/1534530.1534544
+    \endverb
+    \field{isbn}{978-1-60558-623-6}
+    \field{pages}{10:1\bibrangedash 10:9}
+    \field{series}{SYSTOR '09}
+    \field{title}{Write Amplification Analysis in Flash-based Solid State
+  Drives}
+    \list{location}{1}{%
+      {Haifa, Israel}%
+    }
+    \field{year}{2009}
+    \warn{\item Can't use 'location' + 'address'}
+  \endentry
+
+  \entry{Chang:2007:EEF:1278480.1278533}{inproceedings}{}
+    \true{moreauthor}
+    \name{author}{1}{}{%
+      {{hash=CYH}{%
+         family={Chang},
+         familyi={C\bibinitperiod},
+         given={Yuan-Hao},
+         giveni={Y\bibinitperiod-H\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {ACM}%
+    }
+    \keyw{endurance, flash memory, reliability, wear leveling}
+    \strng{namehash}{CYH+1}
+    \strng{fullhash}{CYH+1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{booktitle}{Proceedings of the 44th Annual Design Automation
+  Conference}
+    \verb{doi}
+    \verb 10.1145/1278480.1278533
+    \endverb
+    \field{isbn}{978-1-59593-627-1}
+    \field{pages}{212\bibrangedash 217}
+    \field{series}{DAC '07}
+    \field{title}{Endurance Enhancement of Flash-memory Storage Systems: An
+  Efficient Static Wear Leveling Design}
+    \list{location}{1}{%
+      {San Diego, California}%
+    }
+    \field{year}{2007}
+    \warn{\item Can't use 'location' + 'address'}
+  \endentry
+
+  \entry{Frankie:2012:MMT:2184512.2184527}{inproceedings}{}
+    \name{author}{1}{}{%
+      {{hash=FTo}{%
+         family={Frankie},
+         familyi={F\bibinitperiod},
+         given={Tasha\bibnamedelima others},
+         giveni={T\bibinitperiod\bibinitdelim o\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {ACM}%
+    }
+    \keyw{NAND flash, birth-death Markov process, overprovisioning of SSDs,
+  solid state drive, trim}
+    \strng{namehash}{FTo1}
+    \strng{fullhash}{FTo1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{booktitle}{Proceedings of the 50th Annual Southeast Regional
+  Conference}
+    \verb{doi}
+    \verb 10.1145/2184512.2184527
+    \endverb
+    \field{isbn}{978-1-4503-1203-5}
+    \field{pages}{59\bibrangedash 64}
+    \field{series}{ACM-SE '12}
+    \field{title}{A Mathematical Model of the Trim Command in NAND-flash SSDs}
+    \list{location}{1}{%
+      {Tuscaloosa, Alabama}%
+    }
+    \field{year}{2012}
+    \warn{\item Can't use 'location' + 'address'}
+  \endentry
+
   \entry{agrawal2007five}{article}{}
     \true{moreauthor}
     \name{author}{1}{}{%

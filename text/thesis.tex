@@ -122,12 +122,12 @@ In the second-stage testing, file system is brought to the aged state by reloadi
 
 In the later parts of this thesis, usage of developed tests on different configurations of file systems and storage is demonstrated. The subject of research are differences between popular Linux file systems (XFS, Ext4) and differences between used storage technologies (solid state and hard disk drives) in context of aging. Because of nature of collected data, a processing tool was implemented to parse large amount of information into human readable reports with interactive charts.
 
-In the Chapter~\ref{2}, the text present already conducted research of effects of age and fragmentation on file system performance. Chapter~\ref{fs} describes used storage and file systems and theirs main features. Chapter~\ref{tools} introduce tools used in implementation of tests while describing their relevant features. Chapters~\ref{aging} and ~\ref{fio} describe actual implementation of mentioned tests. Chapter~\ref{results} describes testing environment and and used data procesing. Then, it presents results obtained by using created tests. The research is focused describing the effect of aging file systems, differences between file systems in terms of aging and relations of underlying storage to performance of aged file system. In Chapter~\ref{conclusion}, I discuss the effects of age on file system performance as well as recommendations for this type of testing. Furthermore, future of testing of file system performance and aging is discussed.
+In the Chapter~\ref{related}, the text present already conducted research of effects of age and fragmentation on file system performance. Chapter~\ref{fs} describes used storage and file systems and theirs main features. Chapter~\ref{tools} introduce tools used in implementation of tests while describing their relevant features. Chapters~\ref{aging} and ~\ref{fio} describe actual implementation of mentioned tests. Chapter~\ref{results} describes testing environment and and used data procesing. Then, it presents results obtained by using created tests. The research is focused describing the effect of aging file systems, differences between file systems in terms of aging and relations of underlying storage to performance of aged file system. In Chapter~\ref{conclusion}, I discuss the effects of age on file system performance as well as recommendations for this type of testing. Furthermore, future of testing of file system performance and aging is discussed.
 
 Appendix~\ref{reports} contains overall information about tests and generated charts. Appendix~\ref{examples} contains examples of usage of used tools.  
 
 \chapter{Related work}
-\label{2}
+\label{related}
 In this chapter I present different approaches of file system aging and fragmentation research described and implemented in the past. The first section discuss usage of collected data to create aging workload. The second section discuss possibilities of aging the file system artificially, without pre-collected data.
 
 \section{Aging file system using real-life data}
@@ -203,15 +203,15 @@ Since the parts of HDD have to physically move to reach desired location, there 
 Obviously, block layout would have a large impact on performence of this kind of device. The amount of fragmentation (thus aging) affect the number of performed seeks. This cause the pressure on file system to store data more contiguously and also cluster related data.
 
 \subsection{Solid state drive}
-Solid state drive (i.e. SSD) is  a type of storage device which use integrated cirquit to store and retreive data. SSD has no moving parts, therefore the data access is purely electronic, which results in lower access time and latency than HDD.
+Solid state drive (i.e. SSD) is  a type of storage device which use integrated cirquit to store and retreive data. SSD has no moving parts, therefore the data access is purely electronic, which results in lower access time and latency than HDD~\cite{kasavajhala2011solid}.
 
-However, on SSDs, data cannot be directly overwritten (as in HDDs). The cell of an SSD can only be directly written to, therefore have to be erased before writing. Moreover, due to physical construction limits, write operation can be conducted to one page (4-$\SI{16}{\kilo\byte}$), but erasure have to be done to a whole block (128 to 512 pages). Therefore, if OS have to rewrite some part of a page (e.g. update metadata), the page have to be read, modified and submited back on available part of the drive. The original page is then marked as discarded. This effect is known as write amplification, and is computed as amount of bytes written to the device divided by amount of bytes requested to be written by user. For example, if user updates $\SI{512}{\byte}$ of data on device that uses $\SI{8}{\kilo\byte}$ pages, write amplification is then 16.
+However, on SSDs, data cannot be directly overwritten (as in HDDs). The cell of an SSD can only be directly written to, therefore have to be erased before writing. Moreover, due to physical construction limits, write operation can be conducted on one page (4-$\SI{16}{\kilo\byte}$), but erasure have to be done on a whole block (128 to 512 pages). Therefore, if OS have to rewrite some part of a page (e.g. update metadata), the page have to be read, modified and submited back on available part of the drive. The original page is then marked as discarded. This effect is known as write amplification~\cite{Hu:2009:WAA:1534530.1534544}, and is computed as amount of bytes written to the device divided by amount of bytes requested to be written by user. For example, if user updates $\SI{512}{\byte}$ of data on device that uses $\SI{8}{\kilo\byte}$ pages, write amplification is then 16.
 
 In addition, the memory cell can be rewritten finite amount of times, therefore, a form of wear leveling has to be employed. Wear leveling prevents frequently accessed blocks from exhaustion of cell life-cycle by moving files around the device.
 
-Static wear leveling rotates even unused files around the drive to ensure equal wear. However, deleting file, in file system doesn't always ensure its deletion on the device. Typically, the file is only marked as deleted, but this information is not submited to underlying device itself. Problem is, files that are not valid for file system anymore can still circulate on the device, increasing its wear and write amplification, since there are less free block that could have been.
+Static wear leveling~\cite{Chang:2007:EEF:1278480.1278533} rotates even unused files around the drive to ensure equal wear. However, deleting file, in file system doesn't always ensure its deletion on the device. Typically, the file is only marked as deleted, but this information is not submited to underlying device itself. Problem is, files that are not valid for file system anymore can still circulate on the device, increasing its wear and write amplification, since there are less free block that could have been.
 
-To decrease this effect, trim commands were introduced. Trim command communicate to SSD all the deletions that were realised in the file system, so the drive can erase blocks accordingly. Nevertheless this operation is reducing performance of IO operations while being conducted, it can increase overall performance and life time of an SSD.
+To decrease this effect, trim commands were introduced~\cite{Frankie:2012:MMT:2184512.2184527}. Trim command communicate to SSD all the deletions that were realised in the file system, so the drive can erase blocks accordingly. Nevertheless this operation is reducing performance of IO operations while being conducted, it can increase overall performance and life time of an SSD.
 
 
 
@@ -349,7 +349,7 @@ File size is another important factor of succesfull simulation. To consider a si
 During the test, all available file operations are used, with more weight placed on layout alterning operations (create, delete, truncate, append, random write). The non-alterning operations are there to verify, if any performance drop occur during the aging process.
 
 \section{File system images}
-File system images can be created by using tools developed to inspect file systems in case of emergency. For Ext* file systems, there is a tool called \texttt{e2image} and for XFS, \texttt{xfs\_metadump}. Both tools create images as sparse files, so compression is needed.
+File system images can be created by using tools developed to inspect file systems in case of emergency. For Ext file systems, there is a tool called \texttt{e2image} and for XFS, \texttt{xfs\_metadump}. Both tools create images as sparse files, so compression is needed.
 
 \texttt{E2image tool} can save whole contents of a file system or just its metadata and offers compresion of image as well. Created images can be further compressed by tools such \texttt{bzip2} or \texttt{tar}. Such images can be later reloaded back on a device. From that point, file system can be mounted. Example~\ref{ex:e2image1} shows creating file system image using \texttt{e2image} tool. Example~\ref{ex:e2image2} shows reloading image on device.
 
@@ -458,6 +458,8 @@ At first, performance measurements of fresh file system is done. Test configurat
 
 After testing fresh file system, image is loaded and mouted. If the mounted file system utilize too much space, some files can be randomly deleted. Afterwards, pre-test fragmentation is logged and environment is initalized. When the test is over, post-test fragmentation is gathered.
 
+The configuration of FIO can be passed as parameter to recipe\_fio\_aging task. Such approach makes this testing workflow as flexible as original benchmark.
+
 For statistical correctness, these tests can run in loops $n$ times. Fresh and aged testing is divided into separate loops.
 
 After last iteration, the results are archived and sent to data-collecting server. 
@@ -492,7 +494,9 @@ Parameters available for recipe\_fio\_aging:
 This chapter present results of implemented tests. In the first section I describe environment used for testing. In the second section, I describe means of data evaluation. In the third section, I show elementary differences between fresh and aged file systems. In the fourth section, I describe differences between two tested file systems (XFS, Ext4) in terms of aging. In fifth section I demonstrate the effect file system aging have on underlying storage.
 
 \section{Testing environment}
-In this section, I describe testing environment and storage used for testing with created tests. The testing machines were available to me from a pool of systems of Red Hat Beaker environment.
+The testing machines were available to me from a pool of systems of Red Hat Beaker environment. For every machine, its model, processor, memory and used storage devices are listed in table~\ref{machines}.
+
+The OS installed on all Machines were RHEL-7.3 with kernel 3.10.0-514.el7.x86\_64. Tuned profile was set to performance. More information about installed packages can be found in Example~\ref{ex:kickstart}.
 
 \begin{tabular}{|l|l|}
 \hline
@@ -510,7 +514,7 @@ In this section, I describe testing environment and storage used for testing wit
     Interface & SAS\\ \hline
     Capacity & $\SI{600}{\giga\byte}$\\ \hline
 \hline
-   \multicolumn{2}{|l|}{Machine\,2} \\ \hline
+   \multicolumn{2}{|l|}{prepisat na durdena} \\ \hline
     Model & Lenovo\texttrademark System x3250\,M6 \\
     \hline
     Processor & Intel\textsuperscript\textregistered Xeon\textsuperscript\textregistered E3-1230\,v5 \\
@@ -734,7 +738,29 @@ Underlying storage has significant impact on file system performance. As mention
 
 \chapter{Conclusion}
 \label{conclusion}
-The aim of this thesis
+Tesing of file system aging is complex and challenging problem.
+
+The aim of this thesis was to introduce means of testing of file system aging performance. Such means consist of two automated tests, which use existing benchmarks for testing.
+
+By using the first test, I was able to succesfully induce aging and fragmentation of used file systems. From the generated data, it can be observed, that aging indeed causes performance penalty on file systems. However, deeper data analysis would have to be performed to fully understand the evolution of performance through aging, yet such analysis is beyond scope of this thesis.
+
+The second implemented test uses images created by the first test to measure state of fragmented, aged file systems. Despite the efforts made while designing benchmark configuration, meaningfull results were not obtained from this test. Correct configuration which would prove degraded performance of previously aged file system is yet to be found. Finding such configuration requires extented experiments with different configurations, complex analysis of benchmark and possible debugging. Such efforts can be of subject of future work.
+
+Further aim of this thesis was to compare performance of different aged file systems and effect of used storage technolgies on performance. 
+
+From the obtained data, it is apparent, that with higher utilisation of file systems performance degrading effect are more apparent. Even while using flash based devices (i.e. SSD), the aging can have degrading effect on performance of some IO operations.t
+
+This thesis is aimed on testing so called local file systems with simple configuration, which means, whole device is one partition and file system operates on the whole available volume. However, storage usage is evolving into new approaches. Virtualisation and cloud solutions are more and more popular.
+
+With developement of tools like LVM, it si possible to merge multiple devices into huge, flexible arrays. Approaches like thin-provisioning then offer further possibilities of providing storage space to users.
+
+
+
+With this growing complexity, file system aging (and software aging generally) can have signifficant impact on performance of these systems. It is, therfore, very important to research and understand file system aging before this technology is widely spread.
+
+
+therefore tools like LVM and approaches like thin provisioning will be used k
+
 
 
 
@@ -803,7 +829,7 @@ caption={},
 }
 
 
-\begin{lstlisting}[language=xml, caption={Specifying OS to be installed}][frame=single]
+\begin{lstlisting}[language=xml, caption={Specifying OS to be installed}, label={ex:os}][frame=single]
 <distroRequires>
   <and>
     <distro_family op="=" value="RedHatEnterpriseLinux7"/>
@@ -814,33 +840,64 @@ caption={},
 </distroRequires>
 \end{lstlisting}
 
-\begin{lstlisting}[language=xml, caption={Configuring environment using kickstart}][frame=single]
-<kickstart>
-  <![CDATA[
-    install
-    lang en_US.UTF-8
-    skipx
-    keyboard us
-    rootpw redhat
-    firewall --disabled
-    authconfig --enableshadow --enablemd5
-    selinux --enforcing
-    timezone --utc Europe/Prague
 
-    bootloader --location=mbr --driveorder=sda
-    zerombr
-    clearpart --all --initlabel --drives=sda
-    part /boot --fstype=ext2 --size=200 --asprimary --label=BOOT --ondisk=sda
-    part /mnt/tests --fstype=ext4 --size=40960 --asprimary --label=MNT --ondisk=sda
-    part / --fstype=ext4 --size=1 --grow --asprimary --label=ROOT  --ondisk=sda
-    reboot
-    %packages --excludedocs --ignoremissing --nobase
-    @core
-    wget
-    python
-    dhcpv6-client
-    dhclient
-    yum
+\begin{lstlisting}[language=xml, caption={Configuring environment using kickstart}, label={ex:kickstart}][frame=single]
+<kickstart>
+<![CDATA[
+
+install
+lang en_US.UTF-8
+skipx
+keyboard us
+rootpw redhat 
+firewall --disabled
+authconfig --enableshadow --enablemd5
+selinux --enforcing
+timezone --utc Europe/Prague
+
+bootloader --location=mbr --driveorder=sda
+zerombr
+clearpart --all --initlabel --drives=sda
+part /boot --fstype=ext2 --size=200 --asprimary --label=BOOT --ondisk=sda
+part /mnt/tests --fstype=ext4 --size=40960 --asprimary --label=MNT --ondisk=sda
+part / --fstype=ext4 --size=1 --grow --asprimary --label=ROOT  --ondisk=sda
+reboot
+%packages --excludedocs --ignoremissing --nobase
+@core
+wget
+python
+perl-devel
+parted
+cpuspeed
+perl
+dhcpv6-client
+dhclient
+yum
+yum-rhn-plugin
+yum-security
+yum-updatesd
+openssh-server
+openssh-clients
+bc
+screen
+nfs-utils
+seekwatcher
+sysstat
+xfsprogs
+e2fsprogs
+hdparm
+sdparm
+gcc
+tuned
+cpufrequtils
+cryptsetup-luks
+vim-enhanced
+rsync
+lvm2
+smartmontools
+git
+iotop
+%end			
 ]]>
 </kickstart>
 \end{lstlisting}
