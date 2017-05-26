@@ -14,22 +14,22 @@
 \addvspace {4\p@ }
 \contentsline {figure}{\numberline {6.1}{\ignorespaces Activity diagram of testing of aged file system}}{25}{figure.6.1}
 \addvspace {4\p@ }
-\contentsline {figure}{\numberline {7.1}{\ignorespaces Latency growth induced by aging test}}{33}{figure.7.1}
+\contentsline {figure}{\numberline {7.1}{\ignorespaces Evolution of sequential read of XFS during testing of high and medium utilisation of HDD}}{32}{figure.7.1}
 \contentsline {figure}{\numberline {7.2}{\ignorespaces Evolution of latency of create operation, in untrimed file system (XFS)}}{37}{figure.7.2}
 \addvspace {4\p@ }
 \addvspace {4\p@ }
 \contentsline {figure}{\numberline {A.1}{\ignorespaces Free space fragmentation of XFS during testing of medium utilisation of HDD}}{43}{figure.A.1}
 \contentsline {figure}{\numberline {A.2}{\ignorespaces Size distribution of file extents of XFS during testing of medium utilisation of HDD}}{44}{figure.A.2}
 \contentsline {figure}{\numberline {A.3}{\ignorespaces Usage of available space of XFS during testing of medium utilisation of HDD}}{45}{figure.A.3}
-\contentsline {figure}{\numberline {A.4}{\ignorespaces Evolution of latencies while testing XFS during testing of medium utilisation of HDD}}{46}{figure.A.4}
+\contentsline {figure}{\numberline {A.4}{\ignorespaces Evolution of latencies of XFS during testing of medium utilisation of HDD}}{46}{figure.A.4}
 \contentsline {figure}{\numberline {A.5}{\ignorespaces Evolution of free space fragmentation of XFS during testing of high utilisation of HDD}}{47}{figure.A.5}
 \contentsline {figure}{\numberline {A.6}{\ignorespaces Size distribution of file extents of XFS during testing high utilisation of HDD}}{48}{figure.A.6}
 \contentsline {figure}{\numberline {A.7}{\ignorespaces Usage of available space of XFS during testing of high utilisation of HDD}}{49}{figure.A.7}
-\contentsline {figure}{\numberline {A.8}{\ignorespaces Evolution of latencies while testing XFS during testing of high utilisation of HDD}}{50}{figure.A.8}
+\contentsline {figure}{\numberline {A.8}{\ignorespaces Evolution of latencies of XFS during testing of high utilisation of HDD}}{50}{figure.A.8}
 \contentsline {figure}{\numberline {A.9}{\ignorespaces Evolution of free space fragmentation of EXT4 during testing of high utilisation of HDD}}{51}{figure.A.9}
 \contentsline {figure}{\numberline {A.10}{\ignorespaces Size distribution of file extents of EXT4 during testing of high utilisation of HDD}}{52}{figure.A.10}
 \contentsline {figure}{\numberline {A.11}{\ignorespaces Usage of available space of EXT4 during testing of high utilisation of HDD}}{53}{figure.A.11}
-\contentsline {figure}{\numberline {A.12}{\ignorespaces Evolution of latencies while testing EXT4 during testing of high utilisation of HDD}}{54}{figure.A.12}
+\contentsline {figure}{\numberline {A.12}{\ignorespaces Evolution of latencies of EXT4 during testing of high utilisation of HDD}}{54}{figure.A.12}
 \contentsline {figure}{\numberline {A.13}{\ignorespaces Evolution of free space fragmentation of XFS during testing on SSD with regular trimming}}{55}{figure.A.13}
 \contentsline {figure}{\numberline {A.14}{\ignorespaces Size distribution of file extents of XFS during testing on SSD with regular trimming}}{56}{figure.A.14}
 \contentsline {figure}{\numberline {A.15}{\ignorespaces Usage of available space of XFS during testing on SSD with regular trimming}}{57}{figure.A.15}

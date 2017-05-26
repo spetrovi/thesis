@@ -583,18 +583,24 @@ The file sysem aging tool succesfully induced fragmentation in all performed tes
 %durden W495 xfs vs draven
 On Figure~\ref{fig:free80_xfs}, we can see evolution of fragmentation of free space gathered while testing at medium file system utilisation (80\%). From the Figure~\ref{fig:free99_xfs}, we can see that higher file system utilisation (99\%) induces tremendous fragmentation of free space.
 
-Despite this occurence, it is remarkable, that fragmentation of used space is very similar accross these two test runs. On Figure~\ref{fig:used80_xfs} and~\ref{fig:used99_xfs}, we can see, that both file systems have about 92\% of files optimally allocated. Considering amount of fragments of free space differs in orders of tens of thousands, it is remarkable, that amount of non-contiguous extents of free files differs only by 33\%
+Despite this occurence, it is remarkable, that fragmentation of used space is very similar accross these two test runs. On Figure~\ref{fig:used80_xfs} and~\ref{fig:used99_xfs}, we can see, that both file systems have about 92\% of files optimally allocated. Considering amount of fragments of free space differs in orders of tens of thousands, it is remarkable, that amount of non-contiguous extents of free files differs only by 33\%.
 
 On Table~\ref{tab:99_vs_80}, we can see overall raise of latency in regard of highly utilised file system.
 
-Furthermore, seqential read and append display signs of slight progressive performance degradation through test. Furthermore, operation truncate and create shows sign of performance degradation only on high utilised file systems. Figure~\ref{fig:readtrunc99} displays latency growth of operations truncate and read on high utilised file system.
+Furthermore, operations append and read display signs of progressively larger fluctuations during both tests (Figure~\ref{fig:lats99_xfs} and Figure~\ref{fig:lats80_xfs}). Operations create and truncate show sign of performance degradation only on high utilised file systems (Figure~\ref{fig:lats99_xfs}). Figure~\ref{fig:read_lh} shows comparison of sequential read latencies of medium and highly utilised file systems.
 
-\begin{figure}
+\begin{figure}[!htb]
     \centering
-    \fbox{\includegraphics[width=\textwidth,keepaspectratio,trim=4 4 4 4,clip]{../charts/HDD_xfs/rt99.png}}
-    \caption{Latency growth induced by aging test}
-    \label{fig:readtrunc99}
+   \begin{minipage}{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../charts/HDD_xfs/read_high}
+        \includegraphics[width=\textwidth]{../charts/HDD_xfs/read_low}
+        \caption[Evolution of sequential read of XFS during testing of high and medium utilisation of HDD]{These charts show progressively larger performance fluctuation of sequential read operations observed both medium and highly utilised file system.}
+\label{fig:read_lh}
+    \end{minipage}
 \end{figure}
+
+\clearpage
 
 \begin{table}
 \centering
@@ -757,7 +763,7 @@ This result is great example of testing long-term performance affecting features
 \begin{figure}
     \centering
     \fbox{\includegraphics[width=\textwidth,keepaspectratio]{../charts/SSD_xfs_notrim/create}}
-    \caption{Evolution of latency of create operation, in untrimed file system (XFS)}
+    \caption[Evolution of latency of create operation, in untrimed file system (XFS)]{Latency evolution of create operation, in untrimed XFS}
     \label{fig:notrim_create}
 \end{figure}
 
@@ -796,7 +802,7 @@ This result is great example of testing long-term performance affecting features
                 & 0.70\,ms & 0.97\,ms & mean \\
     \hline
 \end{tabular}
-\caption{Differences in latency on trimmed and non trimmed file system (XFS)}
+\caption{Differences in latencies of trimmed and not trimmed file system (XFS)}
 \label{tab:trim}
 \end{table}
 
@@ -945,7 +951,7 @@ The results of this thesis were presented to developers of file systems and open
         \centering
         \includegraphics[width=\textwidth]{../charts/HDD_xfs/low_ca}
         \includegraphics[width=\textwidth]{../charts/HDD_xfs/low_others}
-        \caption[Evolution of latencies while testing XFS during testing of medium utilisation of HDD]{On these charts, we can see evolution of latencies of conducted IO operations during testing XFS with medium utilisation. Progressively larger fluctuations can be seen in sequential read operation. Latency of opperation append seems to be slowly raising in the last hour of test.}
+        \caption[Evolution of latencies of XFS during testing of medium utilisation of HDD]{On these charts, we can see evolution of latencies of conducted IO operations during testing XFS with medium utilisation. Progressively larger fluctuations can be seen in sequential read operation. Latency of opperation append seems to be slowly raising in the last hour of test.}
 \label{fig:lats80_xfs}
     \end{minipage}
 \end{figure}
@@ -989,7 +995,7 @@ The results of this thesis were presented to developers of file systems and open
         \centering
         \includegraphics[width=\textwidth]{../charts/HDD_xfs/high_ca}
         \includegraphics[width=\textwidth]{../charts/HDD_xfs/high_other}
-        \caption[Evolution of latencies while testing XFS during testing of high utilisation of HDD]{On these charts, we can see evolution of latencies of conducted IO operations during testing XFS with high utilisation. Progressively larger fluctuations can be seen in create and append operations. Some other operations such as seqiential read of truncate are showing proggresive growth mainly after file system reached highest utilisation.}
+        \caption[Evolution of latencies of XFS during testing of high utilisation of HDD]{On these charts, we can see evolution of latencies of conducted IO operations during testing XFS with high utilisation. Progressively larger fluctuations can be seen in create and append operations. Some other operations such as seqiential read of truncate are showing proggresive growth mainly after file system reached highest utilisation.}
 \label{fig:lats99_xfs}
     \end{minipage}
 \end{figure}
@@ -1035,7 +1041,7 @@ The results of this thesis were presented to developers of file systems and open
         \centering
         \includegraphics[width=\textwidth]{../charts/HDD_ext4/ca}
         \includegraphics[width=\textwidth]{../charts/HDD_ext4/o}
-                \caption[Evolution of latencies while testing EXT4 during testing of high utilisation of HDD]{On these charts, we can see evolution of latencies of conducted IO operations during testing EXT4 with high utilisation. Progressively larger fluctuations can be seen in operations random write, truncate and read.}
+                \caption[Evolution of latencies of EXT4 during testing of high utilisation of HDD]{On these charts, we can see evolution of latencies of conducted IO operations during testing EXT4 with high utilisation. Progressively larger fluctuations can be seen in operations random write, truncate and read.}
 \label{fig:lats_ext4}
     \end{minipage}
 \end{figure}
