@@ -66,11 +66,11 @@ class Tar:
   def generate_usage_plot(self):
 	contents = read_file('./out/df_log.out','r').split('\n')[:-1]#[8:-3]
         percents = map(lambda x: int(x.split('%')[0].split(' ')[-1:][0]),contents)
-	x = [300*i for i in range(len(percents))]
+	x = [0.08*i for i in range(len(percents))]
 	fig, ax = plt.subplots()
 	ax.plot(x,percents)
-	ax.set_ylabel('Used space[%]')
-	ax.set_xlabel('Time[s]')
+	ax.set_ylabel('Used space [%]')
+	ax.set_xlabel('Time [h]')
 	#ax.set_ylim([0,0.1])
 	ax.grid()
 	fig.set_size_inches(4, 3)
@@ -394,6 +394,20 @@ r.save()
 
 
 """
+
+path1 = glob.glob('./durden_images/*xfs*.tar.xz')[0]
+path2 = glob.glob('./draven_images/*xfs*W495LONG3.tar.xz')[0]
+r = Report(path1,path2,'./res/')
+r.save()
+
+
+
+"""
+path1 = glob.glob('./durden_images/*ext4*.tar.xz')[0]
+path2 = glob.glob('./durden_images/*xfs*.tar.xz')[0]
+r = Report(path1,path2,'./res/')
+r.save()
+
 path1 = glob.glob('./durden_images/*xfs*.tar.xz')[0]
 path2 = glob.glob('./draven_images/*xfs*W495LONG3.tar.xz')[0]
 r = Report(path1,path2,'./res/')
@@ -431,7 +445,6 @@ r.save()
 #r = Report(path1,path2,'./res/')
 #r.save()
 
-"""
 
 
 path1 = glob.glob('./wolverine_images/*xfs*TRIM.tar.xz')[0]

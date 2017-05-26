@@ -18,11 +18,22 @@
 \contentsline {figure}{\numberline {7.2}{\ignorespaces Evolution of latency of create operation, tested on XFS}}{38}{figure.7.2}
 \addvspace {4\p@ }
 \addvspace {4\p@ }
-\contentsline {figure}{\numberline {A.1}{\ignorespaces Evolution of free space fragmentation with medium utilisation (XFS)}}{45}{figure.A.1}
-\contentsline {figure}{\numberline {A.2}{\ignorespaces Evolution of free space fragmentation with high utilisation (XFS)}}{46}{figure.A.2}
-\contentsline {figure}{\numberline {A.3}{\ignorespaces Distribution of size of extents of used space}}{47}{figure.A.3}
-\contentsline {figure}{\numberline {A.4}{\ignorespaces Distribution of size of extents of used space}}{48}{figure.A.4}
-\contentsline {figure}{\numberline {A.5}{\ignorespaces Distribution of size of extents of used space}}{49}{figure.A.5}
-\contentsline {figure}{\numberline {A.6}{\ignorespaces Distribution of size of extents of used space}}{50}{figure.A.6}
-\contentsline {figure}{\numberline {A.7}{\ignorespaces Distribution of size of extents of used space}}{51}{figure.A.7}
+\contentsline {figure}{\numberline {A.1}{\ignorespaces Evolution of free space fragmentation}}{45}{figure.A.1}
+\contentsline {figure}{\numberline {A.2}{\ignorespaces Size distribution of file extents}}{46}{figure.A.2}
+\contentsline {figure}{\numberline {A.3}{\ignorespaces Evolution of usage during test}}{46}{figure.A.3}
+\contentsline {figure}{\numberline {A.4}{\ignorespaces Evolution of free space fragmentation}}{47}{figure.A.4}
+\contentsline {figure}{\numberline {A.5}{\ignorespaces Size distribution of file extents}}{48}{figure.A.5}
+\contentsline {figure}{\numberline {A.6}{\ignorespaces Evolution of usage during test}}{48}{figure.A.6}
+\contentsline {figure}{\numberline {A.7}{\ignorespaces Evolution of free space fragmentation}}{49}{figure.A.7}
+\contentsline {figure}{\numberline {A.8}{\ignorespaces Size distribution of file extents}}{50}{figure.A.8}
+\contentsline {figure}{\numberline {A.9}{\ignorespaces Evolution of usage during test}}{50}{figure.A.9}
+\contentsline {figure}{\numberline {A.10}{\ignorespaces Evolution of free space fragmentation}}{51}{figure.A.10}
+\contentsline {figure}{\numberline {A.11}{\ignorespaces Size distribution of file extents}}{52}{figure.A.11}
+\contentsline {figure}{\numberline {A.12}{\ignorespaces Evolution of usage during test}}{52}{figure.A.12}
+\contentsline {figure}{\numberline {A.13}{\ignorespaces Distribution of size of extents of used space}}{53}{figure.A.13}
+\contentsline {figure}{\numberline {A.14}{\ignorespaces Distribution of size of extents of used space}}{54}{figure.A.14}
+\contentsline {figure}{\numberline {A.15}{\ignorespaces Evolution of usage during test}}{54}{figure.A.15}
+\contentsline {figure}{\numberline {A.16}{\ignorespaces Evolution of free space fragmentation}}{55}{figure.A.16}
+\contentsline {figure}{\numberline {A.17}{\ignorespaces Size distribution of file extents}}{56}{figure.A.17}
+\contentsline {figure}{\numberline {A.18}{\ignorespaces Evolution of usage during test}}{56}{figure.A.18}
 \addvspace {4\p@ }

@@ -19,11 +19,11 @@
 \contentsline {section}{\numberline {4.4}\slshape Fs-drift}{14}{section.4.4}
 \contentsline {subsection}{\numberline {4.4.1}\rmfamily Changes to original code}{16}{subsection.4.4.1}
 \contentsline {chapter}{\numberline {5}\bfseries Aging the file system}{19}{chapter.5}
-\contentsline {section}{\numberline {5.1}\slshape Aging process}{19}{section.5.1}
+\contentsline {section}{\numberline {5.1}\slshape Fs-drift configuration}{19}{section.5.1}
 \contentsline {section}{\numberline {5.2}\slshape File system images}{20}{section.5.2}
 \contentsline {section}{\numberline {5.3}\slshape Implementation details}{21}{section.5.3}
 \contentsline {chapter}{\numberline {6}\bfseries Performance testing of aged file system}{25}{chapter.6}
-\contentsline {section}{\numberline {6.1}\slshape FIO settings}{25}{section.6.1}
+\contentsline {section}{\numberline {6.1}\slshape FIO configuration}{25}{section.6.1}
 \contentsline {section}{\numberline {6.2}\slshape Test structure}{26}{section.6.2}
 \contentsline {chapter}{\numberline {7}\bfseries Results}{29}{chapter.7}
 \contentsline {section}{\numberline {7.1}\slshape Testing environment}{29}{section.7.1}
@@ -39,7 +39,9 @@
 \contentsline {chapter}{Bibliography}{43}{chapter*.8}
 \contentsline {chapter}{\numberline {A}\bfseries Reports}{45}{appendix.A}
 \contentsline {section}{\numberline {A.1}\slshape XFS, HDD, medium utilisation}{45}{section.A.1}
-\contentsline {section}{\numberline {A.2}\slshape XFS, HDD, high utilisation}{45}{section.A.2}
-\contentsline {section}{\numberline {A.3}\slshape XFS, SSD}{46}{section.A.3}
-\contentsline {section}{\numberline {A.4}\slshape EXT4, SSD}{46}{section.A.4}
-\contentsline {chapter}{\numberline {B}\bfseries Examples}{53}{appendix.B}
+\contentsline {section}{\numberline {A.2}\slshape XFS, HDD, high utilisation}{47}{section.A.2}
+\contentsline {section}{\numberline {A.3}\slshape EXT4, HDD, high utilisation}{49}{section.A.3}
+\contentsline {section}{\numberline {A.4}\slshape XFS, SSD, TRIM}{51}{section.A.4}
+\contentsline {section}{\numberline {A.5}\slshape EXT4, SSD, TRIM}{53}{section.A.5}
+\contentsline {section}{\numberline {A.6}\slshape XFS, SSD, NOTRIM}{55}{section.A.6}
+\contentsline {chapter}{\numberline {B}\bfseries Examples}{57}{appendix.B}

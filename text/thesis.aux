@@ -130,7 +130,7 @@
 \@writefile{lof}{\addvspace {4\p@ }}
 \@writefile{lot}{\addvspace {4\p@ }}
 \newlabel{aging}{{5}{19}{Aging the file system}{chapter.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.1}\slshape   Aging process}{19}{section.5.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}\slshape   Fs-drift configuration}{19}{section.5.1}}
 \@writefile{toc}{\contentsline {section}{\numberline {5.2}\slshape   File system images}{20}{section.5.2}}
 \newlabel{ex:e2image1}{{5.1}{20}{Creating compressed image using \texttt {e2image}}{lstlisting.5.1}{}}
 \@writefile{lol}{\contentsline {lstlisting}{\numberline {5.1}Creating compressed image using \texttt  {e2image}}{20}{lstlisting.5.1}}
@@ -144,7 +144,7 @@
 \@writefile{lof}{\addvspace {4\p@ }}
 \@writefile{lot}{\addvspace {4\p@ }}
 \newlabel{fio}{{6}{25}{Performance testing of aged file system}{chapter.6}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.1}\slshape   FIO settings}{25}{section.6.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.1}\slshape   FIO configuration}{25}{section.6.1}}
 \@writefile{toc}{\contentsline {section}{\numberline {6.2}\slshape   Test structure}{26}{section.6.2}}
 \@writefile{lof}{\contentsline {figure}{\numberline {6.1}{\ignorespaces Activity diagram of testing of aged file system}}{27}{figure.6.1}}
 \newlabel{fig:rec_activity}{{6.1}{27}{Activity diagram of testing of aged file system}{figure.6.1}{}}
@@ -185,29 +185,53 @@
 \@writefile{lot}{\addvspace {4\p@ }}
 \newlabel{reports}{{A}{45}{Reports}{appendix.A}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {A.1}\slshape   XFS, HDD, medium utilisation}{45}{section.A.1}}
-\@writefile{lof}{\contentsline {figure}{\numberline {A.1}{\ignorespaces Evolution of free space fragmentation with medium utilisation (XFS)}}{45}{figure.A.1}}
-\newlabel{fig:free80}{{A.1}{45}{Evolution of free space fragmentation with medium utilisation (XFS)}{figure.A.1}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {A.2}\slshape   XFS, HDD, high utilisation}{45}{section.A.2}}
-\@writefile{lof}{\contentsline {figure}{\numberline {A.2}{\ignorespaces Evolution of free space fragmentation with high utilisation (XFS)}}{46}{figure.A.2}}
-\newlabel{fig:free99}{{A.2}{46}{Evolution of free space fragmentation with high utilisation (XFS)}{figure.A.2}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {A.3}\slshape   XFS, SSD}{46}{section.A.3}}
-\@writefile{toc}{\contentsline {section}{\numberline {A.4}\slshape   EXT4, SSD}{46}{section.A.4}}
-\@writefile{lof}{\contentsline {figure}{\numberline {A.3}{\ignorespaces Distribution of size of extents of used space}}{47}{figure.A.3}}
-\newlabel{fig:used99}{{A.3}{47}{Distribution of size of extents of used space}{figure.A.3}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {A.4}{\ignorespaces Distribution of size of extents of used space}}{48}{figure.A.4}}
-\newlabel{fig:free_xfs_ssd}{{A.4}{48}{Distribution of size of extents of used space}{figure.A.4}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {A.5}{\ignorespaces Distribution of size of extents of used space}}{49}{figure.A.5}}
-\newlabel{fig:used_xfs_ssd}{{A.5}{49}{Distribution of size of extents of used space}{figure.A.5}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {A.6}{\ignorespaces Distribution of size of extents of used space}}{50}{figure.A.6}}
-\newlabel{fig:free_ext4_ssd}{{A.6}{50}{Distribution of size of extents of used space}{figure.A.6}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {A.7}{\ignorespaces Distribution of size of extents of used space}}{51}{figure.A.7}}
-\newlabel{fig:used_ext4_ssd}{{A.7}{51}{Distribution of size of extents of used space}{figure.A.7}{}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {B}\bfseries  Examples}{53}{appendix.B}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.1}{\ignorespaces Evolution of free space fragmentation}}{45}{figure.A.1}}
+\newlabel{fig:free80_xfs}{{A.1}{45}{Evolution of free space fragmentation}{figure.A.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.2}{\ignorespaces Size distribution of file extents}}{46}{figure.A.2}}
+\newlabel{fig:used80_xfs}{{A.2}{46}{Size distribution of file extents}{figure.A.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.3}{\ignorespaces Evolution of usage during test}}{46}{figure.A.3}}
+\newlabel{fig:usage80_xfs}{{A.3}{46}{Evolution of usage during test}{figure.A.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {A.2}\slshape   XFS, HDD, high utilisation}{47}{section.A.2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.4}{\ignorespaces Evolution of free space fragmentation}}{47}{figure.A.4}}
+\newlabel{fig:free99_xfs}{{A.4}{47}{Evolution of free space fragmentation}{figure.A.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.5}{\ignorespaces Size distribution of file extents}}{48}{figure.A.5}}
+\newlabel{fig:used99_xfs}{{A.5}{48}{Size distribution of file extents}{figure.A.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.6}{\ignorespaces Evolution of usage during test}}{48}{figure.A.6}}
+\newlabel{fig:usage99_xfs}{{A.6}{48}{Evolution of usage during test}{figure.A.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {A.3}\slshape   EXT4, HDD, high utilisation}{49}{section.A.3}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.7}{\ignorespaces Evolution of free space fragmentation}}{49}{figure.A.7}}
+\newlabel{fig:free99_ext4}{{A.7}{49}{Evolution of free space fragmentation}{figure.A.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.8}{\ignorespaces Size distribution of file extents}}{50}{figure.A.8}}
+\newlabel{fig:used99_ext4}{{A.8}{50}{Size distribution of file extents}{figure.A.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.9}{\ignorespaces Evolution of usage during test}}{50}{figure.A.9}}
+\newlabel{fig:usage99_ext4}{{A.9}{50}{Evolution of usage during test}{figure.A.9}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {A.4}\slshape   XFS, SSD, TRIM}{51}{section.A.4}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.10}{\ignorespaces Evolution of free space fragmentation}}{51}{figure.A.10}}
+\newlabel{fig:free_xfs_ssd_trim}{{A.10}{51}{Evolution of free space fragmentation}{figure.A.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.11}{\ignorespaces Size distribution of file extents}}{52}{figure.A.11}}
+\newlabel{fig:used_xfs_ssd_trim}{{A.11}{52}{Size distribution of file extents}{figure.A.11}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.12}{\ignorespaces Evolution of usage during test}}{52}{figure.A.12}}
+\newlabel{fig:usage_xfs_ssd_trim}{{A.12}{52}{Evolution of usage during test}{figure.A.12}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {A.5}\slshape   EXT4, SSD, TRIM}{53}{section.A.5}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.13}{\ignorespaces Distribution of size of extents of used space}}{53}{figure.A.13}}
+\newlabel{fig:free_ext4_ssd}{{A.13}{53}{Distribution of size of extents of used space}{figure.A.13}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.14}{\ignorespaces Distribution of size of extents of used space}}{54}{figure.A.14}}
+\newlabel{fig:used_ext4_ssd}{{A.14}{54}{Distribution of size of extents of used space}{figure.A.14}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.15}{\ignorespaces Evolution of usage during test}}{54}{figure.A.15}}
+\newlabel{fig:usage_ext4_ssd_notrim}{{A.15}{54}{Evolution of usage during test}{figure.A.15}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {A.6}\slshape   XFS, SSD, NOTRIM}{55}{section.A.6}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.16}{\ignorespaces Evolution of free space fragmentation}}{55}{figure.A.16}}
+\newlabel{fig:free_xfs_ssd_notrim}{{A.16}{55}{Evolution of free space fragmentation}{figure.A.16}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.17}{\ignorespaces Size distribution of file extents}}{56}{figure.A.17}}
+\newlabel{fig:used_xfs_ssd_notrim}{{A.17}{56}{Size distribution of file extents}{figure.A.17}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.18}{\ignorespaces Evolution of usage during test}}{56}{figure.A.18}}
+\newlabel{fig:usage_xfs_ssd_notrim}{{A.18}{56}{Evolution of usage during test}{figure.A.18}{}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {B}\bfseries  Examples}{57}{appendix.B}}
 \@writefile{lof}{\addvspace {4\p@ }}
 \@writefile{lot}{\addvspace {4\p@ }}
-\newlabel{examples}{{B}{53}{Examples}{appendix.B}{}}
-\newlabel{ex:os}{{B.1}{53}{Specifying OS to be installed}{lstlisting.B.1}{}}
-\newlabel{ex:kickstart}{{B.2}{53}{Configuring environment using kickstart}{lstlisting.B.2}{}}
+\newlabel{examples}{{B}{57}{Examples}{appendix.B}{}}
+\newlabel{ex:os}{{B.1}{57}{Specifying OS to be installed}{lstlisting.B.1}{}}
+\newlabel{ex:kickstart}{{B.2}{57}{Configuring environment using kickstart}{lstlisting.B.2}{}}
 \@ifundefined{unitindent}{\newdimen\unitindent\let \@indentset\relax }{}
 \global \unitindent=30.0pt\relax\@indentset\relax
 \abx@aux@refcontextdefaultsdone
@@ -227,6 +251,6 @@
 \abx@aux@defaultrefcontext{0}{Chang:2007:EEF:1278480.1278533}{none/global/}
 \abx@aux@defaultrefcontext{0}{Frankie:2012:MMT:2184512.2184527}{none/global/}
 \abx@aux@defaultrefcontext{0}{agrawal2007five}{none/global/}
-\gdef \thesis@pages {54}
-\@writefile{lot}{\contentsline {table}{\numberline {B.1}{\ignorespaces Table of overall latencies}}{55}{table.B.1}}
-\newlabel{empty}{{B.1}{55}{Table of overall latencies}{table.B.1}{}}
+\gdef \thesis@pages {58}
+\@writefile{lot}{\contentsline {table}{\numberline {B.1}{\ignorespaces Table of overall latencies}}{59}{table.B.1}}
+\newlabel{empty}{{B.1}{59}{Table of overall latencies}{table.B.1}{}}
