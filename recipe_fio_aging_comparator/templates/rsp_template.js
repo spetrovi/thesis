@@ -21,7 +21,7 @@ XXX_NAME_XXX= new Highcharts.Chart({
       height: 400,
       backgroundColor: '#F2F2F2',
  renderTo: 'XXX_NAME_XXX'},
-title: {text: 'XXX_TITLE_XXX'},xAxis: [{categories: XXX_BINS_XXX,title: {text: 'time [s]'}}],
+title: {text: 'XXX_TITLE_XXX'},xAxis: [{categories: XXX_BINS_XXX,title: {text: 'Time [s]'}}],
     plotOptions: {
         column: {
             groupPadding: 0,

@@ -393,16 +393,16 @@ r.save()
 
 
 
-"""
+
 
 path1 = glob.glob('./durden_images/*xfs*.tar.xz')[0]
 path2 = glob.glob('./draven_images/*xfs*W495LONG3.tar.xz')[0]
 r = Report(path1,path2,'./res/')
 r.save()
 
-
-
 """
+
+
 path1 = glob.glob('./durden_images/*ext4*.tar.xz')[0]
 path2 = glob.glob('./durden_images/*xfs*.tar.xz')[0]
 r = Report(path1,path2,'./res/')
@@ -431,7 +431,7 @@ path1 = glob.glob('./blade_images/*xfs*W495.tar.xz')[0]
 path2 = glob.glob('./blade_images/*xfs*W495TRIM.tar.xz')[0]
 r = Report(path1,path2,'./res/')
 r.save()
-
+"""
 
 path1 = glob.glob('./blade_images/*ext4*W495.tar.xz')[0]
 path2 = glob.glob('./blade_images/*ext4*W495TRIM.tar.xz')[0]

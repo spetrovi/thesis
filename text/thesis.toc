@@ -38,10 +38,10 @@
 \contentsline {chapter}{\numberline {8}\bfseries Conclusion}{39}{chapter.8}
 \contentsline {chapter}{Bibliography}{41}{chapter*.8}
 \contentsline {chapter}{\numberline {A}\bfseries Reports}{43}{appendix.A}
-\contentsline {section}{\numberline {A.1}\slshape XFS, HDD, medium utilisation}{43}{section.A.1}
-\contentsline {section}{\numberline {A.2}\slshape XFS, HDD, high utilisation}{46}{section.A.2}
-\contentsline {section}{\numberline {A.3}\slshape EXT4, HDD, high utilisation}{48}{section.A.3}
-\contentsline {section}{\numberline {A.4}\slshape XFS, SSD, TRIM}{50}{section.A.4}
-\contentsline {section}{\numberline {A.5}\slshape EXT4, SSD, TRIM}{52}{section.A.5}
-\contentsline {section}{\numberline {A.6}\slshape XFS, SSD, NOTRIM}{54}{section.A.6}
-\contentsline {chapter}{\numberline {B}\bfseries Examples}{57}{appendix.B}
+\contentsline {section}{\numberline {A.1}\slshape Test of medium utilisation using XFS on HDD}{43}{section.A.1}
+\contentsline {section}{\numberline {A.2}\slshape Test of high utilisation using XFS on HDD}{47}{section.A.2}
+\contentsline {section}{\numberline {A.3}\slshape Test of high utilisation using EXT4 on HDD}{51}{section.A.3}
+\contentsline {section}{\numberline {A.4}\slshape Test of XFS on SSD with regular trimming}{55}{section.A.4}
+\contentsline {section}{\numberline {A.5}\slshape Test of EXT4 on SSD with regular trimming}{59}{section.A.5}
+\contentsline {section}{\numberline {A.6}\slshape Test of XFS on SSD without regular trimming}{63}{section.A.6}
+\contentsline {chapter}{\numberline {B}\bfseries Examples}{67}{appendix.B}

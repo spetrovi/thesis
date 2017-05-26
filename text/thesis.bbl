@@ -548,5 +548,85 @@
     \field{journaltitle}{ACM Transactions on Storage (TOS)}
     \field{year}{2007}
   \endentry
+
+  \entry{scipy}{misc}{}
+    \true{moreauthor}
+    \name{author}{3}{}{%
+      {{hash=JE}{%
+         family={Jones},
+         familyi={J\bibinitperiod},
+         given={Eric},
+         giveni={E\bibinitperiod},
+      }}%
+      {{hash=OT}{%
+         family={Oliphant},
+         familyi={O\bibinitperiod},
+         given={Travis},
+         giveni={T\bibinitperiod},
+      }}%
+      {{hash=PP}{%
+         family={Peterson},
+         familyi={P\bibinitperiod},
+         given={Pearu},
+         giveni={P\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{JEOTPP+1}
+    \strng{fullhash}{JEOTPP+1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{title}{{SciPy}: Open source scientific tools for {Python}}
+    \verb{url}
+    \verb http://www.scipy.org/
+    \endverb
+    \field{year}{2001--}
+  \endentry
+
+  \entry{weil2006ceph}{inproceedings}{}
+    \name{author}{5}{}{%
+      {{hash=WSA}{%
+         family={Weil},
+         familyi={W\bibinitperiod},
+         given={Sage\bibnamedelima A},
+         giveni={S\bibinitperiod\bibinitdelim A\bibinitperiod},
+      }}%
+      {{hash=BSA}{%
+         family={Brandt},
+         familyi={B\bibinitperiod},
+         given={Scott\bibnamedelima A},
+         giveni={S\bibinitperiod\bibinitdelim A\bibinitperiod},
+      }}%
+      {{hash=MEL}{%
+         family={Miller},
+         familyi={M\bibinitperiod},
+         given={Ethan\bibnamedelima L},
+         giveni={E\bibinitperiod\bibinitdelim L\bibinitperiod},
+      }}%
+      {{hash=LDD}{%
+         family={Long},
+         familyi={L\bibinitperiod},
+         given={Darrell\bibnamedelima DE},
+         giveni={D\bibinitperiod\bibinitdelim D\bibinitperiod},
+      }}%
+      {{hash=MC}{%
+         family={Maltzahn},
+         familyi={M\bibinitperiod},
+         given={Carlos},
+         giveni={C\bibinitperiod},
+      }}%
+    }
+    \list{organization}{1}{%
+      {USENIX Association}%
+    }
+    \strng{namehash}{WSA+1}
+    \strng{fullhash}{WSABSAMELLDDMC1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{booktitle}{Proceedings of the 7th symposium on Operating systems
+  design and implementation}
+    \field{pages}{307\bibrangedash 320}
+    \field{title}{Ceph: A scalable, high-performance distributed file system}
+    \field{year}{2006}
+  \endentry
 \endsortlist
 \endinput
