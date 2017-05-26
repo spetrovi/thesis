@@ -5,43 +5,43 @@
 \contentsline {chapter}{\numberline {2}\bfseries Related work}{5}{chapter.2}
 \contentsline {section}{\numberline {2.1}\slshape Aging file system using real-life data}{5}{section.2.1}
 \contentsline {section}{\numberline {2.2}\slshape Synthetic aging simulation}{6}{section.2.2}
-\contentsline {chapter}{\numberline {3}\bfseries File system and storage devices}{9}{chapter.3}
-\contentsline {section}{\numberline {3.1}\slshape File systems}{9}{section.3.1}
-\contentsline {subsection}{\numberline {3.1.1}\rmfamily XFS}{10}{subsection.3.1.1}
-\contentsline {subsection}{\numberline {3.1.2}\rmfamily Ext4}{10}{subsection.3.1.2}
-\contentsline {section}{\numberline {3.2}\slshape Storage}{11}{section.3.2}
-\contentsline {subsection}{\numberline {3.2.1}\rmfamily Hard disk drive}{11}{subsection.3.2.1}
-\contentsline {subsection}{\numberline {3.2.2}\rmfamily Solid state drive}{11}{subsection.3.2.2}
-\contentsline {chapter}{\numberline {4}\bfseries Environment setup and benchmark tools}{13}{chapter.4}
-\contentsline {section}{\numberline {4.1}\slshape Beaker}{13}{section.4.1}
-\contentsline {section}{\numberline {4.2}\slshape Storage generator}{13}{section.4.2}
-\contentsline {section}{\numberline {4.3}\slshape FIO}{14}{section.4.3}
-\contentsline {section}{\numberline {4.4}\slshape Fs-drift}{14}{section.4.4}
-\contentsline {subsection}{\numberline {4.4.1}\rmfamily Changes to original code}{16}{subsection.4.4.1}
-\contentsline {chapter}{\numberline {5}\bfseries Aging the file system}{19}{chapter.5}
-\contentsline {section}{\numberline {5.1}\slshape Fs-drift configuration}{19}{section.5.1}
-\contentsline {section}{\numberline {5.2}\slshape File system images}{20}{section.5.2}
-\contentsline {section}{\numberline {5.3}\slshape Implementation details}{21}{section.5.3}
-\contentsline {chapter}{\numberline {6}\bfseries Performance testing of aged file system}{25}{chapter.6}
-\contentsline {section}{\numberline {6.1}\slshape FIO configuration}{25}{section.6.1}
-\contentsline {section}{\numberline {6.2}\slshape Test structure}{26}{section.6.2}
-\contentsline {chapter}{\numberline {7}\bfseries Results}{29}{chapter.7}
-\contentsline {section}{\numberline {7.1}\slshape Testing environment}{29}{section.7.1}
-\contentsline {section}{\numberline {7.2}\slshape Data processing}{31}{section.7.2}
-\contentsline {subsection}{\numberline {7.2.1}\rmfamily Fragmentation}{31}{subsection.7.2.1}
-\contentsline {subsection}{\numberline {7.2.2}\rmfamily Fs-drift}{32}{subsection.7.2.2}
-\contentsline {section}{\numberline {7.3}\slshape Testing on images of aged file system}{32}{section.7.3}
-\contentsline {section}{\numberline {7.4}\slshape Performance of aged file system}{32}{section.7.4}
-\contentsline {section}{\numberline {7.5}\slshape Differences betweem XFS and EXT4}{33}{section.7.5}
-\contentsline {section}{\numberline {7.6}\slshape Performance accross different storage devices}{36}{section.7.6}
+\contentsline {chapter}{\numberline {3}\bfseries File system and storage devices}{7}{chapter.3}
+\contentsline {section}{\numberline {3.1}\slshape File systems}{7}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}\rmfamily XFS}{8}{subsection.3.1.1}
+\contentsline {subsection}{\numberline {3.1.2}\rmfamily Ext4}{8}{subsection.3.1.2}
+\contentsline {section}{\numberline {3.2}\slshape Storage}{9}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}\rmfamily Hard disk drive}{9}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {3.2.2}\rmfamily Solid state drive}{9}{subsection.3.2.2}
+\contentsline {chapter}{\numberline {4}\bfseries Environment setup and benchmark tools}{11}{chapter.4}
+\contentsline {section}{\numberline {4.1}\slshape Beaker}{11}{section.4.1}
+\contentsline {section}{\numberline {4.2}\slshape Storage generator}{11}{section.4.2}
+\contentsline {section}{\numberline {4.3}\slshape FIO}{12}{section.4.3}
+\contentsline {section}{\numberline {4.4}\slshape Fs-drift}{12}{section.4.4}
+\contentsline {subsection}{\numberline {4.4.1}\rmfamily Changes in original code}{14}{subsection.4.4.1}
+\contentsline {chapter}{\numberline {5}\bfseries Aging the file system}{17}{chapter.5}
+\contentsline {section}{\numberline {5.1}\slshape Fs-drift configuration}{17}{section.5.1}
+\contentsline {section}{\numberline {5.2}\slshape File system images}{18}{section.5.2}
+\contentsline {section}{\numberline {5.3}\slshape Implementation details}{19}{section.5.3}
+\contentsline {chapter}{\numberline {6}\bfseries Performance testing of aged file system}{23}{chapter.6}
+\contentsline {section}{\numberline {6.1}\slshape FIO configuration}{23}{section.6.1}
+\contentsline {section}{\numberline {6.2}\slshape Test structure}{24}{section.6.2}
+\contentsline {chapter}{\numberline {7}\bfseries Results}{27}{chapter.7}
+\contentsline {section}{\numberline {7.1}\slshape Testing environment}{27}{section.7.1}
+\contentsline {section}{\numberline {7.2}\slshape Data processing}{29}{section.7.2}
+\contentsline {subsection}{\numberline {7.2.1}\rmfamily Fragmentation}{29}{subsection.7.2.1}
+\contentsline {subsection}{\numberline {7.2.2}\rmfamily Evaluation of data generated by fs-drift}{30}{subsection.7.2.2}
+\contentsline {section}{\numberline {7.3}\slshape Testing on images of aged file system}{30}{section.7.3}
+\contentsline {section}{\numberline {7.4}\slshape Performance of aged file system}{30}{section.7.4}
+\contentsline {section}{\numberline {7.5}\slshape Differences betweem XFS and EXT4}{31}{section.7.5}
+\contentsline {section}{\numberline {7.6}\slshape Performance accross different storage devices}{35}{section.7.6}
 \contentsline {section}{\numberline {7.7}\slshape Testing with \texttt {fstrim}}{36}{section.7.7}
-\contentsline {chapter}{\numberline {8}\bfseries Conclusion}{41}{chapter.8}
-\contentsline {chapter}{Bibliography}{43}{chapter*.8}
-\contentsline {chapter}{\numberline {A}\bfseries Reports}{45}{appendix.A}
-\contentsline {section}{\numberline {A.1}\slshape XFS, HDD, medium utilisation}{45}{section.A.1}
-\contentsline {section}{\numberline {A.2}\slshape XFS, HDD, high utilisation}{47}{section.A.2}
-\contentsline {section}{\numberline {A.3}\slshape EXT4, HDD, high utilisation}{49}{section.A.3}
-\contentsline {section}{\numberline {A.4}\slshape XFS, SSD, TRIM}{51}{section.A.4}
-\contentsline {section}{\numberline {A.5}\slshape EXT4, SSD, TRIM}{53}{section.A.5}
-\contentsline {section}{\numberline {A.6}\slshape XFS, SSD, NOTRIM}{55}{section.A.6}
+\contentsline {chapter}{\numberline {8}\bfseries Conclusion}{39}{chapter.8}
+\contentsline {chapter}{Bibliography}{41}{chapter*.8}
+\contentsline {chapter}{\numberline {A}\bfseries Reports}{43}{appendix.A}
+\contentsline {section}{\numberline {A.1}\slshape XFS, HDD, medium utilisation}{43}{section.A.1}
+\contentsline {section}{\numberline {A.2}\slshape XFS, HDD, high utilisation}{46}{section.A.2}
+\contentsline {section}{\numberline {A.3}\slshape EXT4, HDD, high utilisation}{48}{section.A.3}
+\contentsline {section}{\numberline {A.4}\slshape XFS, SSD, TRIM}{50}{section.A.4}
+\contentsline {section}{\numberline {A.5}\slshape EXT4, SSD, TRIM}{52}{section.A.5}
+\contentsline {section}{\numberline {A.6}\slshape XFS, SSD, NOTRIM}{54}{section.A.6}
 \contentsline {chapter}{\numberline {B}\bfseries Examples}{57}{appendix.B}

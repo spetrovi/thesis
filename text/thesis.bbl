@@ -298,6 +298,26 @@
     \warn{\item Can't use 'location' + 'address'}
   \endentry
 
+  \entry{prabhakaran2005analysis}{inproceedings}{}
+    \true{moreauthor}
+    \name{author}{1}{}{%
+      {{hash=PV}{%
+         family={Prabhakaran},
+         familyi={P\bibinitperiod},
+         given={Vijayan},
+         giveni={V\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{PV+1}
+    \strng{fullhash}{PV+1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{booktitle}{USENIX Annual Technical Conference, General Track}
+    \field{pages}{105\bibrangedash 120}
+    \field{title}{Analysis and Evolution of Journaling File Systems.}
+    \field{year}{2005}
+  \endentry
+
   \entry{xfs:qhe}{inproceedings}{}
     \true{moreauthor}
     \name{author}{1}{}{%

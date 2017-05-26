@@ -5,35 +5,35 @@
 \addvspace {4\p@ }
 \addvspace {4\p@ }
 \addvspace {4\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Normal distribution of file access}}{16}{figure.4.1}
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Moving random distribution}}{17}{figure.4.2}
-\contentsline {figure}{\numberline {4.3}{\ignorespaces File size distribution as measured by Agrawal~\cite {agrawal2007five}}}{18}{figure.4.3}
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Logarhitmic normal distribution of file size}}{18}{figure.4.4}
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Normal distribution of file access}}{14}{figure.4.1}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Moving random distribution}}{15}{figure.4.2}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces File size distribution as measured by Agrawal~\cite {agrawal2007five}}}{16}{figure.4.3}
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Logarhitmic normal distribution of file size}}{16}{figure.4.4}
 \addvspace {4\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Activity diagram of aging test}}{23}{figure.5.1}
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Activity diagram of file system aging test}}{21}{figure.5.1}
 \addvspace {4\p@ }
-\contentsline {figure}{\numberline {6.1}{\ignorespaces Activity diagram of testing of aged file system}}{27}{figure.6.1}
+\contentsline {figure}{\numberline {6.1}{\ignorespaces Activity diagram of testing of aged file system}}{25}{figure.6.1}
 \addvspace {4\p@ }
-\contentsline {figure}{\numberline {7.1}{\ignorespaces Latency growth induced by aging test}}{36}{figure.7.1}
-\contentsline {figure}{\numberline {7.2}{\ignorespaces Evolution of latency of create operation, tested on XFS}}{38}{figure.7.2}
+\contentsline {figure}{\numberline {7.1}{\ignorespaces Latency growth induced by aging test}}{33}{figure.7.1}
+\contentsline {figure}{\numberline {7.2}{\ignorespaces Evolution of latency of create operation, in untrimed file system (XFS)}}{37}{figure.7.2}
 \addvspace {4\p@ }
 \addvspace {4\p@ }
-\contentsline {figure}{\numberline {A.1}{\ignorespaces Evolution of free space fragmentation}}{45}{figure.A.1}
-\contentsline {figure}{\numberline {A.2}{\ignorespaces Size distribution of file extents}}{46}{figure.A.2}
-\contentsline {figure}{\numberline {A.3}{\ignorespaces Evolution of usage during test}}{46}{figure.A.3}
-\contentsline {figure}{\numberline {A.4}{\ignorespaces Evolution of free space fragmentation}}{47}{figure.A.4}
-\contentsline {figure}{\numberline {A.5}{\ignorespaces Size distribution of file extents}}{48}{figure.A.5}
-\contentsline {figure}{\numberline {A.6}{\ignorespaces Evolution of usage during test}}{48}{figure.A.6}
-\contentsline {figure}{\numberline {A.7}{\ignorespaces Evolution of free space fragmentation}}{49}{figure.A.7}
-\contentsline {figure}{\numberline {A.8}{\ignorespaces Size distribution of file extents}}{50}{figure.A.8}
-\contentsline {figure}{\numberline {A.9}{\ignorespaces Evolution of usage during test}}{50}{figure.A.9}
-\contentsline {figure}{\numberline {A.10}{\ignorespaces Evolution of free space fragmentation}}{51}{figure.A.10}
-\contentsline {figure}{\numberline {A.11}{\ignorespaces Size distribution of file extents}}{52}{figure.A.11}
-\contentsline {figure}{\numberline {A.12}{\ignorespaces Evolution of usage during test}}{52}{figure.A.12}
-\contentsline {figure}{\numberline {A.13}{\ignorespaces Distribution of size of extents of used space}}{53}{figure.A.13}
-\contentsline {figure}{\numberline {A.14}{\ignorespaces Distribution of size of extents of used space}}{54}{figure.A.14}
-\contentsline {figure}{\numberline {A.15}{\ignorespaces Evolution of usage during test}}{54}{figure.A.15}
-\contentsline {figure}{\numberline {A.16}{\ignorespaces Evolution of free space fragmentation}}{55}{figure.A.16}
-\contentsline {figure}{\numberline {A.17}{\ignorespaces Size distribution of file extents}}{56}{figure.A.17}
-\contentsline {figure}{\numberline {A.18}{\ignorespaces Evolution of usage during test}}{56}{figure.A.18}
+\contentsline {figure}{\numberline {A.1}{\ignorespaces Free space fragmentation of XFS during medium uitlisation test}}{43}{figure.A.1}
+\contentsline {figure}{\numberline {A.2}{\ignorespaces Size distribution of file extents of XFS during medium utilisation test}}{44}{figure.A.2}
+\contentsline {figure}{\numberline {A.3}{\ignorespaces Usage of available volume of XFS during medium utilisation test}}{45}{figure.A.3}
+\contentsline {figure}{\numberline {A.4}{\ignorespaces Evolution of free space fragmentation of XFS during high utilisation test}}{46}{figure.A.4}
+\contentsline {figure}{\numberline {A.5}{\ignorespaces Size distribution of file extents}}{47}{figure.A.5}
+\contentsline {figure}{\numberline {A.6}{\ignorespaces Evolution of usage during test}}{47}{figure.A.6}
+\contentsline {figure}{\numberline {A.7}{\ignorespaces Evolution of free space fragmentation}}{48}{figure.A.7}
+\contentsline {figure}{\numberline {A.8}{\ignorespaces Size distribution of file extents}}{49}{figure.A.8}
+\contentsline {figure}{\numberline {A.9}{\ignorespaces Evolution of usage during test}}{49}{figure.A.9}
+\contentsline {figure}{\numberline {A.10}{\ignorespaces Evolution of free space fragmentation}}{50}{figure.A.10}
+\contentsline {figure}{\numberline {A.11}{\ignorespaces Size distribution of file extents}}{51}{figure.A.11}
+\contentsline {figure}{\numberline {A.12}{\ignorespaces Evolution of usage during test}}{51}{figure.A.12}
+\contentsline {figure}{\numberline {A.13}{\ignorespaces Distribution of size of extents of used space}}{52}{figure.A.13}
+\contentsline {figure}{\numberline {A.14}{\ignorespaces Distribution of size of extents of used space}}{53}{figure.A.14}
+\contentsline {figure}{\numberline {A.15}{\ignorespaces Evolution of usage during test}}{53}{figure.A.15}
+\contentsline {figure}{\numberline {A.16}{\ignorespaces Evolution of free space fragmentation}}{54}{figure.A.16}
+\contentsline {figure}{\numberline {A.17}{\ignorespaces Size distribution of file extents}}{55}{figure.A.17}
+\contentsline {figure}{\numberline {A.18}{\ignorespaces Evolution of usage during test}}{55}{figure.A.18}
 \addvspace {4\p@ }

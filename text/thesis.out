@@ -14,7 +14,7 @@
 \BOOKMARK [1][-]{section.4.2}{\040Storage\040generator}{chapter.4}% 14
 \BOOKMARK [1][-]{section.4.3}{\040FIO}{chapter.4}% 15
 \BOOKMARK [1][-]{section.4.4}{\040Fs-drift}{chapter.4}% 16
-\BOOKMARK [2][-]{subsection.4.4.1}{\040Changes\040to\040original\040code}{section.4.4}% 17
+\BOOKMARK [2][-]{subsection.4.4.1}{\040Changes\040in\040original\040code}{section.4.4}% 17
 \BOOKMARK [0][-]{chapter.5}{Aging\040the\040file\040system}{}% 18
 \BOOKMARK [1][-]{section.5.1}{\040Fs-drift\040configuration}{chapter.5}% 19
 \BOOKMARK [1][-]{section.5.2}{\040File\040system\040images}{chapter.5}% 20
@@ -26,7 +26,7 @@
 \BOOKMARK [1][-]{section.7.1}{\040Testing\040environment}{chapter.7}% 26
 \BOOKMARK [1][-]{section.7.2}{\040Data\040processing}{chapter.7}% 27
 \BOOKMARK [2][-]{subsection.7.2.1}{\040Fragmentation}{section.7.2}% 28
-\BOOKMARK [2][-]{subsection.7.2.2}{\040Fs-drift}{section.7.2}% 29
+\BOOKMARK [2][-]{subsection.7.2.2}{\040Evaluation\040of\040data\040generated\040by\040fs-drift}{section.7.2}% 29
 \BOOKMARK [1][-]{section.7.3}{\040Testing\040on\040images\040of\040aged\040file\040system}{chapter.7}% 30
 \BOOKMARK [1][-]{section.7.4}{\040Performance\040of\040aged\040file\040system}{chapter.7}% 31
 \BOOKMARK [1][-]{section.7.5}{\040Differences\040betweem\040XFS\040and\040EXT4}{chapter.7}% 32
