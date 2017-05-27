@@ -491,12 +491,13 @@
   \endentry
 
   \entry{Frankie:2012:MMT:2184512.2184527}{inproceedings}{}
+    \true{moreauthor}
     \name{author}{1}{}{%
-      {{hash=FTo}{%
+      {{hash=FT}{%
          family={Frankie},
          familyi={F\bibinitperiod},
-         given={Tasha\bibnamedelima others},
-         giveni={T\bibinitperiod\bibinitdelim o\bibinitperiod},
+         given={Tasha},
+         giveni={T\bibinitperiod},
       }}%
     }
     \list{publisher}{1}{%
@@ -504,8 +505,8 @@
     }
     \keyw{NAND flash, birth-death Markov process, overprovisioning of SSDs,
   solid state drive, trim}
-    \strng{namehash}{FTo1}
-    \strng{fullhash}{FTo1}
+    \strng{namehash}{FT+1}
+    \strng{fullhash}{FT+1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
     \field{booktitle}{Proceedings of the 50th Annual Southeast Regional
@@ -579,7 +580,7 @@
     \verb{url}
     \verb http://www.scipy.org/
     \endverb
-    \field{year}{2001--}
+    \field{year}{2001--2017}
   \endentry
 
   \entry{weil2006ceph}{inproceedings}{}
