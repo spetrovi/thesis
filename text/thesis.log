@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.3.8)  28 MAY 2017 19:11
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.3.8)  28 MAY 2017 19:26
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -3246,14 +3246,23 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 1301.
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1301.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1301.
 
-Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 3FD8EE5133B8BECB1F0DBE9062BA3538;3558.
 
+
+Package rerunfilecheck Warning: File `thesis.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `thesis.out':
+(rerunfilecheck)             Before: 3FD8EE5133B8BECB1F0DBE9062BA3538;3558
+(rerunfilecheck)             After:  0B8B382F7DA5F91532E8CA0A370BA5FC;3547.
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 
 LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
 Package logreq Info: Writing requests to 'thesis.run.xml'.
 \openout1 = `thesis.run.xml'.
@@ -3281,7 +3290,7 @@ texlive/2016/texmf-dist/fonts/type1/public/tex-gyre/qplr.pfb></usr/local/texliv
 e/2016/texmf-dist/fonts/type1/public/tex-gyre/qplri.pfb></usr/local/texlive/201
 6/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2016/texmf
 -dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on thesis.pdf (84 pages, 1984255 bytes).
+Output written on thesis.pdf (84 pages, 1984134 bytes).
 PDF statistics:
  1460 PDF objects out of 1728 (max. 8388607)
  1181 compressed objects within 12 object streams
