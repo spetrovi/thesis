@@ -54,16 +54,14 @@
     advisor       = Adam Rambousek,
     title         = {The effects of age \\ on file system performance},
     TeXtitle      = {The effects of age \\ on file system performance},
-    keywords      = {file system, XFS, EXT4, IO, performance, aging, fragmentation, SSD, HDD, TRIM, fs-drift, FIO, benchmark},
-    TeXkeywords   = {file system, XFS, EXT4, IO, performance, aging, fragmentation, SSD, HDD, TRIM, fs-drift, FIO, benchmark},
+    keywords      = {file system, XFS, ext4, IO, performance, aging, fragmentation, SSD, HDD, TRIM, fs-drift, FIO, benchmark},
+    TeXkeywords   = {file system, XFS, ext4, IO, performance, aging, fragmentation, SSD, HDD, TRIM, fs-drift, FIO, benchmark},
 }
 \thesislong{abstract}{
-    This is the abstract of my thesis, which can
-
-    span multiple paragraphs.
+The purpose of this thesis is to research effects of age on file system performance. For the testing purpose, two automated tests were implemented, which use open source benchmarks fs-drift and FIO to induce aging effects and to measure performance. Research was aimed at effects of aging on popular Linux file systems, XFS and ext4. Further research examined effects of underlying storage technology on performance of aged file systems. The file system aging testing implemented as part of this thesis is used to expand testing matrix of Red Hat Kernel Performance team.
 }
 \thesislong{thanks}{
-I would like to thank to my technical advisory Matúš Kocka for tremendous help and guidenance. I would also like to thank Red Hat for providing necessary testing environment. 
+I would like to thank my consultant Matúš Kocka for tremendous help and guidenance during writing of this thesis. I would also like to thank Red Hat for collaboration and provision of necessary testing equipment. 
 }
 %% The following section sets up the bibliography.
 
@@ -99,9 +97,9 @@ I would like to thank to my technical advisory Matúš Kocka for tremendous help
 
 \begin{document}
 \chapter{Introduction}
-File systems remain an important part of modern storage solutions. Large, growing databases, multi-media and other storage based applications need to be supported by high-performing infrastructure layer of storing and retrieving information. Such infrastructure have to be provided by the operating systems (OS) in form of file system.
+File systems remain an important part of modern storage solutions. Large, growing databases, multi-media and other storage based applications need to be supported by high-performing infrastructure layer of storing and retrieving information. Such infrastructure have to be provided by the operating systems (OS) in form of a file system.
 
-Originally, file system was a simple tool developed to handle communication between OS and physical device, but today, it is a very complex piece of software with large set of tools and features to go~with.
+Originally, file system was a simple tool developed to handle communication between OS and physical device, but today, it is a very complex piece of software with a large set of tools and features to go~with.
 
 Performance testing is an integral part of development cycle of most of produced software. Because of growing complexity of file systems, performance testing took of as an important part of file system evaluation.
 
@@ -119,7 +117,9 @@ Created images are then used in second-stage testing. By using created images, h
 
 In the second-stage testing, file system is brought to the aged state by reloading image corresponding with desired testing configuration. Before every performance test, some volume can be released from file system, so the performance test has space to test on. After environment initalization (\texttt{sync}, \texttt{fstrim}), the performance test can begin. Testing of fresh instance of file system is done as well to conclude if any performance change occur.
 
-In the latter parts of this thesis, usage of developed tests on different configurations of file systems and storage is demonstrated. The subject of research are differences between popular Linux file systems (XFS, Ext4) and differences between used storage technologies (solid state and hard disk drives) in context of aging. Because of nature of collected data, a processing tool was implemented to parse large amount of information into human readable reports with interactive charts.
+In the latter parts of this thesis, usage of developed tests on different configurations of file systems and storage is demonstrated. The subject of research are differences between popular Linux file systems (XFS, ext4) and differences between used storage technologies (solid state and hard disk drives) in context of aging. Because of nature of collected data, a processing tool was implemented to parse large amount of information into human readable reports with interactive charts.\footnotemark[1]
+
+\footnotetext[1]{Charts were created using JavaScript charting library Highcharts}
 
 In the Chapter~\ref{related}, the text presents already conducted research of effects of age and fragmentation on file system performance. Chapter~\ref{fs} describes used storage and file systems and their main features. Chapter~\ref{tools} introduce tools used in implementation of tests while describing their relevant features. Chapters~\ref{aging} and~\ref{fio} describe actual implementation of mentioned tests. Chapter~\ref{results} describes testing environmen, means of data evaluation and results obtained by using created tests. The research is focused on describing the effects of file system aging, differences between file systems in terms of aging and relations of underlying storage to performance of aged file system. In~Chapter~\ref{conclusion}, I discuss results achieved by this thesis. Furthermore, future of testing of file system performance and aging is discussed.
 
@@ -230,7 +230,7 @@ The workflows, created as a part of this thesis, are implemented in form of Beak
 \section{Storage generator}
 Storage generator is a Beaker task developed by Jozef Mikovič. It is capable of automated configuration of storage on a provisioned system. In a single device mode, storage generator simply creates new partition on the given device and creates and mounts file system. In a recipe mode, storage generator follows set of instruction to create more advanced configurations such as merging multiple devices using LVM, creating LVM cache or encrypted volume. Example of usage can be found in Example~\ref{ex:storage_generator}
 
-The creation of XFS file system is standard, but Ext4 file system is created with additional option, disabling \emph{lazy init}. Lazy init is a feature which allows for fast creation of file system by not allocating all the available space at once. The space is allocated later, as the file system grows. Such additional allocation, however would skew data collected in the first hours of the test, therefore it is disabled in these tests.
+The creation of XFS file system is standard, but ext4 file system is created with additional option, disabling \emph{lazy init}. Lazy init is a feature which allows for fast creation of file system by not allocating all the available space at once. The space is allocated later, as the file system grows. Such additional allocation, however would skew data collected in the first hours of the test, therefore it is disabled in these tests.
 
 \section{FIO}
 Flexible Input/Output benchmark is a workload generator written by Jens Axboe. It is a tool well known for it's flexibility as well as large group of users and contributors. The flexibility is integral for conductuing less artifical and more natural performance tests. However, approaching more natural test behavior, stability of results drop, so ideal equilibrium between these two requirements has to be found.
@@ -399,7 +399,7 @@ Before running the fs-drift, asynchronous thread \texttt{async\_worker} is trigg
 
 After fs-drift ends, fragmetation of used space is logged and image of file system is created using presented tools and archived using \texttt{bzip2}. All the generated data and information about environment is archived as well and text file describing the test is generated. These three files are then sent (via \texttt{rsync}) to data collecting server.
 
-For better oversight of the tests functionality, its activity diagram is presented as Figure~\ref{fig:drift_job_activity}. Example of execution of this task can be seen in Example X. 
+For better oversight of the tests functionality, its activity diagram is presented as Figure~\ref{fig:drift_job_activity}. Example of execution of this task can be found in Example~\ref{ex:age}. 
 
 Parameters available for drift\_job:
 \begin{compactenum}
@@ -494,7 +494,7 @@ Parameters available for recipe\_fio\_aging:
 
 
 
-\chapter{Results}
+\chapter{Testing summary}
 \label{results}
 This chapter presents results of implemented tests. In the first section I describe environment used for testing. In the second section, I describe means of data evaluation. In the third section, I show elementary differences between fresh and aged file systems. In the fourth section, I describe differences between two tested file systems (XFS, ext4) in terms of aging. In fifth section I demonstrate the effect file system aging have on underlying storage.
 
@@ -532,7 +532,7 @@ The OS installed on all Machines were RHEL-7.3 with kernel 3.10.0-514.el7.x86\_6
     Memory & $\SI{16384}{\mega\byte}$ \\
     \hline
     \multicolumn{2}{|l|}{Storage} \\ \hline
-    Device & SSD \\ \hline
+    Device & Intel Solid State Drive \\ \hline
     Interface & SATA\\ \hline
     Capacity & $\SI{120}{\giga\byte}$\\ \hline
 \hline
@@ -546,14 +546,14 @@ The OS installed on all Machines were RHEL-7.3 with kernel 3.10.0-514.el7.x86\_6
     Memory &  $\SI{12288}{\mega\byte}$\\
     \hline
     \multicolumn{2}{|l|}{Storage} \\ \hline
-    Device & ServeRAID M5015\\ \hline
+    Device & IBM Hard Disk Drive\\ \hline
     Interface &  SAS\\ \hline
     Capacity & $\SI{300}{\giga\byte}$\\ \hline
 \end{tabular}
 \label{machines}
 
 \section{Data processing}
-Accounting for great amount of data generated by the tests, some kind of automatic processing needs to be implemented to make evaluation easier for humans. Therefore, I developed set of scripts which can compare results of two different runs of implemented test. The output of those script is human readable HTML report. The report displays information about testing environment and different charts described bellow. All the charts generated from the tests can be found in Appendix A. The scripts used to generate reports are part of this thesis in form of electronic appendix.
+Accounting for great amount of data generated by the tests, some kind of automatic processing needs to be implemented to make evaluation easier for humans. Therefore, set of scripts which can compare results of two different runs of the test had to be implemented. The output of those scripts is human readable HTML report. The report displays information about testing environment and different charts described bellow. All the charts generated from the tests can be found in Appendix~\ref{reports}.
 
 \subsection{Fragmentation}
 During the tests, two types of fragmentation were recorded, namely fragmentation of used space and fragmentation of free space.
@@ -885,7 +885,7 @@ With such growing complexity, file system aging (and software aging generally) c
 
 The automated file system aging test and means of evaluation of generated data are the main results of this thesis. Since the aging test was implemented as a Beaker task, it is compatible with Red Hat Kernel Performance team workflow and was therefore included in testing matrix of Red Hat Enterprise Linux 7.4 and Pegas and upstream kernels. Including this test in regular testing matrix is an important step in expanding ways of examining file systems in new kernel versions. Testing file system aging may reveal and help repair complex problems which can emerge during file systems developement.
 
-The results of this thesis were presented to developers of file systems and open source community as well. Future plans for file system aging are discussed with developers of XFS file system.
+The results of this thesis were presented to developers of file systems and open source community as well. Future plans for file system aging are discussed with developers of file systems.
 
 
 
@@ -905,10 +905,9 @@ The results of this thesis were presented to developers of file systems and open
 
 
 
-\printbibliography[heading=bibintoc]
 
 \appendix %% Start the appendices.
-\chapter{Reports}\label{reports}
+\chapter{All generated results}\label{reports}
 
 
 
@@ -953,7 +952,7 @@ The results of this thesis were presented to developers of file systems and open
         \centering
         \includegraphics[width=\textwidth]{../charts/HDD_xfs/low_ca}
         \includegraphics[width=\textwidth]{../charts/HDD_xfs/low_others}
-        \caption[Evolution of latencies of XFS during testing of medium utilisation of HDD]{On these charts, we can see evolution of latencies of conducted IO operations during testing XFS with medium utilisation. Progressively larger fluctuations can be seen in sequential read operation. Latency of opperation append seems to be slowly raising in the last hour of test.}
+        \caption[Evolution of latencies of XFS during testing of medium utilisation of HDD]{Evolution of latencies of conducted IO operations during testing XFS with medium utilisation. Progressively larger fluctuations can be seen in sequential read. Latency of opperation append seems to be slowly raising in the last hour of the test.}
 \label{fig:lats80_xfs}
     \end{minipage}
 \end{figure}
@@ -971,7 +970,7 @@ The results of this thesis were presented to developers of file systems and open
 \begin{figure}[h]
     \centering
     \fbox{\includegraphics[width=\textwidth,keepaspectratio]{../charts/HDD_xfs/free99.png}}
-    \caption[Evolution of free space fragmentation of XFS during testing of high utilisation of HDD]{On this chart, we can see evolution of free space fragmentation in the last 5 hours of the test. When comparing this chart with Figure~\ref{fig:usage99_xfs}, we can see that peak in number of extents always appear when the test is randomly deleting space. After that, XFS tries to merge small free space extents into larger ones and succesfully defragment free space.}
+    \caption[Evolution of free space fragmentation of XFS during testing of high utilisation of HDD]{On this chart, we can see evolution of free space fragmentation in the last 5 hours of the test. When comparing this chart with Figure~\ref{fig:usage99_xfs}, we can see that peak in number of extents always appear when the test is randomly deleting space. After that, XFS tries to merge small free space extents into larger ones and successfully defragments free space.}
     \label{fig:free99_xfs}
 \end{figure}
 
@@ -997,7 +996,7 @@ The results of this thesis were presented to developers of file systems and open
         \centering
         \includegraphics[width=\textwidth]{../charts/HDD_xfs/high_ca}
         \includegraphics[width=\textwidth]{../charts/HDD_xfs/high_other}
-        \caption[Evolution of latencies of XFS during testing of high utilisation of HDD]{On these charts, we can see evolution of latencies of conducted IO operations during testing XFS with high utilisation. Progressively larger fluctuations can be seen in create and append operations. Some other operations such as seqiential read of truncate are showing proggresive growth mainly after file system reached highest utilisation.}
+        \caption[Evolution of latencies of XFS during testing of high utilisation of HDD]{Evolution of latencies of IO operations during testing XFS with high utilisation. Progressively larger fluctuations can be seen in create and append operations. Some other operations such as sequential read of truncate are showing progressive growth, mainly after file system reached highest utilisation.}
 \label{fig:lats99_xfs}
     \end{minipage}
 \end{figure}
@@ -1006,7 +1005,7 @@ The results of this thesis were presented to developers of file systems and open
 \clearpage
 
 
-\section{Test of high utilisation using EXT4 on HDD}
+\section{Test of high utilisation using ext4 on HDD}
 \begin{itemize}
 \itemsep0em 
    \item System: Machine\,3
@@ -1017,14 +1016,14 @@ The results of this thesis were presented to developers of file systems and open
 \begin{figure}[h]
     \centering
     \fbox{\includegraphics[width=\textwidth,keepaspectratio]{../charts/HDD_ext4/free.png}}
-    \caption[Evolution of free space fragmentation of EXT4 during testing of high utilisation of HDD]{This chart shows evolution of free space fragmentation in the last 5 hours of the test. When comparing this chart with Figure~\ref{fig:usage99_ext4}, we can see that peak in number of extents always appear when the test is randomly deleting space. After that, ext4 fails to merge small free space extents into larger ones as it could have been observed in XFS.}
+    \caption[Evolution of free space fragmentation of ext4 during testing of high utilisation of HDD]{This chart shows evolution of free space fragmentation in the last 5 hours of the test. When comparing this chart with Figure~\ref{fig:usage99_ext4}, we can see that peak in number of extents always appear when the test is randomly deleting space. After that, ext4 fails to merge small free space extents into larger ones as it could have been observed in XFS.}
     \label{fig:free99_ext4}
 \end{figure}
 
 \begin{figure}[h]
     \centering
     \fbox{\includegraphics[width=\textwidth,keepaspectratio]{../charts/HDD_ext4/used}}
-    \caption[Size distribution of file extents of EXT4 during testing of high utilisation of HDD]{On this chart, we can see distribution of size of file extents. Despite high fragmentation of free space during the test, the final block layout of file system have around 209 thousands of extents. 92\% of files were optimally allocated. Furthermore, we can see that most of the created extents are the smallest possbile size ($\SI{4}{\kilo\byte}$, i.e. file system block size).}
+    \caption[Size distribution of file extents of ext4 during testing of high utilisation of HDD]{On this chart, we can see distribution of size of file extents. Despite high fragmentation of free space during the test, the final block layout of file system have around 209 thousands of extents. 92\% of files were optimally allocated. Furthermore, we can see that most of the created extents are the smallest possbile size ($\SI{4}{\kilo\byte}$, i.e. file system block size).}
     \label{fig:used99_ext4}
 \end{figure}
 
@@ -1032,7 +1031,7 @@ The results of this thesis were presented to developers of file systems and open
     \begin{minipage}{\textwidth}
         \centering
         \includegraphics[width=0.7\textwidth]{../charts/HDD_ext4/usage.png}
-        \caption[Usage of available space of EXT4 during testing of high utilisation of HDD]{Chart displays file system utilisation over time. We can see that deletion of used space was triggered 3 times. It took the test approximately 10.5 hours to fill available space ($\SI{300}{\giga\byte}$).}
+        \caption[Usage of available space of ext4 during testing of high utilisation of HDD]{Chart displays file system utilisation over time. We can see that deletion of used space was triggered 3 times. It took the test approximately 10.5 hours to fill available space ($\SI{300}{\giga\byte}$).}
 \label{fig:usage99_ext4}
     \end{minipage}
 \end{figure}
@@ -1043,7 +1042,7 @@ The results of this thesis were presented to developers of file systems and open
         \centering
         \includegraphics[width=\textwidth]{../charts/HDD_ext4/ca}
         \includegraphics[width=\textwidth]{../charts/HDD_ext4/o}
-                \caption[Evolution of latencies of EXT4 during testing of high utilisation of HDD]{On these charts, we can see evolution of latencies of conducted IO operations during testing EXT4 with high utilisation. Progressively larger fluctuations can be seen in operations random write, truncate and read.}
+                \caption[Evolution of latencies of ext4 during testing of high utilisation of HDD]{On these charts, we can see evolution of latencies of conducted IO operations during testing ext4 with high utilisation. Progressively larger fluctuations can be seen in operations random write, truncate and read.}
 \label{fig:lats_ext4}
     \end{minipage}
 \end{figure}
@@ -1078,7 +1077,7 @@ The results of this thesis were presented to developers of file systems and open
     \begin{minipage}{\textwidth}
         \centering
         \includegraphics[width=0.7\textwidth]{../charts/SSD_xfs_trim/usage.png}
-        \caption[Usage of available space of XFS during testing on SSD with regular trimming]{Chart displays file system utilisation over time. Test filled the available volume ($\SI{120}{\giga\byte}$) in half an hour. It is difficult to say how many volume deleting iteratinos were triggered, beacuse the test managed to fill released space between usage logging intervals.}
+        \caption[Usage of available space of XFS during testing on SSD with regular trimming]{Chart displays file system utilisation over time. Test filled the available volume ($\SI{120}{\giga\byte}$) in half an hour. It is difficult to say how many volume deleting iterations were triggered, beacuse the test managed to fill released space between usage logging intervals.}
 \label{fig:usage_xfs_ssd_trim}
     \end{minipage}
 \end{figure}
@@ -1089,7 +1088,7 @@ The results of this thesis were presented to developers of file systems and open
         \centering
         \includegraphics[width=\textwidth]{../charts/SSD_xfs_trim/1}
         \includegraphics[width=\textwidth]{../charts/SSD_xfs_trim/2}
-                \caption[Evolution of latencies of XFS during testing on SSD with regular trimming]{On these charts, we can see evolution of latencies of conducted IO operations during testing XFS on SSD device with regular trimming performed. Large fluctuactions can be seen in create operations. Other operations are not showing significal performance change trend during testing time.}
+                \caption[Evolution of latencies of XFS during testing on SSD with regular trimming]{Evolution of latencies of conducted IO operations during testing XFS on SSD device with regular trimming performed.}
 \label{fig:lats_xfs_ssd_trim}
 
     \end{minipage}
@@ -1097,7 +1096,7 @@ The results of this thesis were presented to developers of file systems and open
 
 \clearpage
 
-\section{Test of EXT4 on SSD with regular trimming}
+\section{Test of ext4 on SSD with regular trimming}
 \begin{itemize}
 \itemsep0em 
    \item System: Machine\,2
@@ -1108,14 +1107,14 @@ The results of this thesis were presented to developers of file systems and open
 \begin{figure}[h]
     \centering
     \fbox{\includegraphics[width=\textwidth,keepaspectratio]{../charts/SSD_ext4_trim/free.png}}
-    \caption[Evolution of free space fragmentation of EXT4 during testing on SSD with regular trimming]{This chart shows evolution of free space fragmentation through the whole test. When comparing this chart with Figure~\ref{fig:usage_ext4_ssd_trim}, we can see large raise of number of extents occured after the test consumed all the available volume.}
+    \caption[Evolution of free space fragmentation of ext4 during testing on SSD with regular trimming]{This chart shows evolution of free space fragmentation through the whole test. When comparing this chart with Figure~\ref{fig:usage_ext4_ssd_trim}, we can see large raise of number of extents occured after the test consumed all the available volume.}
     \label{fig:free_ext4_ssd}
 \end{figure}
 
 \begin{figure}[h]
     \centering
     \fbox{\includegraphics[width=\textwidth,keepaspectratio]{../charts/SSD_ext4_trim/used}}
-    \caption[Size distribution of file extents of EXT4 during testing on SSD with regular trimming]{On this chart, we can see distribution of size of file extents. Despite high fragmentation of free space during the test, the final block layout of file system have around 151 thousands of extents. 98\% of files were optimally allocated. Furthermore, we can observe that extent size distribution has lower amount of larger extents (>$\SI{128}{\kilo\byte}$) while having similar amounts of smaller extents (4-$\SI{32}{\kilo\byte}$).}
+    \caption[Size distribution of file extents of ext4 during testing on SSD with regular trimming]{On this chart, we can see distribution of size of file extents. Despite high fragmentation of free space during the test, the final block layout of file system have around 151 thousands of extents. 98\% of files were optimally allocated. Furthermore, we can observe that extent size distribution has lower amount of larger extents (>$\SI{128}{\kilo\byte}$) while having similar amounts of smaller extents (4-$\SI{32}{\kilo\byte}$).}
     \label{fig:used_ext4_ssd}
 \end{figure}
 
@@ -1123,7 +1122,7 @@ The results of this thesis were presented to developers of file systems and open
     \begin{minipage}{\textwidth}
         \centering
         \includegraphics[width=0.7\textwidth]{../charts/SSD_ext4_trim/usage.png}
-        \caption[Usage of available space of EXT4 during testing on SSD with regular trimming]{Chart displays file system utilisation over time. Test filled the available volume ($\SI{120}{\giga\byte}$) in half an hour. It is difficult to say how many volume deleting iteratios were triggered, beacuse the test managed to fill released space between usage logging intervals.}
+        \caption[Usage of available space of ext4 during testing on SSD with regular trimming]{Chart displays file system utilisation over time. Test filled the available volume ($\SI{120}{\giga\byte}$) in half an hour. It is difficult to say how many volume deleting iteratios were triggered, beacuse the test managed to fill released space between usage logging intervals.}
 \label{fig:usage_ext4_ssd_trim}
     \end{minipage}
 \end{figure}
@@ -1134,7 +1133,7 @@ The results of this thesis were presented to developers of file systems and open
         \centering
         \includegraphics[width=\textwidth]{../charts/SSD_ext4_trim/1}
         \includegraphics[width=\textwidth]{../charts/SSD_ext4_trim/2}
-                \caption[Evolution of latencies of EXT4 during testing on SSD with regular trimming]{On these charts, we can see evolution of latencies of conducted IO operations during testing EXT4 on SSD device with regular trimming performed. Some large fluctuations can be seen in read operation, but othewise not meaningfull trend in change of performance van be observed.}
+                \caption[Evolution of latencies of ext4 during testing on SSD with regular trimming]{Evolution of latencies of conducted IO operations during testing ext4 on SSD device with regular trimming performed. Some large fluctuations can be seen in sequential read operation, but othewise not meaningfull trend in change of performance van be observed.}
 \label{fig:lats_ext4_ssd}
     \end{minipage}
 \end{figure}
@@ -1181,7 +1180,7 @@ The results of this thesis were presented to developers of file systems and open
         \centering
         \includegraphics[width=\textwidth]{../charts/SSD_xfs_notrim/1}
         \includegraphics[width=\textwidth]{../charts/SSD_xfs_notrim/2}
-                \caption[Evolution of latencies of XFS during testing on SSD without regular trimming]{On these charts, we can see evolution of latencies of conducted IO operations during testing XFS on SSD device without regular trimming performed. Progressive degradation can be observed in create operation. There may be small growth and progressive larger fluctuations in sequential read, random read and random write.}
+                \caption[Evolution of latencies of XFS during testing on SSD without regular trimming]{Evolution of latencies of conducted IO operations during testing XFS on SSD device without regular trimming performed. Progressive degradation can be observed in create operation. There may be small growth and progressive larger fluctuations in sequential read, random read and random write.}
 \label{fig:lats_xfs_ssd_notrim}
     \end{minipage}
 \end{figure}
@@ -1207,7 +1206,7 @@ caption={},
 }
 
 
-\begin{lstlisting}[language=xml, caption={Specifying OS to be installed}, label={ex:os}][frame=single]
+\begin{lstlisting}[language=xml, caption={Specifying OS to be installed in Beaker environment}, label={ex:os}][frame=single]
 <distroRequires>
   <and>
     <distro_family op="=" value="RedHatEnterpriseLinux7"/>
@@ -1280,7 +1279,7 @@ iotop
 </kickstart>
 \end{lstlisting}
 
-\begin{lstlisting}[language=xml, caption={Configuring single device and file system EXT4 using storage generator},label={ex:storage_generator}][frame=single]
+\begin{lstlisting}[language=xml, caption={Configuring single device and file system ext4 using storage generator},label={ex:storage_generator}][frame=single]
       <task name="/kernel_fsperf/storage_generator" role="STANDALONE">
         <params>
           <param name="TEST_PARAM_STORAGE_GENERATOR" value="-s create -f ext4 -t single -m /RHTSspareLUN1 -d /dev/sdc -T 1SASHDD_ext4"/>
@@ -1288,7 +1287,15 @@ iotop
       </task>
 \end{lstlisting}
 
+\begin{lstlisting}[language=xml, caption={Scheduling file system aging task in Beaker environment},label={ex:aging}][frame=single]
+      <task name="/performance/drift_job" role="STANDALONE">
+        <params>
+          <param name="TEST_PARAM_DRIFT_JOB" value="-s 1 -r -t_/RHTSspareLUN1-o_12000000-f_4000000-+v_10000-w_wtable4.csv-i_300-+D_gaussian-T_on-Y_50-N_on -d /dev/sdb1 -M /RHTSspareLUN1 -t 1SASHDD -q W4595 -m 5_99 -f 0"/>
+        </params>
+      </task>
+\end{lstlisting}
 
+
+\printbibliography[heading=bibintoc]
 
 \end{document}
-erfo
