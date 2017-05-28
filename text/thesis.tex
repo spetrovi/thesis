@@ -61,7 +61,7 @@
 The purpose of this thesis is to research effects of age on file system performance. For the testing purpose, two automated tests were implemented, which use open source benchmarks fs-drift and FIO to induce aging effects and to measure performance. Research was aimed at effects of aging on popular Linux file systems, XFS and ext4. Further research examined effects of underlying storage technology on performance of aged file systems. The file system aging testing implemented as part of this thesis is used to expand testing matrix of Red Hat Kernel Performance team.
 }
 \thesislong{thanks}{
-I would like to thank my consultant Matúš Kocka for tremendous help and guidenance during writing of this thesis. I would also like to thank Red Hat for collaboration and provision of necessary testing equipment. 
+I would like to thank my consultant Matúš Kocka for tremendous help and guidance during writing of this thesis. I would also like to thank Red Hat for collaboration and provision of necessary testing equipment. 
 }
 %% The following section sets up the bibliography.
 
@@ -97,7 +97,7 @@ I would like to thank my consultant Matúš Kocka for tremendous help and guiden
 
 \begin{document}
 \chapter{Introduction}
-File systems remain an important part of modern storage solutions. Large, growing databases, multi-media and other storage based applications need to be supported by high-performing infrastructure layer of storing and retrieving information. Such infrastructure have to be provided by the operating systems (OS) in a form of file system.
+File systems remain an important part of modern storage solutions. Large, growing databases, multimedia and other storage based applications need to be supported by high-performing infrastructure layer of storing and retrieving information. Such infrastructure have to be provided by the operating systems (OS) in a form of file system.
 
 Originally, file system was a simple tool developed to handle communication between OS and physical device, but today, it is a very complex piece of software with a large set of tools and features to go~with.
 
@@ -109,19 +109,19 @@ File systems, as well as other complex software, are subjected to progressive de
 
 Researching of file system aging can by done in two stages, aging the file system and testing of the aged instance. In the first stage, observation about \emph{evolution} of fragmentation and performance can be made. The second stage brings insight into \emph{state} of performance of aged file system.
 
-In the first part, this thesis describe implementation of two flexible tests, which correspond with afformentioned stages.
+In the first part, this thesis describes implementation of two flexible tests, which correspond with afformentioned stages.
  
 In the first-stage testing, file system is aged using open-source benchmark fs-drift. While aging the file system, fragmentation of free space and latency of IO operations is periodically recorded. After the aging process, additional information about file systems block layout is recorded as well. Once this information is gathered, image of aged file system instance is created. To save space, only metadata of created file system is used, since content of created files is random and therefore irrelevant.
 
 Created images are then used in second-stage testing. By using created images, higher stability and consistency of results is achieved. By reloading the file system image on the device, it is possible to bring the file system to the original, aged, state therefore for every performance test the same file system layout is available.
 
-In the second-stage testing, file system is brought to the aged state by reloading image corresponding with desired testing configuration. Before every performance test, some volume can be released from file system, so the performance test has space to test on. After environment initalization (\texttt{sync}, \texttt{fstrim}), the performance test can begin. Testing of fresh instance of file system is done as well to conclude if any performance change occur.
+In the second-stage testing, file system is brought to the aged state by reloading image corresponding with desired testing configuration. Before every performance test, some volume can be released from file system, so the performance test has space to test on. After environment initialization (\texttt{sync}, \texttt{fstrim}), the performance test can begin. Testing of fresh instance of file system is done as well to conclude if any performance change occur.
 
-In the latter parts of this thesis, usage of developed tests on different configurations of file systems and storage is demonstrated. The subject of research are differences between popular Linux file systems (XFS, ext4) and differences between used storage technologies (solid state and hard disk drives) in context of aging. Because of nature of collected data, a processing tool was implemented to parse large amount of information into human readable reports with interactive charts.\footnotemark[1]
+In the latter parts of this thesis, usage of developed tests on different configurations of file systems and storage is demonstrated. The subject of research is difference between popular Linux file systems (XFS, ext4) and differences between used storage technologies (solid state and hard disk drives) in context of aging. Because of nature of collected data, a processing tool was implemented to parse large amount of information into human readable reports with interactive charts.\footnotemark[1]
 
 \footnotetext[1]{Charts were created using JavaScript charting library Highcharts}
 
-In the Chapter~\ref{related}, the text presents already conducted research of effects of age and fragmentation on file system performance. Chapter~\ref{fs} describes used storage and file systems and their main features. Chapter~\ref{tools} introduce tools used in implementation of tests while describing their relevant features. Chapters~\ref{aging} and~\ref{fio} describe actual implementation of mentioned tests. Chapter~\ref{results} describes testing environmen, means of data evaluation and results obtained by using created tests. The research is focused on describing the effects of file system aging, differences between file systems in terms of aging and relations of underlying storage to performance of aged file system. In~Chapter~\ref{conclusion}, I discuss results achieved by this thesis. Furthermore, future of testing of file system performance and aging is discussed.
+In the Chapter~\ref{related}, the text presents already conducted research of effects of age and fragmentation on file system performance. Chapter~\ref{fs} describes used storage and file systems and their main features. Chapter~\ref{tools} introduces tools used in implementation of tests while describing their relevant features. Chapters~\ref{aging} and~\ref{fio} describe implementation of mentioned tests. Chapter~\ref{results} describes testing environment, means of data evaluation and results obtained by using created tests. The research is focused on describing the effects of file system aging, differences between file systems in terms of aging and relations of underlying storage to performance of aged file system. In~Chapter~\ref{conclusion}, I discuss results achieved by this thesis. Furthermore, future of testing of file system performance and aging is discussed.
 
 Appendix~\ref{reports} contains all charts generated by automated reporting tool implemented for purpose of this thesis. Appendix~\ref{examples} contains examples of usage of used tools.  
 
@@ -149,7 +149,7 @@ Synthetic aging is a type of aging that does not require real-life data for its 
 
 Fast file system aging was described as a part of a trace replay benchmark called TBBT~\cite{Zhu:2005:TSA:1251028.1251052}. This type of aging consists of sequence of interleaving append operations on a set of files. By controlling the amount of files involved in the process, researchers had great control over final fragmentation. Such workflow, while creating desired fragmentation, is however quite unrealistic, making the results of testing on such file system questionable~\cite{Traeger:2008:NYS:1367829.1367831}.
 
-Another attempt of inducing fragmenetation was made in an empirical study of file system fragmentation in mobile storage systems~\cite{ji2016empirical}. The aging process consisted of filling the device by alternative creation of files larger or equal to $\SI{100}{\mega\byte}$ and smaller or equal to $\SI{100}{\kilo\byte}$. After 100\% file system utilization was reached, 5\% of files was randomly deleted. 
+Another attempt of inducing fragmentation was made in an empirical study of file system fragmentation in mobile storage systems~\cite{ji2016empirical}. The aging process consisted of filling the device by alternative creation of files larger or equal to $\SI{100}{\mega\byte}$ and smaller or equal to $\SI{100}{\kilo\byte}$. After 100\% file system utilization was reached, 5\% of files was randomly deleted. 
 
 However, for truly realistic insight, a workflow generator which tries to mimic real-life usage can more suitable.
 
@@ -303,7 +303,7 @@ As mentioned, possibility of specifying \emph{pause file} was added, making the 
 
 Another feature added to fs-drift was non-uniform distribution of file sizes. Originally, fs-drift used only uniform distribution to choose file size from zero to specified maximum size. Such implementation offers very little control over file size distribution and is quite unrealistic. Therefore, possibility to request natural file size distribution was added. As a reference for file size distribution, five year old study of file system metadata was used~\cite{agrawal2007five}. Figure~\ref{fig:filedist} shows measured file size distribution of used file systems. To mimic this layout, log-normal distribution was modeled. The shape of resulting distribution is shown in Figure~\ref{fig:lognormal}.
 
-The version used for testing in this thesis have all afformentioned features implemented and problems repaired. The code is also included in eletronic appendix.
+The version used for testing in this thesis have all aformentioned features implemented and problems repaired. The code is also included in eletronic appendix.
 
 \begin{figure}
     \centering
@@ -907,7 +907,7 @@ The results of this thesis were presented to developers of file systems and open
 
 
 \appendix %% Start the appendices.
-\chapter{All generated results}\label{reports}
+\chapter{Reports}\label{reports}
 
 
 

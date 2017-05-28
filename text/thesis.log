@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.3.8)  28 MAY 2017 19:26
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.3.8)  28 MAY 2017 19:45
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -3253,8 +3253,8 @@ Package rerunfilecheck Warning: File `thesis.out' has changed.
 (rerunfilecheck)                or use package `bookmark'.
 
 Package rerunfilecheck Info: Checksums for `thesis.out':
-(rerunfilecheck)             Before: 3FD8EE5133B8BECB1F0DBE9062BA3538;3558
-(rerunfilecheck)             After:  0B8B382F7DA5F91532E8CA0A370BA5FC;3547.
+(rerunfilecheck)             Before: 0B8B382F7DA5F91532E8CA0A370BA5FC;3547
+(rerunfilecheck)             After:  D5F047DA0C244E7917987FD055D4E9D5;3527.
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
@@ -3271,7 +3271,7 @@ Package logreq Info: Writing requests to 'thesis.run.xml'.
 Here is how much of TeX's memory you used:
  47217 strings out of 493013
  872105 string characters out of 6133329
- 1624846 words of memory out of 5000000
+ 1624844 words of memory out of 5000000
  49498 multiletter control sequences out of 15000+600000
  91946 words of font info for 140 fonts, out of 8000000 for 9000
  1143 hyphenation exceptions out of 8191
@@ -3290,7 +3290,7 @@ texlive/2016/texmf-dist/fonts/type1/public/tex-gyre/qplr.pfb></usr/local/texliv
 e/2016/texmf-dist/fonts/type1/public/tex-gyre/qplri.pfb></usr/local/texlive/201
 6/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2016/texmf
 -dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on thesis.pdf (84 pages, 1984134 bytes).
+Output written on thesis.pdf (84 pages, 1983310 bytes).
 PDF statistics:
  1460 PDF objects out of 1728 (max. 8388607)
  1181 compressed objects within 12 object streams

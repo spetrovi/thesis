@@ -36,7 +36,7 @@
 \contentsline {section}{\numberline {7.6}\slshape Performance accross different storage devices}{34}{section.7.6}
 \contentsline {section}{\numberline {7.7}\slshape Testing with \texttt {fstrim}}{34}{section.7.7}
 \contentsline {chapter}{\numberline {8}\bfseries Conclusion}{39}{chapter.8}
-\contentsline {chapter}{\numberline {A}\bfseries All generated results}{41}{appendix.A}
+\contentsline {chapter}{\numberline {A}\bfseries Reports}{41}{appendix.A}
 \contentsline {section}{\numberline {A.1}\slshape Test of medium utilisation using XFS on HDD}{41}{section.A.1}
 \contentsline {section}{\numberline {A.2}\slshape Test of high utilisation using XFS on HDD}{45}{section.A.2}
 \contentsline {section}{\numberline {A.3}\slshape Test of high utilisation using ext4 on HDD}{49}{section.A.3}
