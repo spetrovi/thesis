@@ -27,7 +27,9 @@ def d_image(fsystem, destination):
 	histograms = []
 
 	for i, _file in enumerate(raw_files):
- 	    if i > 103:
+ 	    if len(raw_files) > 100 and i > 103:
+		histograms.append(fsf.Free_space_fragmentation(read_file(_file,'r'), fsystem))
+	    if len(raw_files) < 100:
 		histograms.append(fsf.Free_space_fragmentation(read_file(_file,'r'), fsystem))
 
 	bins = []

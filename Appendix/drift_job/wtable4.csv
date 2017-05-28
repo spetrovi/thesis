@@ -1,0 +1,8 @@
+# quick fs aging workload
+create,50
+append,40
+delete,10
+truncate,10
+random_write,10
+read,10
+random_read,10

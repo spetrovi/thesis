@@ -1,0 +1,3 @@
+PURPOSE of /performance/drift_job
+Description: Fill given device with random workload
+Author: Samuel Petrovic <spetrovi@redhat.com>

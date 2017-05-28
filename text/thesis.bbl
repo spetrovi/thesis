@@ -125,6 +125,27 @@
     \field{year}{1997}
   \endentry
 
+  \entry{highcharts}{misc}{}
+    \true{moreauthor}
+    \name{author}{1}{}{%
+      {{hash=HT}{%
+         family={Hønsi},
+         familyi={H\bibinitperiod},
+         given={Torstein},
+         giveni={T\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{HT+1}
+    \strng{fullhash}{HT+1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{title}{Highcharts charting library}
+    \verb{url}
+    \verb https://www.highcharts.com/
+    \endverb
+    \field{year}{2017}
+  \endentry
+
   \entry{Ousterhout:1985:TAU:323647.323631}{inproceedings}{}
     \true{moreauthor}
     \name{author}{1}{}{%
@@ -548,6 +569,26 @@
     \field{volume}{3}
     \field{journaltitle}{ACM Transactions on Storage (TOS)}
     \field{year}{2007}
+  \endentry
+
+  \entry{html}{misc}{}
+    \name{author}{1}{}{%
+      {{hash=JR}{%
+         family={Jones},
+         familyi={J\bibinitperiod},
+         given={Richard},
+         giveni={R\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{JR1}
+    \strng{fullhash}{JR1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{title}{Library for generating HTML code}
+    \verb{url}
+    \verb https://pypi.python.org/pypi/html
+    \endverb
+    \field{year}{2017}
   \endentry
 
   \entry{scipy}{misc}{}
