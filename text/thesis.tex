@@ -224,15 +224,15 @@ To decrease this effect, trim commands were introduced~\cite{Frankie:2012:MMT:21
 In this chapter, I present tools which were used to implement automated tests for creating and storing aged file systems and measuring their performance. Furthermore, I describe the main features and means of their usage. All the presented tools are open source projects.
 
 \section{Beaker}
-Beaker is an open source project aimed at automating testing workflow. The software can provision system from a pool of labs, install OS and packages, configure environment and perform tasks. The whole process is guided by sequence of instructions in an XML format. Examples of usage can be found in the Appendix~\ref{examples}
+Beaker is an open source Red Hat community project aimed at automating testing workflow~\cite{beaker}. The software can provision system from a pool of labs, install OS and packages, configure environment and perform tasks. The whole process is guided by sequence of instructions in an XML format. Examples of usage can be found in the Appendix~\ref{examples}.
 
 \section{Storage generator}
-Storage generator is a Beaker task developed by Jozef Mikovič. It is capable of automated configuration of storage on a provisioned system. In a single device mode, storage generator simply creates new partition on the given device and creates and mounts file system. In a recipe mode, storage generator follows set of instruction to create more advanced configurations such as merging multiple devices using LVM, creating LVM cache or encrypted volume. Example of usage can be found in Example~\ref{ex:storage_generator}
+Storage generator is a Beaker task developed by Jozef Mikovič as an internal Red Hat tool. It is capable of automated configuration of storage on a provisioned system. In a single device mode, storage generator simply creates new partition on the given device and creates and mounts file system. In a recipe mode, storage generator follows set of instruction to create more advanced configurations such as merging multiple devices using LVM, creating LVM cache or encrypted volume. Example of usage can be found in Example~\ref{ex:storage_generator}.
 
 The creation of XFS file system is standard, but ext4 file system is created with an additional option, disabling \emph{lazy init}. Lazy init is a feature which allows for fast creation of file system by not allocating all the available space at once. The space is allocated later, as the file system grows. Such additional allocation, however would skew data collected in the first hours of the test, therefore it is disabled in these tests.
 
 \section{FIO}
-Flexible Input/Output benchmark is a workload generator written by Jens Axboe. It is a tool well known for it's flexibility as well as large group of users and contributors. The flexibility is integral for conducting less artificial and more natural performance tests. However, approaching more natural test behavior, stability of results drop, so ideal equilibrium between these two requirements has to be found.
+Flexible Input/Output benchmark is a workload generator written by Jens Axboe~\cite{fio:github}. It is a tool well known for it's flexibility as well as large group of users and contributors. The flexibility is integral for conducting less artificial and more natural performance tests. However, approaching more natural test behavior, stability of results drop, so ideal equilibrium between these two requirements has to be found.
 
 FIO accepts the workload specification as either a configuration file or a single line. Multiple different jobs can be specified as well as global options valid for every job. 
 
@@ -241,7 +241,7 @@ There is a possibility to choose from variety of IO operations to be performed. 
 After the test, FIO generates overall report of measured performance. Logging of multiple properties can be enabled, giving researchers even more oversight about the nature of file system performance.
 
 \section{Fs-drift}
-Fs-drift is a very flexible aging test, which can be used to simulate lots of different workloads. The test is based on random file access and randomly generated mix of requests. These requests can be writes, reads, creates, appends, truncates, renames and creations of hard and soft links.
+Fs-drift is a very flexible aging test, which can be used to simulate lots of different workloads~\cite{fs-drift:github}. The test is based on random file access and randomly generated mix of requests. These requests can be writes, reads, creates, appends, truncates, renames and creations of hard and soft links.
 
 At the beginning of run time, the top directory is empty, therefore create requests success the most, other requests, such as \texttt{read} or \texttt{delete}, will fail because not many files has yet been created. Over time, as the file system grows, create requests began to fail and other requests will more likely succeed. File system will eventually reach a state of equilibrium, when requests are equally likely to execute. From this point, the file system would not grow anymore, and the test runs unless one of the stop conditions is met.
 

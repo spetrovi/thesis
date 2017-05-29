@@ -546,6 +546,46 @@
     \warn{\item Can't use 'location' + 'address'}
   \endentry
 
+  \entry{beaker}{misc}{}
+    \name{author}{1}{}{%
+      {{hash=cRH}{%
+         family={community},
+         familyi={c\bibinitperiod},
+         given={Red\bibnamedelima Hat},
+         giveni={R\bibinitperiod\bibinitdelim H\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{cRH1}
+    \strng{fullhash}{cRH1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{title}{Beaker}
+    \verb{url}
+    \verb https://beaker-project.org/
+    \endverb
+    \field{year}{2017}
+  \endentry
+
+  \entry{fio:github}{misc}{}
+    \name{author}{1}{}{%
+      {{hash=AJ}{%
+         family={Axboe},
+         familyi={A\bibinitperiod},
+         given={Jens},
+         giveni={J\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{AJ1}
+    \strng{fullhash}{AJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{title}{Flexible Input/Output benchmark}
+    \verb{url}
+    \verb https://github.com/axboe/fio
+    \endverb
+    \field{year}{2017}
+  \endentry
+
   \entry{agrawal2007five}{article}{}
     \true{moreauthor}
     \name{author}{1}{}{%

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.3.8)  29 MAY 2017 01:00
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.3.8)  29 MAY 2017 09:43
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -2644,20 +2644,20 @@ Underfull \vbox (badness 2213) has occurred while \output is active []
 [8] [9] [10]
 Chapter 4.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 6876) has occurred while \output is active []
 
  [11
 
 
 ]
-[12] <../scripts/fig2.png, id=549, 286.9119pt x 229.0959pt>
+[12] <../scripts/fig2.png, id=554, 286.9119pt x 229.0959pt>
 File: ../scripts/fig2.png Graphic file (type png)
 
 <use ../scripts/fig2.png>
 Package pdftex.def Info: ../scripts/fig2.png used on input line 264.
 (pdftex.def)             Requested size: 252.94388pt x 201.97556pt.
 
-<../scripts/fig3.png, id=551, 286.9119pt x 229.0959pt>
+<../scripts/fig3.png, id=556, 286.9119pt x 229.0959pt>
 File: ../scripts/fig3.png Graphic file (type png)
 
 <use ../scripts/fig3.png>
@@ -2669,7 +2669,7 @@ Underfull \vbox (badness 2119) has occurred while \output is active []
  [13]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [14 <../scripts/fig2.png>] <../charts/filedist.png, id=565, 905.3825pt x 522.9
+ [14 <../scripts/fig2.png>] <../charts/filedist.png, id=570, 905.3825pt x 522.9
 5375pt>
 File: ../charts/filedist.png Graphic file (type png)
 
@@ -2681,7 +2681,7 @@ Overfull \hbox (6.79999pt too wide) in paragraph at lines 309--310
  [][] 
  []
 
-<../scripts/dist3.png, id=568, 293.4162pt x 258.7266pt>
+<../scripts/dist3.png, id=573, 293.4162pt x 258.7266pt>
 File: ../scripts/dist3.png Graphic file (type png)
 
 <use ../scripts/dist3.png>
@@ -2721,7 +2721,7 @@ Package Listings Warning: Text dropped after begin of listing on input line 386
 Package Listings Warning: Text dropped after begin of listing on input line 390
 .
 
-[18] [19] <../scripts/drift_job_activity.pdf, id=615, 877.2775pt x 985.6825pt>
+[18] [19] <../scripts/drift_job_activity.pdf, id=620, 877.2775pt x 985.6825pt>
 File: ../scripts/drift_job_activity.pdf Graphic file (type pdf)
 
 <use ../scripts/drift_job_activity.pdf>
@@ -2750,7 +2750,7 @@ er to recipe_fio_aging
  []
 
 [24]
-<../scripts/recipe_fio_aging_activity.pdf, id=651, 884.30376pt x 855.195pt>
+<../scripts/recipe_fio_aging_activity.pdf, id=656, 884.30376pt x 855.195pt>
 File: ../scripts/recipe_fio_aging_activity.pdf Graphic file (type pdf)
 
 <use ../scripts/recipe_fio_aging_activity.pdf>
@@ -2780,7 +2780,7 @@ Underfull \hbox (badness 3019) in paragraph at lines 557--557
 g open source li-brary
  []
 
-[29] [30] <../charts/HDD_xfs/read_high.pdf, id=704, 1204.5pt x 803.0pt>
+[29] [30] <../charts/HDD_xfs/read_high.pdf, id=709, 1204.5pt x 803.0pt>
 File: ../charts/HDD_xfs/read_high.pdf Graphic file (type pdf)
 
 <use ../charts/HDD_xfs/read_high.pdf>
@@ -2788,7 +2788,7 @@ Package pdftex.def Info: ../charts/HDD_xfs/read_high.pdf used on input line 600
 .
 (pdftex.def)             Requested size: 361.34999pt x 240.90186pt.
 
-<../charts/HDD_xfs/read_low.pdf, id=705, 1204.5pt x 803.0pt>
+<../charts/HDD_xfs/read_low.pdf, id=710, 1204.5pt x 803.0pt>
 File: ../charts/HDD_xfs/read_low.pdf Graphic file (type pdf)
 
 <use ../charts/HDD_xfs/read_low.pdf>
@@ -2807,7 +2807,7 @@ Overfull \hbox (13.57957pt too wide) in paragraph at lines 667--702
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [34]
-[35] [36] <../charts/SSD_xfs_notrim/create.pdf, id=777, 1204.5pt x 803.0pt>
+[35] [36] <../charts/SSD_xfs_notrim/create.pdf, id=782, 1204.5pt x 803.0pt>
 File: ../charts/SSD_xfs_notrim/create.pdf Graphic file (type pdf)
 
 <use ../charts/SSD_xfs_notrim/create.pdf>
@@ -2837,6 +2837,13 @@ Overfull \hbox (10.55145pt too wide) in paragraph at lines 895--895
 lash-memory
  []
 
+
+Overfull \hbox (2.57054pt too wide) in paragraph at lines 895--895
+[]\T1/qpl/m/n/12 (-20) Red Hat com-mu-nity. \T1/qpl/m/it/12 (-20) Beaker\T1/qpl
+/m/n/12 (-20) . 2017. \T1/qpl/m/sc/12 (-20) url\T1/qpl/m/n/12 (-20) : []$\T1/lm
+tt/m/n/12 https : / / beaker -[] project .
+ []
+
 [44] [45] [46
 
 
@@ -2850,14 +2857,14 @@ LaTeX Font Warning: Font shape `OMS/qpl/m/n' undefined
 (Font)              using `OMS/cmsy/m/n' instead
 (Font)              for symbol `textbullet' on input line 920.
 
-<../charts/HDD_xfs/free80.png, id=860, 728.7225pt x 626.34pt>
+<../charts/HDD_xfs/free80.png, id=869, 728.7225pt x 626.34pt>
 File: ../charts/HDD_xfs/free80.png Graphic file (type png)
 
 <use ../charts/HDD_xfs/free80.png>
 Package pdftex.def Info: ../charts/HDD_xfs/free80.png used on input line 928.
 (pdftex.def)             Requested size: 361.34999pt x 310.57922pt.
 
-<../charts/HDD_xfs/used80.pdf, id=861, 1204.5pt x 803.0pt>
+<../charts/HDD_xfs/used80.pdf, id=870, 1204.5pt x 803.0pt>
 File: ../charts/HDD_xfs/used80.pdf Graphic file (type pdf)
 
 <use ../charts/HDD_xfs/used80.pdf>
@@ -2868,21 +2875,21 @@ Overfull \hbox (6.79999pt too wide) in paragraph at lines 936--937
  [][] 
  []
 
-<../charts/HDD_xfs/600.png, id=862, 283.2984pt x 229.0959pt>
+<../charts/HDD_xfs/600.png, id=871, 283.2984pt x 229.0959pt>
 File: ../charts/HDD_xfs/600.png Graphic file (type png)
 
 <use ../charts/HDD_xfs/600.png>
 Package pdftex.def Info: ../charts/HDD_xfs/600.png used on input line 944.
 (pdftex.def)             Requested size: 252.94388pt x 204.5484pt.
 
-<../charts/HDD_xfs/low_ca.pdf, id=863, 1204.5pt x 803.0pt>
+<../charts/HDD_xfs/low_ca.pdf, id=872, 1204.5pt x 803.0pt>
 File: ../charts/HDD_xfs/low_ca.pdf Graphic file (type pdf)
 
 <use ../charts/HDD_xfs/low_ca.pdf>
 Package pdftex.def Info: ../charts/HDD_xfs/low_ca.pdf used on input line 955.
 (pdftex.def)             Requested size: 361.34999pt x 240.90186pt.
 
-<../charts/HDD_xfs/low_others.pdf, id=864, 1204.5pt x 803.0pt>
+<../charts/HDD_xfs/low_others.pdf, id=873, 1204.5pt x 803.0pt>
 File: ../charts/HDD_xfs/low_others.pdf Graphic file (type pdf)
 
 <use ../charts/HDD_xfs/low_others.pdf>
@@ -2896,14 +2903,14 @@ LaTeX Warning: Float too large for page by 7.6877pt on input line 960.
 [47 <../charts/HDD_xfs/free80.png>] [48 <../charts/HDD_xfs/used80.pdf>]
 [49 <../charts/HDD_xfs/600.png>] [50 <../charts/HDD_xfs/low_ca.pdf> <../charts/
 HDD_xfs/low_others.pdf>]
-<../charts/HDD_xfs/free99.png, id=931, 726.715pt x 627.34375pt>
+<../charts/HDD_xfs/free99.png, id=940, 726.715pt x 627.34375pt>
 File: ../charts/HDD_xfs/free99.png Graphic file (type png)
 
 <use ../charts/HDD_xfs/free99.png>
 Package pdftex.def Info: ../charts/HDD_xfs/free99.png used on input line 974.
 (pdftex.def)             Requested size: 361.34999pt x 311.94804pt.
 
-<../charts/HDD_xfs/used99.pdf, id=934, 1204.5pt x 803.0pt>
+<../charts/HDD_xfs/used99.pdf, id=943, 1204.5pt x 803.0pt>
 File: ../charts/HDD_xfs/used99.pdf Graphic file (type pdf)
 
 <use ../charts/HDD_xfs/used99.pdf>
@@ -2917,7 +2924,7 @@ Overfull \hbox (6.79999pt too wide) in paragraph at lines 981--982
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<../charts/HDD_xfs/300.png, id=935, 290.5254pt x 229.0959pt>
+<../charts/HDD_xfs/300.png, id=944, 290.5254pt x 229.0959pt>
 File: ../charts/HDD_xfs/300.png Graphic file (type png)
 
 <use ../charts/HDD_xfs/300.png>
@@ -2927,14 +2934,14 @@ Package pdftex.def Info: ../charts/HDD_xfs/300.png used on input line 989.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<../charts/HDD_xfs/high_ca.pdf, id=936, 1204.5pt x 803.0pt>
+<../charts/HDD_xfs/high_ca.pdf, id=945, 1204.5pt x 803.0pt>
 File: ../charts/HDD_xfs/high_ca.pdf Graphic file (type pdf)
 
 <use ../charts/HDD_xfs/high_ca.pdf>
 Package pdftex.def Info: ../charts/HDD_xfs/high_ca.pdf used on input line 999.
 (pdftex.def)             Requested size: 361.34999pt x 240.90186pt.
 
-<../charts/HDD_xfs/high_other.pdf, id=937, 1204.5pt x 803.0pt>
+<../charts/HDD_xfs/high_other.pdf, id=946, 1204.5pt x 803.0pt>
 File: ../charts/HDD_xfs/high_other.pdf Graphic file (type pdf)
 
 <use ../charts/HDD_xfs/high_other.pdf>
@@ -2950,14 +2957,14 @@ LaTeX Warning: Float too large for page by 22.1877pt on input line 1004.
  <../charts/HDD_xfs/free99.png>] [52 <../charts/HDD_xfs/used99.pdf>]
 [53 <../charts/HDD_xfs/300.png>] [54 <../charts/HDD_xfs/high_ca.pdf> <../charts
 /HDD_xfs/high_other.pdf>]
-<../charts/HDD_ext4/free.png, id=1004, 694.595pt x 575.14874pt>
+<../charts/HDD_ext4/free.png, id=1013, 694.595pt x 575.14874pt>
 File: ../charts/HDD_ext4/free.png Graphic file (type png)
 
 <use ../charts/HDD_ext4/free.png>
 Package pdftex.def Info: ../charts/HDD_ext4/free.png used on input line 1020.
 (pdftex.def)             Requested size: 361.34999pt x 299.21948pt.
 
-<../charts/HDD_ext4/used.pdf, id=1007, 1204.5pt x 803.0pt>
+<../charts/HDD_ext4/used.pdf, id=1016, 1204.5pt x 803.0pt>
 File: ../charts/HDD_ext4/used.pdf Graphic file (type pdf)
 
 <use ../charts/HDD_ext4/used.pdf>
@@ -2971,7 +2978,7 @@ Overfull \hbox (6.79999pt too wide) in paragraph at lines 1027--1028
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<../charts/HDD_ext4/usage.png, id=1008, 290.5254pt x 229.0959pt>
+<../charts/HDD_ext4/usage.png, id=1017, 290.5254pt x 229.0959pt>
 File: ../charts/HDD_ext4/usage.png Graphic file (type png)
 
 <use ../charts/HDD_ext4/usage.png>
@@ -2981,14 +2988,14 @@ Package pdftex.def Info: ../charts/HDD_ext4/usage.png used on input line 1035.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<../charts/HDD_ext4/cta.pdf, id=1009, 1204.5pt x 803.0pt>
+<../charts/HDD_ext4/cta.pdf, id=1018, 1204.5pt x 803.0pt>
 File: ../charts/HDD_ext4/cta.pdf Graphic file (type pdf)
 
 <use ../charts/HDD_ext4/cta.pdf>
 Package pdftex.def Info: ../charts/HDD_ext4/cta.pdf used on input line 1045.
 (pdftex.def)             Requested size: 361.34999pt x 240.90186pt.
 
-<../charts/HDD_ext4/rrrd.pdf, id=1010, 1204.5pt x 803.0pt>
+<../charts/HDD_ext4/rrrd.pdf, id=1019, 1204.5pt x 803.0pt>
 File: ../charts/HDD_ext4/rrrd.pdf Graphic file (type pdf)
 
 <use ../charts/HDD_ext4/rrrd.pdf>
@@ -2999,7 +3006,7 @@ Package pdftex.def Info: ../charts/HDD_ext4/rrrd.pdf used on input line 1046.
  <../charts/HDD_ext4/free.png>] [56 <../charts/HDD_ext4/used.pdf>] [57 <../char
 ts/HDD_ext4/usage.png>] [58 <../charts/HDD_ext4/cta.pdf> <../charts/HDD_ext4/rr
 rd.pdf>]
-<../charts/SSD_xfs_trim/free.png, id=1075, 516.93124pt x 502.87875pt>
+<../charts/SSD_xfs_trim/free.png, id=1085, 516.93124pt x 502.87875pt>
 File: ../charts/SSD_xfs_trim/free.png Graphic file (type png)
 
 <use ../charts/SSD_xfs_trim/free.png>
@@ -3007,7 +3014,7 @@ Package pdftex.def Info: ../charts/SSD_xfs_trim/free.png used on input line 106
 6.
 (pdftex.def)             Requested size: 361.34999pt x 351.53697pt.
 
-<../charts/SSD_xfs_trim/used.pdf, id=1078, 1204.5pt x 803.0pt>
+<../charts/SSD_xfs_trim/used.pdf, id=1088, 1204.5pt x 803.0pt>
 File: ../charts/SSD_xfs_trim/used.pdf Graphic file (type pdf)
 
 <use ../charts/SSD_xfs_trim/used.pdf>
@@ -3022,7 +3029,7 @@ Overfull \hbox (6.79999pt too wide) in paragraph at lines 1073--1074
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<../charts/SSD_xfs_trim/usage.png, id=1079, 292.6935pt x 229.0959pt>
+<../charts/SSD_xfs_trim/usage.png, id=1089, 292.6935pt x 229.0959pt>
 File: ../charts/SSD_xfs_trim/usage.png Graphic file (type png)
 
 <use ../charts/SSD_xfs_trim/usage.png>
@@ -3033,14 +3040,14 @@ Package pdftex.def Info: ../charts/SSD_xfs_trim/usage.png used on input line 10
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<../charts/SSD_xfs_trim/1.pdf, id=1080, 1204.5pt x 803.0pt>
+<../charts/SSD_xfs_trim/1.pdf, id=1090, 1204.5pt x 803.0pt>
 File: ../charts/SSD_xfs_trim/1.pdf Graphic file (type pdf)
 
 <use ../charts/SSD_xfs_trim/1.pdf>
 Package pdftex.def Info: ../charts/SSD_xfs_trim/1.pdf used on input line 1091.
 (pdftex.def)             Requested size: 361.34999pt x 240.90186pt.
 
-<../charts/SSD_xfs_trim/2.pdf, id=1081, 1204.5pt x 803.0pt>
+<../charts/SSD_xfs_trim/2.pdf, id=1091, 1204.5pt x 803.0pt>
 File: ../charts/SSD_xfs_trim/2.pdf Graphic file (type pdf)
 
 <use ../charts/SSD_xfs_trim/2.pdf>
@@ -3051,7 +3058,7 @@ Package pdftex.def Info: ../charts/SSD_xfs_trim/2.pdf used on input line 1092.
  <../charts/SSD_xfs_trim/free.png>]
 [60 <../charts/SSD_xfs_trim/used.pdf>] [61 <../charts/SSD_xfs_trim/usage.png>]
 [62 <../charts/SSD_xfs_trim/1.pdf> <../charts/SSD_xfs_trim/2.pdf>]
-<../charts/SSD_ext4_trim/free.png, id=1148, 591.20876pt x 506.89375pt>
+<../charts/SSD_ext4_trim/free.png, id=1157, 591.20876pt x 506.89375pt>
 File: ../charts/SSD_ext4_trim/free.png Graphic file (type png)
 
 <use ../charts/SSD_ext4_trim/free.png>
@@ -3059,7 +3066,7 @@ Package pdftex.def Info: ../charts/SSD_ext4_trim/free.png used on input line 11
 11.
 (pdftex.def)             Requested size: 361.34999pt x 309.8235pt.
 
-<../charts/SSD_ext4_trim/used.pdf, id=1151, 1204.5pt x 803.0pt>
+<../charts/SSD_ext4_trim/used.pdf, id=1160, 1204.5pt x 803.0pt>
 File: ../charts/SSD_ext4_trim/used.pdf Graphic file (type pdf)
 
 <use ../charts/SSD_ext4_trim/used.pdf>
@@ -3074,7 +3081,7 @@ Overfull \hbox (6.79999pt too wide) in paragraph at lines 1118--1119
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<../charts/SSD_ext4_trim/usage.png, id=1152, 292.6935pt x 229.0959pt>
+<../charts/SSD_ext4_trim/usage.png, id=1161, 292.6935pt x 229.0959pt>
 File: ../charts/SSD_ext4_trim/usage.png Graphic file (type png)
 
 <use ../charts/SSD_ext4_trim/usage.png>
@@ -3085,7 +3092,7 @@ Package pdftex.def Info: ../charts/SSD_ext4_trim/usage.png used on input line 1
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<../charts/SSD_ext4_trim/1.pdf, id=1153, 1204.5pt x 803.0pt>
+<../charts/SSD_ext4_trim/1.pdf, id=1162, 1204.5pt x 803.0pt>
 File: ../charts/SSD_ext4_trim/1.pdf Graphic file (type pdf)
 
 <use ../charts/SSD_ext4_trim/1.pdf>
@@ -3093,7 +3100,7 @@ Package pdftex.def Info: ../charts/SSD_ext4_trim/1.pdf used on input line 1136.
 
 (pdftex.def)             Requested size: 361.34999pt x 240.90186pt.
 
-<../charts/SSD_ext4_trim/2.pdf, id=1154, 1204.5pt x 803.0pt>
+<../charts/SSD_ext4_trim/2.pdf, id=1163, 1204.5pt x 803.0pt>
 File: ../charts/SSD_ext4_trim/2.pdf Graphic file (type pdf)
 
 <use ../charts/SSD_ext4_trim/2.pdf>
@@ -3109,7 +3116,7 @@ LaTeX Warning: Float too large for page by 7.6877pt on input line 1141.
  <../charts/SSD_ext4_trim/free.png>] [64 <../charts/SSD_ext4_trim/used.pdf>] [6
 5 <../charts/SSD_ext4_trim/usage.png>] [66 <../charts/SSD_ext4_trim/1.pdf> <../
 charts/SSD_ext4_trim/2.pdf>]
-<../charts/SSD_xfs_notrim/free.png, id=1220, 555.07375pt x 483.8075pt>
+<../charts/SSD_xfs_notrim/free.png, id=1230, 555.07375pt x 483.8075pt>
 File: ../charts/SSD_xfs_notrim/free.png Graphic file (type png)
 
 <use ../charts/SSD_xfs_notrim/free.png>
@@ -3117,7 +3124,7 @@ Package pdftex.def Info: ../charts/SSD_xfs_notrim/free.png used on input line 1
 157.
 (pdftex.def)             Requested size: 361.34999pt x 314.95837pt.
 
-<../charts/SSD_xfs_notrim/used.pdf, id=1225, 1204.5pt x 803.0pt>
+<../charts/SSD_xfs_notrim/used.pdf, id=1235, 1204.5pt x 803.0pt>
 File: ../charts/SSD_xfs_notrim/used.pdf Graphic file (type pdf)
 
 <use ../charts/SSD_xfs_notrim/used.pdf>
@@ -3132,7 +3139,7 @@ Overfull \hbox (6.79999pt too wide) in paragraph at lines 1164--1165
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<../charts/SSD_xfs_notrim/usage.png, id=1226, 292.6935pt x 229.0959pt>
+<../charts/SSD_xfs_notrim/usage.png, id=1236, 292.6935pt x 229.0959pt>
 File: ../charts/SSD_xfs_notrim/usage.png Graphic file (type png)
 
 <use ../charts/SSD_xfs_notrim/usage.png>
@@ -3143,7 +3150,7 @@ Package pdftex.def Info: ../charts/SSD_xfs_notrim/usage.png used on input line
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<../charts/SSD_xfs_notrim/1.pdf, id=1227, 1204.5pt x 803.0pt>
+<../charts/SSD_xfs_notrim/1.pdf, id=1237, 1204.5pt x 803.0pt>
 File: ../charts/SSD_xfs_notrim/1.pdf Graphic file (type pdf)
 
 <use ../charts/SSD_xfs_notrim/1.pdf>
@@ -3151,7 +3158,7 @@ Package pdftex.def Info: ../charts/SSD_xfs_notrim/1.pdf used on input line 1183
 .
 (pdftex.def)             Requested size: 361.34999pt x 240.90186pt.
 
-<../charts/SSD_xfs_notrim/2.pdf, id=1228, 1204.5pt x 803.0pt>
+<../charts/SSD_xfs_notrim/2.pdf, id=1238, 1204.5pt x 803.0pt>
 File: ../charts/SSD_xfs_notrim/2.pdf Graphic file (type pdf)
 
 <use ../charts/SSD_xfs_notrim/2.pdf>
@@ -3231,10 +3238,10 @@ Package logreq Info: Writing requests to 'thesis.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 47265 strings out of 493013
- 872714 string characters out of 6133329
- 1625780 words of memory out of 5000000
- 49503 multiletter control sequences out of 15000+600000
+ 47271 strings out of 493013
+ 872880 string characters out of 6133329
+ 1625781 words of memory out of 5000000
+ 49507 multiletter control sequences out of 15000+600000
  90980 words of font info for 153 fonts, out of 8000000 for 9000
  1143 hyphenation exceptions out of 8191
  62i,14n,97p,10370b,3238s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -3252,10 +3259,10 @@ texlive/2016/texmf-dist/fonts/type1/public/tex-gyre/qplr.pfb></usr/local/texliv
 e/2016/texmf-dist/fonts/type1/public/tex-gyre/qplri.pfb></usr/local/texlive/201
 6/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2016/texmf
 -dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on thesis.pdf (89 pages, 2033186 bytes).
+Output written on thesis.pdf (89 pages, 2034817 bytes).
 PDF statistics:
- 1509 PDF objects out of 1728 (max. 8388607)
- 1224 compressed objects within 13 object streams
- 306 named destinations out of 1000 (max. 500000)
+ 1519 PDF objects out of 1728 (max. 8388607)
+ 1234 compressed objects within 13 object streams
+ 308 named destinations out of 1000 (max. 500000)
  31935 words of extra memory for PDF output out of 35830 (max. 10000000)
 
